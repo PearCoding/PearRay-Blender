@@ -15,6 +15,13 @@ properties_world.WORLD_PT_world.COMPAT_ENGINES.add('PEARRAY_RENDER')
 del properties_world
 
 
+from bl_ui import properties_scene
+properties_scene.SCENE_PT_scene.COMPAT_ENGINES.add('PEARRAY_RENDER')
+properties_scene.SCENE_PT_unit.COMPAT_ENGINES.add('PEARRAY_RENDER')
+properties_scene.SCENE_PT_color_management.COMPAT_ENGINES.add('PEARRAY_RENDER')
+del properties_scene
+
+
 from bl_ui import properties_texture
 from bl_ui.properties_texture import context_tex_datablock
 for member in dir(properties_texture):
@@ -47,6 +54,17 @@ for member in dir(properties_data_camera):
     except:
         pass
 del properties_data_camera
+
+
+from bl_ui import properties_data_lamp
+for member in dir(properties_data_lamp):
+    subclass = getattr(properties_data_lamp, member)
+    if subclass not in (properties_data_lamp.DATA_PT_shadow,):
+        try:
+            subclass.COMPAT_ENGINES.add('PEARRAY_RENDER')
+        except:
+            pass
+del properties_data_lamp
 
 
 from bl_ui import properties_particle as properties_particle
@@ -150,14 +168,56 @@ class CAMERA_PT_pearray_cam_settings(CameraDataButtonsPanel, bpy.types.Panel):
 
         cam = context.camera
 
-        layout.prop(cam.pearray, "zoom", text="Zoom")
+        layout.prop(cam.pearray, "zoom")
 
         split = layout.split()
 
-        split.prop(cam.pearray, "fstop", text="DOF FStop")
-        split.prop(cam.pearray, "apertureRadius", text="DOF Aperture Radius")
+        split.prop(cam.pearray, "fstop")
+        split.prop(cam.pearray, "apertureRadius")
 
 ### PearRay
+class RENDER_PT_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
+    bl_label = "Pixel Sampler"
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        
+        layout.prop(scene.pearray, "pixel_sampler_mode")
+        layout.prop(scene.pearray, "max_pixel_samples")
+
+
+class RENDER_PT_gi(RenderButtonsPanel, bpy.types.Panel):
+    bl_label = "Global Illumination"
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        
+        layout.prop(scene.pearray, "max_diffuse_bounces")
+        layout.prop(scene.pearray, "max_light_samples")
+        layout.prop(scene.pearray, "use_bidirect")
+
+
+class RENDER_PT_photon(RenderButtonsPanel, bpy.types.Panel):
+    bl_label = "Photon Mapping"
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        
+        layout.prop(scene.pearray, "photon_count")
+        layout.prop(scene.pearray, "photon_gather_radius")
+        layout.prop(scene.pearray, "photon_max_gather_count")
+        layout.prop(scene.pearray, "photon_max_diffuse_bounces")
+        layout.prop(scene.pearray, "photon_min_specular_bounces")
+        layout.prop(scene.pearray, "photon_gathering_mode")
+        layout.prop(scene.pearray, "photon_squeeze")
+
+
 class RENDER_PT_export_settings(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Export Settings"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
@@ -169,16 +229,18 @@ class RENDER_PT_export_settings(RenderButtonsPanel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         
-        layout.prop(scene.pearray, "scene_name", text="Scene Name")
-        layout.prop(scene.pearray, "keep_prc", text="Keep PRC")
-
+        layout.prop(scene.pearray, "scene_name")
+        layout.prop(scene.pearray, "keep_prc")
+    
 
 def draw_pearray_render(self, context):
     layout = self.layout
     scene = context.scene
 
     if scene.render.engine == 'PEARRAY_RENDER':
+        layout.prop(scene.pearray, "max_ray_depth")
         layout.prop(scene.pearray, "debug_mode")
+        layout.prop(scene.pearray, "incremental")
 
 
 def register():

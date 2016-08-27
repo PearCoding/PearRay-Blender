@@ -6,7 +6,7 @@ import subprocess
 import queue
 import threading
 
-from .scene import generate_scene
+from .scene import generate_scene, write_ini
 
 
 class PearRayRender(bpy.types.RenderEngine):
@@ -69,7 +69,7 @@ class PearRayRender(bpy.types.RenderEngine):
         # PearRay process is finised, one way or the other
         if poll_result is not None:
             if poll_result < 0:
-                print("<<< PEARRAY PROCESS FAILED : %s >>>" % poll_result)
+                self.report('ERROR', "<<< PEARRAY PROCESS FAILED : %s >>>" % poll_result)
                 self.update_stats("", "PearRay: Failed")
             return False
 
@@ -122,6 +122,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
         sceneName = scene.pearray.scene_name
         sceneFile = ""
+        iniFile = ""
         renderPath = ""
 
         # has to be called to update the frame on exporting animations
@@ -134,13 +135,20 @@ class PearRayRender(bpy.types.RenderEngine):
 
         if scene.pearray.keep_prc:
             sceneFile = os.path.normpath(renderPath + "/scene.prc")
+            iniFile = os.path.normpath(renderPath + "/scene.ini")
         else:
             sceneFile = tempfile.NamedTemporaryFile(suffix=".prc").name
+            iniFile = tempfile.NamedTemporaryFile(suffix=".ini").name
 
         self.update_stats("", "PearRay: Exporting data from Blender")
+        write_ini(scene, iniFile)
         generate_scene(sceneName, scene, sceneFile)
-        print("Input %s - Output %s" % (sceneFile, renderPath))
+
+        print("Ini %s - Input %s - Output %s" % (iniFile, sceneFile, renderPath))
+        print(open(iniFile, "r").read())
+        print("-----------------")
         print(open(sceneFile, "r").read())
+        print("-----------------")
 
         self.update_stats("", "PearRay: Starting render")
         pearray_binary = PearRayRender._locate_binary()
@@ -152,11 +160,15 @@ class PearRayRender(bpy.types.RenderEngine):
         args = [sceneFile,
                 renderPath, 
                 "-q",# be quiet
-                "-p",# show progress (ignores quiet option)
+                "-C",
+                iniFile,
                 "--img-update=" + str(self.DELAY), # Updates image while rendering
                 "--img-ext=tga", # This type is faster to read
                 "-v",
                 ]
+        addon_prefs = bpy.context.user_preferences.addons[__package__].preferences
+        if addon_prefs.show_progress_pearray:
+            args.append("-p")# show progress (ignores quiet option)
 
         if not scene.pearray.debug_mode == 'NONE':
             args.append("--debug=%s" % scene.pearray.debug_mode.lower())
@@ -179,7 +191,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
         else:
             print ("<<< PEARRAY STARTED >>>")
-            print("Command line arguments passed: " + str(args))
+            print ("Command line arguments passed: " + str(args))
 
         # Update image
         x = int(render.resolution_x * render.resolution_percentage * 0.01)
@@ -207,17 +219,21 @@ class PearRayRender(bpy.types.RenderEngine):
                 pass
         
         # Line handler
-        stdout_queue = queue.Queue()
-        stdout_thread_stop = threading.Event()
-        stdout_thread = threading.Thread(target=PearRayRender._enqueue_output, args=(self._process.stdout, stdout_queue, stdout_thread_stop))
-        stdout_thread.daemon = True # thread dies with the program
-        stdout_thread.start()
+        if addon_prefs.show_progress_pearray:
+            stdout_queue = queue.Queue()
+            stdout_thread_stop = threading.Event()
+            stdout_thread = threading.Thread(target=PearRayRender._enqueue_output, args=(self._process.stdout, stdout_queue, stdout_thread_stop))
+            stdout_thread.daemon = True # thread dies with the program
+            stdout_thread.start()
 
         prev_size = -1
         prev_mtime = -1
         percent = -1
         while self._proc_wait():
-            percent = self._handle_render_stat(percent, stdout_queue)
+            if addon_prefs.show_progress_pearray:
+                percent = self._handle_render_stat(percent, stdout_queue)
+            else:
+                self.update_stats("", "PearRay: Rendering...")
 
             if os.path.exists(output_image):
                 new_size = os.path.getsize(output_image)
@@ -228,8 +244,9 @@ class PearRayRender(bpy.types.RenderEngine):
                     prev_size = new_size
                     prev_mtime = new_mtime
 
-        stdout_thread_stop.set()
-        stdout_thread.join()
+        if addon_prefs.show_progress_pearray:
+            stdout_thread_stop.set()
+            stdout_thread.join()
 
         update_image()
         self.end_result(result)

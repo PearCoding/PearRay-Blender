@@ -24,6 +24,36 @@ def make_unique_name(l, name):
     return test_name
 
 
+def write_ini(scene, filename):
+    file = open(filename, "w")
+
+    s = scene.pearray
+    file.write("[renderer]\n")
+    file.write("debug=%s\n" % s.debug_mode.lower())
+    file.write("incremental=%i\n" % int(s.incremental))
+    file.write("max=%i\n" % s.max_ray_depth)
+
+    file.write("[pixelsampler]\n")
+    file.write("mode=%s\n" % s.pixel_sampler_mode.lower())
+    file.write("max=%i\n" % s.max_pixel_samples)
+
+    file.write("[globalillumination]\n")
+    file.write("diffuse_bounces=%i\n" % s.max_diffuse_bounces)
+    file.write("light_samples=%i\n" % s.max_light_samples)
+    file.write("bidirect=%i\n" % int(s.use_bidirect))
+
+    file.write("[photon]\n")
+    file.write("count=%i\n" % s.photon_count)
+    file.write("radius=%f\n" % s.photon_gather_radius)
+    file.write("max=%i\n" % s.photon_max_gather_count)
+    file.write("max_diffuse_bounces=%i\n" % s.photon_max_diffuse_bounces)
+    file.write("min_specular_bounces=%i\n" % s.photon_min_specular_bounces)
+    file.write("gathering_mode=%s\n" % s.photon_gathering_mode.lower())
+    file.write("squeeze=%f\n" % s.photon_squeeze)
+    
+    file.close()
+
+
 def generate_scene(name, scene, filename):
     # PearRay uses a Y Up vector, but Blender uses a Z Up vector.
     # Here we change it :)
@@ -226,22 +256,40 @@ def generate_scene(name, scene, filename):
         file.write("(entity\n")
         file.write(":name '%s'\n" % light.name)
         file.write(":type 'sphere'\n")
-        file.write(":radius 0.0001\n")# Really?
+        file.write(":radius 0.001\n")# Really?
         inline_entity_matrix(light)
         file.write(")\n")
     
     def export_arealight(light):
-        pass# TODO
+        light_data = light.data
+        file.write("; Light %s\n" % light.name)
+        color = tuple([c * light_data.energy for c in light_data.color])
+        light_spec_n = write_spectral(light.name + "_spec", color)
+
+        light_mat_n = make_unique_name(material_instances, light.name + "_mat")
+        material_instances.append(light_mat_n)
+
+        file.write("(material\n")
+        file.write(":name '%s'\n" % light_mat_n)
+        file.write(":type 'diffuse'\n")
+        file.write(":emission '%s'\n" % light_spec_n)
+        file.write(")\n")
+
+        file.write("(entity\n")
+        file.write(":name '%s'\n" % light.name)
+        file.write(":type 'plane'\n")
+        file.write(":xAxis %f\n" % -light_data.size)
+        file.write(":yAxis %f\n" % light_data.size_y)
+        inline_entity_matrix(light)
+        file.write(")\n")
 
     def export_light(light):
         if light.data.type == 'POINT':
             export_pointlight(light)# Interpret as spherical area light
-        elif light.data.type == 'SPOT':
-            pass# TODO
-        elif light.data.type == 'SUN':
-            pass# TODO
         elif light.data.type == 'AREA':
             export_arealight(light)
+        else:
+            print("PearRay does not support lights of type '%s'" % light.data.type)
 
     # Meshes
     def export_trimesh(name, mesh):
