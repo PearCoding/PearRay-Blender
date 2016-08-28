@@ -10,6 +10,7 @@ from bpy.props import (
         StringProperty,
         BoolProperty,
         IntProperty,
+        IntVectorProperty,
         FloatProperty,
         FloatVectorProperty,
         EnumProperty,
@@ -81,6 +82,19 @@ class PearRaySceneProperties(PropertyGroup):
         soft_max=4096,
         subtype="UNSIGNED",
         default=8
+        )
+    threads_count = IntProperty(
+        name="Threads",
+        description="Amount of threads used for rendering. 0 means automatic selection; < 0 subtracts it from the available processor core",
+        default=0
+        )
+    threads_tile = IntVectorProperty(
+        name="Tiling",
+        description="Amount of tiling for better use of threads",
+        min=1,
+        soft_max=32,
+        size=2,
+        default=(8, 8)
         )
     pixel_sampler_mode = EnumProperty(
         name="Sampler Mode",

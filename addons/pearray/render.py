@@ -15,7 +15,7 @@ class PearRayRender(bpy.types.RenderEngine):
     #bl_use_preview = True
     bl_use_exclude_layers = True
     
-    DELAY = 0.5 # seconds
+    DELAY = 1 # seconds
 
     @staticmethod
     def _locate_binary():
@@ -27,7 +27,7 @@ class PearRayRender(bpy.types.RenderEngine):
             if os.path.exists(pearray_binary):
                 return pearray_binary
             else:
-                print("User Preferences path to pearray %r NOT FOUND, checking $PATH" % pearray_binary)
+                self.report({'ERROR'}, "User Preferences path to pearray %r NOT FOUND, checking $PATH" % pearray_binary)
 
         # Windows Only
         if sys.platform[:3] == "win":
@@ -69,7 +69,7 @@ class PearRayRender(bpy.types.RenderEngine):
         # PearRay process is finised, one way or the other
         if poll_result is not None:
             if poll_result < 0:
-                self.report('ERROR', "<<< PEARRAY PROCESS FAILED : %s >>>" % poll_result)
+                self.report({'ERROR'}, "PearRay process failed with return code %i" % poll_result)
                 self.update_stats("", "PearRay: Failed")
             return False
 
@@ -131,7 +131,7 @@ class PearRayRender(bpy.types.RenderEngine):
         if not sceneName:
             sceneName = blendSceneName
 
-        renderPath = scene.render.filepath
+        renderPath = bpy.path.resolve_ncase(bpy.path.abspath(scene.render.filepath))
 
         if scene.pearray.keep_prc:
             sceneFile = os.path.normpath(renderPath + "/scene.prc")
@@ -144,16 +144,16 @@ class PearRayRender(bpy.types.RenderEngine):
         write_ini(scene, iniFile)
         generate_scene(sceneName, scene, sceneFile)
 
-        print("Ini %s - Input %s - Output %s" % (iniFile, sceneFile, renderPath))
-        print(open(iniFile, "r").read())
-        print("-----------------")
-        print(open(sceneFile, "r").read())
-        print("-----------------")
+        #print("Ini %s - Input %s - Output %s" % (iniFile, sceneFile, renderPath))
+        #print(open(iniFile, "r").read())
+        #print("-----------------")
+        #print(open(sceneFile, "r").read())
+        #print("-----------------")
 
         self.update_stats("", "PearRay: Starting render")
         pearray_binary = PearRayRender._locate_binary()
         if not pearray_binary:
-            self.report('ERROR', "PearRay: could not execute pearray, possibly PearRay isn't installed")
+            self.report({'ERROR'}, "PearRay: could not execute pearray, possibly PearRay isn't installed")
             print("<<< PEARRAY FAILED >>>")
             return
 
@@ -183,7 +183,7 @@ class PearRayRender(bpy.types.RenderEngine):
             self._process = subprocess.Popen([pearray_binary] + args,
                                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except OSError:
-            self.report('ERROR', "PearRay: could not execute '%s'" % pearray_binary)
+            self.report({'ERROR'}, "PearRay: could not execute '%s'" % pearray_binary)
             import traceback
             traceback.print_exc()
             print ("<<< PEARRAY FAILED >>>")
@@ -211,7 +211,7 @@ class PearRayRender(bpy.types.RenderEngine):
             print("<<< PEARRAY OUTPUT FILE ERROR >>>")
             print(err)
 
-        def update_image():
+        def update_image():# FIXME: How do we prevent crashes? -> Bus Error/Segmentation Faults
             try:
                 layer.load_from_file(output_image)
                 self.update_result(result)
