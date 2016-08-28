@@ -183,6 +183,8 @@ class PearRayRender(bpy.types.RenderEngine):
         if not scene.pearray.debug_mode == 'NONE':
             args.append("--debug=%s" % scene.pearray.debug_mode.lower())
         
+        if not os.path.exists(renderPath):
+            os.makedirs(renderPath)
         output_image = os.path.normpath(renderPath + "/" + image_name + "." + image_ext)
 
         if os.path.exists(output_image):
@@ -223,7 +225,7 @@ class PearRayRender(bpy.types.RenderEngine):
                 pass
         
         update_image()
-        
+
         # Line handler
         if addon_prefs.show_progress_pearray:
             stdout_queue = queue.Queue()
