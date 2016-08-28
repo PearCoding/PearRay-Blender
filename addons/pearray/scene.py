@@ -33,6 +33,14 @@ def write_ini(scene, filename):
     file.write("incremental=%i\n" % int(s.incremental))
     file.write("max=%i\n" % s.max_ray_depth)
 
+    file.write("[threads]\n")
+    threads = 0
+    if scene.render.threads_mode == 'FIXED':
+        threads = scene.render.threads
+    file.write("count=%i\n" % threads)
+    file.write("tile_x=%i\n" % scene.render.tile_x)
+    file.write("tile_y=%i\n" % scene.render.tile_y)
+
     file.write("[pixelsampler]\n")
     file.write("mode=%s\n" % s.pixel_sampler_mode.lower())
     file.write("max=%i\n" % s.max_pixel_samples)
@@ -301,11 +309,11 @@ def generate_scene(name, scene, filename):
         verts = mesh.vertices
         verts_normals = [v.normal[:] for v in verts]
 
-        if len(faces_uv) > 0:
-            if mesh.uv_textures.active and faces_uv.active.data:
-                uv_layer = faces_uv.active.data
-        else:
-            uv_layer = None
+        #if len(faces_uv) > 0:
+        #    if mesh.uv_textures.active and faces_uv.active.data:
+        #        uv_layer = faces_uv.active.data
+        #else:
+        #    uv_layer = None
 
         file.write("(mesh\n")
         file.write(":name '%s'\n" % name)
@@ -358,7 +366,7 @@ def generate_scene(name, scene, filename):
         file.write(":name '%s'\n" % obj.name)
         file.write(":type 'mesh'\n")
 
-        if len(obj.data.materials) >= 1:
+        if len(obj.data.materials) >= 1 and obj.data.materials[0]:
             file.write(":material '%s'\n" % obj.data.materials[0].name)
         else:
             file.write(":material '%s'\n" % MISSING_MAT)

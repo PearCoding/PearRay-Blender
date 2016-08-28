@@ -4,6 +4,7 @@ import bpy
 from bl_ui import properties_render
 properties_render.RENDER_PT_render.COMPAT_ENGINES.add('PEARRAY_RENDER')
 properties_render.RENDER_PT_dimensions.COMPAT_ENGINES.add('PEARRAY_RENDER')
+properties_render.RENDER_PT_performance.COMPAT_ENGINES.add('PEARRAY_RENDER')
 properties_render.RENDER_PT_output.COMPAT_ENGINES.add('PEARRAY_RENDER')
 del properties_render
 
@@ -176,18 +177,6 @@ class CAMERA_PT_pearray_cam_settings(CameraDataButtonsPanel, bpy.types.Panel):
         split.prop(cam.pearray, "apertureRadius")
 
 ### PearRay
-class RENDER_PT_threading(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Threading"
-    COMPAT_ENGINES = {'PEARRAY_RENDER'}
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        
-        layout.prop(scene.pearray, "threads_count")
-        layout.prop(scene.pearray, "threads_tile")
-
-
 class RENDER_PT_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Pixel Sampler"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}

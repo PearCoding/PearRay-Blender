@@ -131,7 +131,7 @@ class PearRayRender(bpy.types.RenderEngine):
         if not sceneName:
             sceneName = blendSceneName
 
-        renderPath = bpy.path.resolve_ncase(bpy.path.abspath(scene.render.filepath))
+        renderPath = bpy.path.resolve_ncase(bpy.path.abspath(render.filepath))
 
         if scene.pearray.keep_prc:
             sceneFile = os.path.normpath(renderPath + "/scene.prc")
@@ -140,15 +140,25 @@ class PearRayRender(bpy.types.RenderEngine):
             sceneFile = tempfile.NamedTemporaryFile(suffix=".prc").name
             iniFile = tempfile.NamedTemporaryFile(suffix=".ini").name
 
+        image_name = "image"
+        image_ext = {
+                'BMP': 'bmp',
+                'PNG': 'png',
+                'JPEG': 'jpg',
+                'JPEG2000': 'jp2',
+                'TARGA': 'tga',
+                'OPEN_EXR_MULTILAYER': 'exr',
+                'OPEN_EXR': 'exr',
+                'HDR': 'hdr',
+                'TIFF': 'tiff',
+            }.get(render.image_settings.file_format, 'NONE')
+        if image_ext == 'NONE':
+            self.report({'WARNING'}, "Couldn't work with choosen extension. Setting it back to png")
+            image_ext = 'png'
+        
         self.update_stats("", "PearRay: Exporting data from Blender")
         write_ini(scene, iniFile)
         generate_scene(sceneName, scene, sceneFile)
-
-        #print("Ini %s - Input %s - Output %s" % (iniFile, sceneFile, renderPath))
-        #print(open(iniFile, "r").read())
-        #print("-----------------")
-        #print(open(sceneFile, "r").read())
-        #print("-----------------")
 
         self.update_stats("", "PearRay: Starting render")
         pearray_binary = PearRayRender._locate_binary()
@@ -163,7 +173,7 @@ class PearRayRender(bpy.types.RenderEngine):
                 "-C",
                 iniFile,
                 "--img-update=" + str(self.DELAY), # Updates image while rendering
-                "--img-ext=tga", # This type is faster to read
+                "--img-ext=%s" % image_ext,
                 "-v",
                 ]
         addon_prefs = bpy.context.user_preferences.addons[__package__].preferences
@@ -173,7 +183,7 @@ class PearRayRender(bpy.types.RenderEngine):
         if not scene.pearray.debug_mode == 'NONE':
             args.append("--debug=%s" % scene.pearray.debug_mode.lower())
         
-        output_image = os.path.normpath(renderPath + "/image.tga")
+        output_image = os.path.normpath(renderPath + "/" + image_name + "." + image_ext)
 
         if os.path.exists(output_image):
             os.remove(output_image)
@@ -205,18 +215,14 @@ class PearRayRender(bpy.types.RenderEngine):
 
         time.sleep(self.DELAY)
 
-        try:
-            layer.load_from_file(output_image)
-        except RuntimeError as err:
-            print("<<< PEARRAY OUTPUT FILE ERROR >>>")
-            print(err)
-
         def update_image():# FIXME: How do we prevent crashes? -> Bus Error/Segmentation Faults
             try:
                 layer.load_from_file(output_image)
                 self.update_result(result)
             except RuntimeError:
                 pass
+        
+        update_image()
         
         # Line handler
         if addon_prefs.show_progress_pearray:
