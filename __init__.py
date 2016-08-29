@@ -13,15 +13,17 @@ bl_info = {
 
 if "bpy" in locals():
     import importlib
-    importlib.reload(ui)
-    importlib.reload(render)
+    importlib.reload(core)
+    importlib.reload(export)
     importlib.reload(properties)
+    importlib.reload(ui)
 else:
     import bpy
     from . import (
+            core,
+            export,
+            properties,
             ui,
-            render,
-            properties
             )
 
 

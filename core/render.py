@@ -6,7 +6,9 @@ import subprocess
 import queue
 import threading
 
-from .scene import generate_scene, write_ini
+from .. import export
+
+pearray_package = __import__(__name__.split('.')[0])
 
 
 class PearRayRender(bpy.types.RenderEngine):
@@ -19,10 +21,10 @@ class PearRayRender(bpy.types.RenderEngine):
 
     @staticmethod
     def _locate_binary():
-        addon_prefs = bpy.context.user_preferences.addons[__package__].preferences
+        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
 
         # Use the system preference if its set.
-        pearray_binary = addon_prefs.filepath_pearray
+        pearray_binary = addon_prefs.executable
         if pearray_binary:
             if os.path.exists(pearray_binary):
                 return pearray_binary
@@ -120,16 +122,12 @@ class PearRayRender(bpy.types.RenderEngine):
         if not blendSceneName:
             blendSceneName = "blender_scene"
 
-        sceneName = scene.pearray.scene_name
         sceneFile = ""
         iniFile = ""
         renderPath = ""
 
         # has to be called to update the frame on exporting animations
         scene.frame_set(scene.frame_current)
-
-        if not sceneName:
-            sceneName = blendSceneName
 
         renderPath = bpy.path.resolve_ncase(bpy.path.abspath(render.filepath))
 
@@ -157,8 +155,10 @@ class PearRayRender(bpy.types.RenderEngine):
             image_ext = 'png'
         
         self.update_stats("", "PearRay: Exporting data from Blender")
-        write_ini(scene, iniFile)
-        generate_scene(sceneName, scene, sceneFile)
+        ini_exporter = export.Exporter(iniFile, scene)
+        ini_exporter.write_ini()
+        scene_exporter = export.Exporter(sceneFile, scene)
+        scene_exporter.write_scene()
 
         self.update_stats("", "PearRay: Starting render")
         pearray_binary = PearRayRender._locate_binary()
@@ -176,8 +176,8 @@ class PearRayRender(bpy.types.RenderEngine):
                 "--img-ext=%s" % image_ext,
                 "-v",
                 ]
-        addon_prefs = bpy.context.user_preferences.addons[__package__].preferences
-        if addon_prefs.show_progress_pearray:
+        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
+        if addon_prefs.show_progress:
             args.append("-p")# show progress (ignores quiet option)
 
         if not scene.pearray.debug_mode == 'NONE':
@@ -227,7 +227,7 @@ class PearRayRender(bpy.types.RenderEngine):
         update_image()
 
         # Line handler
-        if addon_prefs.show_progress_pearray:
+        if addon_prefs.show_progress:
             stdout_queue = queue.Queue()
             stdout_thread_stop = threading.Event()
             stdout_thread = threading.Thread(target=PearRayRender._enqueue_output, args=(self._process.stdout, stdout_queue, stdout_thread_stop))
@@ -238,7 +238,7 @@ class PearRayRender(bpy.types.RenderEngine):
         prev_mtime = -1
         percent = -1
         while self._proc_wait():
-            if addon_prefs.show_progress_pearray:
+            if addon_prefs.show_progress:
                 percent = self._handle_render_stat(percent, stdout_queue)
             else:
                 self.update_stats("", "PearRay: Rendering...")
@@ -252,7 +252,7 @@ class PearRayRender(bpy.types.RenderEngine):
                     prev_size = new_size
                     prev_mtime = new_mtime
 
-        if addon_prefs.show_progress_pearray:
+        if addon_prefs.show_progress:
             stdout_thread_stop.set()
             stdout_thread.join()
 

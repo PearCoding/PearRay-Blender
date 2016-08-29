@@ -53,11 +53,10 @@ enum_photon_gathering_mode= (
 
 ### Scene
 class PearRaySceneProperties(PropertyGroup):
-    scene_name = StringProperty(
-        name="Scene Name",
-        description="Name of PearRay scene to create. Empty name will use "
-                    "the name of the blend file",
-        maxlen=1024
+    beautiful_prc = BoolProperty(
+        name="Beautiful PRC",
+        description="Export the prc in a beautiful way. (Just using tabs :P)",
+        default=False
     )
     keep_prc = BoolProperty(
         name="Keep PRC",
@@ -193,31 +192,23 @@ class PearRayCameraProperties(PropertyGroup):
 
 
 ### Global Settings
+pearray_package = __import__(__name__.split('.')[0])
 class PearRayPreferences(AddonPreferences):
-    bl_idname = __package__
+    bl_idname = pearray_package.__package__
     
-    filepath_pearray = StringProperty(
-                name="Binary Location",
+    executable = StringProperty(
+                name="Executable",
                 description="Path to renderer executable",
                 subtype='FILE_PATH',
                 )
-    show_progress_pearray = BoolProperty(
+    show_progress = BoolProperty(
                 name="Show Progress",
                 description="Experimental feature to show current progress status while rendering",
                 default=False
                 )
     def draw(self, context):
         layout = self.layout
-        layout.prop(self, "filepath_pearray")
-        layout.prop(self, "show_progress_pearray")
+        layout.prop(self, "executable")
+        layout.prop(self, "show_progress")
 
-
-def register():
-    bpy.types.Scene.pearray = PointerProperty(type=PearRaySceneProperties)
-    bpy.types.Camera.pearray = PointerProperty(type=PearRayCameraProperties)
-
-
-def unregister():
-    del bpy.types.Scene.pearray
-    del bpy.types.Camera.pearray
     

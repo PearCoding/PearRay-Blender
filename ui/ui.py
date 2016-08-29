@@ -230,8 +230,8 @@ class RENDER_PT_export_settings(RenderButtonsPanel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         
-        layout.prop(scene.pearray, "scene_name")
         layout.prop(scene.pearray, "keep_prc")
+        layout.prop(scene.pearray, "beautiful_prc")
     
 
 def draw_pearray_render(self, context):
@@ -242,13 +242,3 @@ def draw_pearray_render(self, context):
         layout.prop(scene.pearray, "max_ray_depth")
         layout.prop(scene.pearray, "debug_mode")
         layout.prop(scene.pearray, "incremental")
-
-
-def register():
-    bpy.types.RENDER_PT_render.append(draw_pearray_render)
-    pass
-
-
-def unregister():
-    bpy.types.RENDER_PT_render.remove(draw_pearray_render)
-    pass
