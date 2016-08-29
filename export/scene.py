@@ -34,12 +34,10 @@ def write_scene(exporter):
         w.write(":camera '%s'" % scene.camera.name)
     
     def export_background():# TODO: Add texture support
-        background_mat_n = exporter.make_unique_name(exporter.material_instances, '_blender_world_background')
+        background_mat_n = exporter.register_unique_name('MATERIAL', '_blender_world_background')
 
         if exporter.world:
             if not exporter.world.use_sky_blend:
-                exporter.material_instances.append(background_mat_n)
-
                 w.write(":background '%s'" % background_mat_n)
                 background_spec_n = write_spectral(exporter, "%s_spec" % background_mat_n, exporter.world.horizon_color)
                 w.write("(material")
@@ -59,21 +57,21 @@ def write_scene(exporter):
     w.goIn()
 
     export_scene()
-    w.write("; Default Materials\n")
+    w.write("; Default Materials")
     exporter.MISSING_MAT = export_default_materials(exporter)
-    w.write("; Camera\n")
+    w.write("; Camera")
     export_camera(exporter, scene.camera)
-    w.write("; Background\n")
+    w.write("; Background")
     export_background()
-    w.write("; Lights\n")
+    w.write("; Lights")
     for light in objs:
         if light.type == 'LAMP':
             export_light(exporter, light)
-    w.write("; Meshes\n")
+    w.write("; Meshes")
     for obj in objs:
         if is_allowed_mesh(obj):
             export_mesh(exporter, obj)
-    w.write("; Materials\n")
+    w.write("; Materials")
     for obj in objs:
         if is_allowed_mesh(obj):
             for m in obj.data.materials:

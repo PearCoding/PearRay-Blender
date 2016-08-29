@@ -24,7 +24,7 @@ def write_ini(exporter):
     exporter.w.write("[globalillumination]")
     exporter.w.write("diffuse_bounces=%i" % s.max_diffuse_bounces)
     exporter.w.write("light_samples=%i" % s.max_light_samples)
-    exporter.w.write("bidirect=%i" % int(s.use_bidirect))
+    exporter.w.write("bidirect=%i" % int(s.integrator == 'BIDI'))
 
     exporter.w.write("[photon]")
     exporter.w.write("count=%i" % s.photon_count)

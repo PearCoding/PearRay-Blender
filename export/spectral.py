@@ -1,6 +1,5 @@
 def write_spectral(exporter, spec_name, color):
-    new_name = exporter.make_unique_name(exporter.spec_instances, spec_name)
-    exporter.spec_instances.append(new_name)
+    new_name = exporter.register_unique_name('SPEC', spec_name)
 
     exporter.w.write("(spectrum")
     exporter.w.goIn()

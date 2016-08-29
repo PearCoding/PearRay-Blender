@@ -17,7 +17,7 @@ class PearRayRender(bpy.types.RenderEngine):
     #bl_use_preview = True
     bl_use_exclude_layers = True
     
-    DELAY = 1 # seconds
+    DELAY = 2 # seconds
 
     @staticmethod
     def _locate_binary():

@@ -28,10 +28,10 @@ def export_material(exporter, material):
     if not material or not material.use_raytrace:
         return
     
-    if material.name in exporter.material_instances:
+    if material.name in exporter.instances['MATERIAL']:
         return
 
-    exporter.material_instances.append(material.name)
+    exporter.register_unique_name('MATERIAL', material.name)
 
     write_spectral(exporter, "%s_diff_col" % material.name, material.diffuse_intensity * material.diffuse_color)
     if material.emit > 0:
@@ -64,8 +64,7 @@ def export_material(exporter, material):
 
 
 def export_default_materials(exporter):
-    missing_mat = exporter.make_unique_name(exporter.material_instances, "missing_mat")
-    exporter.material_instances.append(missing_mat)
+    missing_mat = exporter.register_unique_name('MATERIAL', "missing_mat")
 
     missing_spec_n = write_spectral(exporter, "%s_spec" % missing_mat, (10,7,8))
 

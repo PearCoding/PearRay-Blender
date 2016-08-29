@@ -36,7 +36,7 @@ def export_trimesh(exporter, name, mesh):
     w.write(")")
 
     if len(verts_normals) > 0:
-        w.write("(attribute\n")
+        w.write("(attribute")
         w.goIn()
         line = ":type 'n'"
         for n in verts_normals:
@@ -47,7 +47,7 @@ def export_trimesh(exporter, name, mesh):
 
     # TODO: Add UVs, Colors etc.
 
-    line = "(faces "
+    line = "(faces"
     for fi, f in enumerate(faces):
         fv = faces_verts[fi]
         if len(fv) == 4:# Cube
@@ -67,7 +67,7 @@ def export_mesh(exporter, obj):
     w = exporter.w
 
     # Check if in instance list
-    if not obj.data.name in exporter.mesh_instances:
+    if not obj.data.name in exporter.instances['MESH']:
         try:
             mesh = obj.to_mesh(exporter.scene, True, 'RENDER', calc_tessface=True)
         except:
@@ -76,7 +76,7 @@ def export_mesh(exporter, obj):
         export_trimesh(exporter, obj.data.name, mesh)
         bpy.data.meshes.remove(mesh)
 
-    exporter.mesh_instances.append(obj.data.name)
+    exporter.register_unique_name('MESH', obj.data.name)
 
     w.write("(entity")
     w.goIn()

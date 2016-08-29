@@ -39,9 +39,10 @@ class Exporter:
 
         self.scene = scene
 
-        self.mesh_instances = []
-        self.material_instances = []
-        self.spec_instances = []
+        self.instances = {}
+        self.instances["MESH"] = []
+        self.instances["MATERIAL"] = []
+        self.instances["SPEC"] = []
         self.MISSING_MAT = ''
 
         # PearRay uses a Y Up vector, but Blender uses a Z Up vector.
@@ -52,15 +53,16 @@ class Exporter:
 
         self.render = scene.render
         self.world = scene.world
-
     
-    #@staticmethod
-    def make_unique_name(self, l, name):
+    
+    def register_unique_name(self, type, name):
         test_name = name
         i = 1
-        while test_name in l:
+        while test_name in self.instances[type]:
             test_name = "%s_%i" % (name, i)
             i = i + 1
+        self.instances[type].append(test_name)
+
         return test_name
 
 
