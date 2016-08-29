@@ -9,10 +9,9 @@ More information about the PearRay raytracer is available
 
 ## Setup Instructions
 
-Copy the this folder into Blender scripts/addons directory and
-then enable PearRay addon on 'Addons > Render' section of Blender
+Copy this folder into Blender scripts/addons directory and
+then enable the PearRay addon on the 'Addons > Render' section of Blender
 'User Preferences' panel.
 
 After enabling the addon, configure the 'Executable'
-setting that appears under the PearRay addon panel by selecting
-the folder where the PearRay binary is installed.
+setting that appears under the PearRay addon panel by selecting the PearRay binary.
