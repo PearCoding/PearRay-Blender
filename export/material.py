@@ -64,18 +64,29 @@ def export_material(exporter, material):
 
 
 def export_default_materials(exporter):
-    missing_mat = exporter.register_unique_name('MATERIAL', "missing_mat")
+    exporter.MISSING_MAT = exporter.register_unique_name('MATERIAL', "_missing_mat")
+    exporter.DEBUG_MAT = exporter.register_unique_name('MATERIAL', "_debug_mat")
 
-    missing_spec_n = write_spectral(exporter, "%s_spec" % missing_mat, (10,7,8))
+    missing_spec_n = write_spectral(exporter, "%s_spec" % exporter.MISSING_MAT, (10,7,8))
+    debug_spec_n = write_spectral(exporter, "%s_spec" % exporter.DEBUG_MAT, (1,0,0))
 
     exporter.w.write("(material")
     exporter.w.goIn()
 
-    exporter.w.write(":name '%s'" % missing_mat)
+    exporter.w.write(":name '%s'" % exporter.MISSING_MAT)
     exporter.w.write(":type 'diffuse'")
     exporter.w.write(":emission '%s'" % missing_spec_n)
 
     exporter.w.goOut()
     exporter.w.write(")")
 
-    return missing_mat
+    exporter.w.write("(material")
+    exporter.w.goIn()
+
+    exporter.w.write(":name '%s'" % exporter.DEBUG_MAT)
+    exporter.w.write(":type 'debugBoundingBox'")
+    exporter.w.write(":color '%s'" % debug_spec_n)
+    exporter.w.write(":density 0.3")
+
+    exporter.w.goOut()
+    exporter.w.write(")")

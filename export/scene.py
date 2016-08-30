@@ -58,7 +58,7 @@ def write_scene(exporter):
 
     export_scene()
     w.write("; Default Materials")
-    exporter.MISSING_MAT = export_default_materials(exporter)
+    export_default_materials(exporter)
     w.write("; Camera")
     export_camera(exporter, scene.camera)
     w.write("; Background")

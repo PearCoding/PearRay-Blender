@@ -44,10 +44,11 @@ class Exporter:
         self.instances["MATERIAL"] = []
         self.instances["SPEC"] = []
         self.MISSING_MAT = ''
+        self.DEBUG_MAT = ''
 
         # PearRay uses a Y Up vector, but Blender uses a Z Up vector.
         # Here we change it :)
-        self.M_WORLD = mathutils.Matrix([(-1,0,0,0), (0,0,-1,0), (0,1,0,0), (0,0,0,1)])
+        self.M_WORLD = mathutils.Matrix([(1,0,0,0), (0,0,-1,0), (0,-1,0,0), (0,0,0,1)])
         self.CAM_UNIT_F = 0.1 # Why do I need this? -> TODO: PearRay should be implemented with millimeters in mind!
         self.LIGHT_POW_F = 10
 
