@@ -11,8 +11,7 @@ def export_pointlight(exporter, light):
     color = tuple([c * light_data.energy * exporter.LIGHT_POW_F for c in light_data.color])
     light_spec_n = write_spectral(exporter, light.name + "_spec", color)
 
-    light_mat_n = exporter.make_unique_name(exporter.material_instances, light.name + "_mat")
-    exporter.material_instances.append(light_mat_n)
+    light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 
     w.write("(material")
     w.goIn()
@@ -44,8 +43,7 @@ def export_arealight(exporter, light):
     color = tuple([c * light_data.energy * exporter.LIGHT_POW_F for c in light_data.color])
     light_spec_n = write_spectral(light.name + "_spec", color)
 
-    light_mat_n = exporter.make_unique_name(exporter.material_instances, light.name + "_mat")
-    exporter.material_instances.append(light_mat_n)
+    light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 
     w.write("(material")
     w.goIn()

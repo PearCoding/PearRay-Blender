@@ -5,6 +5,7 @@ import time
 import subprocess
 import queue
 import threading
+import re
 
 from .. import export
 
@@ -18,6 +19,7 @@ class PearRayRender(bpy.types.RenderEngine):
     bl_use_exclude_layers = True
     
     DELAY = 2 # seconds
+
 
     @staticmethod
     def _locate_binary():
@@ -87,6 +89,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
 
     def _handle_render_stat(self, percent, q):
+        str_line = ""
         while True:
             try:
                 line = q.get_nowait()
@@ -96,24 +99,29 @@ class PearRayRender(bpy.types.RenderEngine):
                 if line == 'preprocess':
                     pass
                 else:
-                    try:
-                        p = float(line)
-                        if p > percent:
-                            percent = p
-                    except ValueError:
-                        pass
+                    v = str(line,'utf-8')
+                    m = self.percent_pattern.match(v)
+                    if not m:
+                        continue
+                    
+                    p = float(m.group(1))
+                    if p > percent:
+                        percent = p
+                        str_line = v.strip()
 
         if percent == -1:
             self.update_stats("", "PearRay: Preprocessing...")
             self.update_progress(0)
         else:
-            self.update_stats("", "PearRay: Rendering [%3.2f%%]..." % (percent*100))
-            self.update_progress(percent)
+            self.update_stats("", "PearRay: Rendering [%s]..." % (str_line))
+            self.update_progress(percent*0.01)
                 
         return percent
 
     def render(self, scene):
         import tempfile
+
+        self.percent_pattern = re.compile(r"(\d+(\.\d*)?|\.\d+)\%")
 
         render = scene.render
 

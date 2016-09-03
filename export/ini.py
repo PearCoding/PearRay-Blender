@@ -5,6 +5,7 @@ def write_ini(exporter):
     s = scene.pearray
 
     exporter.w.write("[renderer]")
+    exporter.w.write("integrator=%s" % s.integrator.lower())
     exporter.w.write("debug=%s" % s.debug_mode.lower())
     exporter.w.write("incremental=%i" % int(s.incremental))
     exporter.w.write("max=%i" % s.max_ray_depth)
@@ -24,7 +25,6 @@ def write_ini(exporter):
     exporter.w.write("[globalillumination]")
     exporter.w.write("diffuse_bounces=%i" % s.max_diffuse_bounces)
     exporter.w.write("light_samples=%i" % s.max_light_samples)
-    exporter.w.write("bidirect=%i" % int(s.integrator == 'BIDI'))
 
     exporter.w.write("[photon]")
     exporter.w.write("count=%i" % s.photon_count)

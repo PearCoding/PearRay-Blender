@@ -16,7 +16,7 @@ enum_debug_mode= (
     ('BINO_S', "Binormal Spherical", "Show binormals in spherical coordinates"),
     ('UV', "UV", "Show UV/texture coordinates"),
     ('PDF', "PDF", "Show probability distribution function values"),
-    ('APPLIED', "Applied", "Show applied BRDF values"),
+    ('EMISSION', "Emission", "Show emission part of the rendering equation"),
     ('VALIDITY', "Validity", "Show if material is valid"),
     )
 
@@ -31,7 +31,7 @@ enum_pixel_sampler_mode= (
 enum_integrator_mode= (
     ('DI', "Direct", "Direct Rendering"),
     ('BIDI', "Bi-Direct", "Bidirect Rendering"),
-    ('PHOT', "Progressive Photonmapping", "Progressive Photonmapping"),
+    ('PPM', "Progressive Photonmapping", "Progressive Photonmapping"),
     )
 
 enum_photon_gathering_mode= (
