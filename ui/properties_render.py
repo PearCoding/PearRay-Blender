@@ -46,7 +46,7 @@ class RENDER_PT_gi(RenderButtonsPanel, bpy.types.Panel):
 
 
 class RENDER_PT_photon(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Photon Mapping"
+    bl_label = "Progressive Photon Mapping (PPM)"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
     def draw(self, context):
@@ -54,10 +54,9 @@ class RENDER_PT_photon(RenderButtonsPanel, bpy.types.Panel):
         scene = context.scene
         
         layout.prop(scene.pearray, "photon_count")
+        layout.prop(scene.pearray, "photon_passes")
         layout.prop(scene.pearray, "photon_gather_radius")
         layout.prop(scene.pearray, "photon_max_gather_count")
-        layout.prop(scene.pearray, "photon_max_diffuse_bounces")
-        layout.prop(scene.pearray, "photon_min_specular_bounces")
         layout.prop(scene.pearray, "photon_gathering_mode")
         layout.prop(scene.pearray, "photon_squeeze")
 
@@ -82,7 +81,7 @@ def draw_pearray_render(self, context):
     scene = context.scene
 
     if scene.render.engine == 'PEARRAY_RENDER':
-        layout.prop(scene.pearray, "max_ray_depth")
         layout.prop(scene.pearray, "integrator")
         layout.prop(scene.pearray, "debug_mode")
         layout.prop(scene.pearray, "incremental")
+        layout.prop(scene.pearray, "max_ray_depth")

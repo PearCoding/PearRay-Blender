@@ -26,11 +26,10 @@ def write_ini(exporter):
     exporter.w.write("diffuse_bounces=%i" % s.max_diffuse_bounces)
     exporter.w.write("light_samples=%i" % s.max_light_samples)
 
-    exporter.w.write("[photon]")
+    exporter.w.write("[ppm]")
     exporter.w.write("count=%i" % s.photon_count)
+    exporter.w.write("passes=%i" % s.photon_passes)
     exporter.w.write("radius=%f" % s.photon_gather_radius)
     exporter.w.write("max=%i" % s.photon_max_gather_count)
-    exporter.w.write("max_diffuse_bounces=%i" % s.photon_max_diffuse_bounces)
-    exporter.w.write("min_specular_bounces=%i" % s.photon_min_specular_bounces)
     exporter.w.write("gathering_mode=%s" % s.photon_gathering_mode.lower())
     exporter.w.write("squeeze=%f" % s.photon_squeeze)

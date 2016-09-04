@@ -89,12 +89,20 @@ class PearRaySceneProperties(PropertyGroup):
         )
     photon_count = IntProperty(
         name="Photons",
-        description="Amount of photons emitted into scene",
-        min=0,
+        description="Amount of photons emitted per pass into scene",
+        min=1,
         soft_max=1000000000,
         step=100,
         subtype="UNSIGNED",
         default=100000
+        )
+    photon_passes = IntProperty(
+        name="Max Passes",
+        description="Maximum count of passes",
+        min=1,
+        soft_max=1000000000,
+        subtype="UNSIGNED",
+        default=50
         )
     photon_gather_radius = FloatProperty(
         name="Gather Radius",
@@ -109,22 +117,6 @@ class PearRaySceneProperties(PropertyGroup):
         step=100,
         subtype="UNSIGNED",
         default=500
-        )
-    photon_max_diffuse_bounces = IntProperty(
-        name="Max Diffuse Bounces",
-        description="Maximum diffuse bounces in photon mapping",
-        min=1,
-        soft_max=4096,
-        subtype="UNSIGNED",
-        default=4
-        )
-    photon_min_specular_bounces = IntProperty(
-        name="Min Specular Bounces",
-        description="Minimum specular bounces in photon mapping",
-        min=1,
-        soft_max=4096,
-        subtype="UNSIGNED",
-        default=1
         )
     photon_gathering_mode = EnumProperty(
         name="Gathering Mode",

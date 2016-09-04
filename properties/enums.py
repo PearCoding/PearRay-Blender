@@ -31,7 +31,7 @@ enum_pixel_sampler_mode= (
 enum_integrator_mode= (
     ('DI', "Direct", "Direct Rendering"),
     ('BIDI', "Bi-Direct", "Bidirect Rendering"),
-    ('PPM', "Progressive Photonmapping", "Progressive Photonmapping"),
+    ('PPM', "Progressive Photon Mapping", "Progressive Photon Mapping"),
     )
 
 enum_photon_gathering_mode= (
