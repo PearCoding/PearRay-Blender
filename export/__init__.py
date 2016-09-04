@@ -50,7 +50,7 @@ class Exporter:
         # Here we change it :)
         self.M_WORLD = mathutils.Matrix([(-1,0,0,0), (0,0,1,0), (0,1,0,0), (0,0,0,1)])
         self.CAM_UNIT_F = 0.1 # Why do I need this? -> TODO: PearRay should be implemented with millimeters in mind!
-        self.LIGHT_POW_F = 10
+        self.LIGHT_POW_F = 1
 
         self.render = scene.render
         self.world = scene.world
