@@ -32,6 +32,11 @@ class PearRaySceneProperties(PropertyGroup):
         description="Keep generated prc file after rendering",
         default=False
         )   
+    apply_transform = BoolProperty(
+        name="Apply Transform",
+        description="Apply transform prior export for meshes",
+        default=False
+        )  
     debug_mode = EnumProperty(
         name="Debug Mode",
         description="Render in debug mode",

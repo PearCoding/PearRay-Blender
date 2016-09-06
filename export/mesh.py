@@ -1,7 +1,15 @@
 import bpy
+import mathutils
 from .entity import inline_entity_matrix as inline_entity_matrix
 
-def export_trimesh(exporter, name, mesh):
+def export_trimesh(exporter, mw, name, mesh):
+    if not exporter.scene.pearray.apply_transform:
+        M = mathutils.Matrix.Identity(4)
+    else:
+        M = exporter.M_WORLD * mw
+
+    NM = M.inverted_safe().transposed()
+
     w = exporter.w
 
     faces = mesh.tessfaces[:]
@@ -13,6 +21,9 @@ def export_trimesh(exporter, name, mesh):
     verts = mesh.vertices
     verts_normals = [v.normal[:] for v in verts]
 
+    if len(verts) < 1:
+        return False
+    
     #if len(faces_uv) > 0:
     #    if mesh.uv_textures.active and faces_uv.active.data:
     #        uv_layer = faces_uv.active.data
@@ -29,7 +40,8 @@ def export_trimesh(exporter, name, mesh):
     w.goIn()
     line = ":type 'p'"
     for v in verts:
-       line = line + ", [%f, %f, %f]" % v.co[:]
+        nv = M * mathutils.Vector(v.co[:])
+        line = line + ", [%f, %f, %f]" % nv[:]
     w.write(line)
 
     w.goOut()
@@ -40,7 +52,8 @@ def export_trimesh(exporter, name, mesh):
         w.goIn()
         line = ":type 'n'"
         for n in verts_normals:
-           line = line + ", [%f, %f, %f]" % n
+            nn = M * mathutils.Vector(n)
+            line = line + ", [%f, %f, %f]" % nn[:]
         w.write(line)
         w.goOut()
         w.write(")")
@@ -62,6 +75,8 @@ def export_trimesh(exporter, name, mesh):
     w.goOut()
     w.write(")")
 
+    return True
+
 
 def export_mesh(exporter, obj):
     w = exporter.w
@@ -73,8 +88,12 @@ def export_mesh(exporter, obj):
         except:
             print("Couldn't export %s as mesh" % obj.name)
             return
-        export_trimesh(exporter, obj.data.name, mesh)
+        succ = export_trimesh(exporter, obj.matrix_world, obj.data.name, mesh)
         bpy.data.meshes.remove(mesh)
+        
+        if not succ:
+            print("Couldn't export %s" % obj.name)
+            return
 
     exporter.register_unique_name('MESH', obj.data.name)
 
@@ -91,7 +110,8 @@ def export_mesh(exporter, obj):
         print("Mesh %s has no material!" % obj.name)
         
     w.write(":mesh '%s'" % obj.data.name)
-    inline_entity_matrix(exporter, obj)
+    if not exporter.scene.pearray.apply_transform:
+        inline_entity_matrix(exporter, obj)
 
     w.goOut()
     w.write(")")

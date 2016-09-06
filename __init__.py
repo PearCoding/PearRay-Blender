@@ -5,7 +5,7 @@ bl_info = {
     "version": (0, 2),
     "blender": (2, 70, 0),
     "location": "Render > Engine > PearRay",
-    "warning": "experimental", # used for warning icon and text in addons panel
+    "warning": "experimental",
     "tracker_url": "https://github.com/PearCoding/PearRay/issues/new",
     "category": "Render"
     }

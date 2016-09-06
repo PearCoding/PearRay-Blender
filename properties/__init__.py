@@ -8,6 +8,7 @@ from bpy.types import AddonPreferences
 from bpy.props import (
         StringProperty,
         BoolProperty,
+        IntProperty,
         PointerProperty
         )
 
@@ -22,15 +23,26 @@ class PearRayPreferences(AddonPreferences):
                 description="Path to renderer executable",
                 subtype='FILE_PATH',
                 )
-    show_progress = BoolProperty(
+    show_progress_interval = IntProperty(
                 name="Show Progress",
-                description="Experimental feature to show current progress status while rendering",
-                default=False
+                description="Update interval for progress status. Zero disables it",
+                default=2,
+                min=0,
+                soft_max=10
+                )
+    show_image_interval = IntProperty(
+                name="Show Image",
+                description="(Experimental) Update interval for image updates. Zero disables it",
+                default=5,
+                min=0,
+                soft_max=10
                 )
     def draw(self, context):
         layout = self.layout
         layout.prop(self, "executable")
-        layout.prop(self, "show_progress")
+        col = layout.column(align=True)
+        col.prop(self, "show_progress_interval")
+        col.prop(self, "show_image_interval")
 
 
 def register():

@@ -43,7 +43,7 @@ def export_arealight(exporter, light):
     w.write("; Light %s" % light.name)
 
     color = tuple([c * light_data.energy * exporter.LIGHT_POW_F for c in light_data.color])
-    light_spec_n = write_spectral(light.name + "_spec", color)
+    light_spec_n = write_spectral(exporter, light.name + "_spec", color)
 
     light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 

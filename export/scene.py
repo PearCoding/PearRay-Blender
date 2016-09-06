@@ -37,9 +37,10 @@ def write_scene(exporter):
         background_mat_n = exporter.register_unique_name('MATERIAL', '_blender_world_background')
 
         if exporter.world:
-            if not exporter.world.use_sky_blend:
+            color = exporter.world.horizon_color
+            if not (color.r > 0 or color.g > 0 or color.b > 0):
                 w.write(":background '%s'" % background_mat_n)
-                background_spec_n = write_spectral(exporter, "%s_spec" % background_mat_n, exporter.world.horizon_color)
+                background_spec_n = write_spectral(exporter, "%s_spec" % background_mat_n, color)
                 w.write("(material")
                 w.goIn()
 

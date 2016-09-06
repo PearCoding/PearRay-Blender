@@ -17,8 +17,6 @@ class PearRayRender(bpy.types.RenderEngine):
     bl_label = "PearRay"
     #bl_use_preview = True
     bl_use_exclude_layers = True
-    
-    DELAY = 2 # seconds
 
 
     @staticmethod
@@ -57,7 +55,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
 
     def _proc_wait(self):
-        time.sleep(self.DELAY)
+        time.sleep(0.5)
 
         # User interrupts the rendering
         if self.test_break():
@@ -162,7 +160,7 @@ class PearRayRender(bpy.types.RenderEngine):
             self.report({'WARNING'}, "Couldn't work with choosen extension. Setting it back to png")
             image_ext = 'png'
         
-        self.update_stats("", "PearRay: Exporting data from Blender")
+        self.update_stats("", "PearRay: Exporting data")
         ini_exporter = export.Exporter(iniFile, scene)
         ini_exporter.write_ini()
         scene_exporter = export.Exporter(sceneFile, scene)
@@ -175,18 +173,21 @@ class PearRayRender(bpy.types.RenderEngine):
             print("<<< PEARRAY FAILED >>>")
             return
 
+        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
+
         args = [sceneFile,
                 renderPath, 
                 "-q",# be quiet
                 "-C",
                 iniFile,
-                "--img-update=" + str(self.DELAY), # Updates image while rendering
                 "--img-ext=%s" % image_ext,
                 "-v",
                 ]
-        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
-        if addon_prefs.show_progress:
-            args.append("-p")# show progress (ignores quiet option)
+        if addon_prefs.show_progress_interval > 0:
+            args.append("-p" + str(addon_prefs.show_progress_interval))# show progress (ignores quiet option)
+
+        if addon_prefs.show_image_interval > 0:
+            args.append("--img-update=" + str(addon_prefs.show_image_interval))
 
         if not scene.pearray.debug_mode == 'NONE':
             args.append("--debug=%s" % scene.pearray.debug_mode.lower())
@@ -223,7 +224,6 @@ class PearRayRender(bpy.types.RenderEngine):
         result = self.begin_result(0, 0, x, y)
         layer = result.layers[0]
 
-        time.sleep(self.DELAY)
 
         def update_image():# FIXME: How do we prevent crashes? -> Bus Error/Segmentation Faults
             try:
@@ -232,10 +232,13 @@ class PearRayRender(bpy.types.RenderEngine):
             except RuntimeError:
                 pass
         
-        update_image()
+        time.sleep(2)
 
+        if addon_prefs.show_image_interval > 0:
+            update_image()
+            
         # Line handler
-        if addon_prefs.show_progress:
+        if addon_prefs.show_progress_interval > 0:
             stdout_queue = queue.Queue()
             stdout_thread_stop = threading.Event()
             stdout_thread = threading.Thread(target=PearRayRender._enqueue_output, args=(self._process.stdout, stdout_queue, stdout_thread_stop))
@@ -245,22 +248,32 @@ class PearRayRender(bpy.types.RenderEngine):
         prev_size = -1
         prev_mtime = -1
         percent = -1
+
+        prog_start = time.time()
+        img_start = time.time()
         while self._proc_wait():
-            if addon_prefs.show_progress:
-                percent = self._handle_render_stat(percent, stdout_queue)
+            if addon_prefs.show_progress_interval > 0:
+                prog_end = time.time() 
+                if addon_prefs.show_progress_interval < (prog_end - prog_start):
+                    percent = self._handle_render_stat(percent, stdout_queue)
+                    prog_start = prog_end
             else:
                 self.update_stats("", "PearRay: Rendering...")
 
-            if os.path.exists(output_image):
-                new_size = os.path.getsize(output_image)
-                new_mtime = os.path.getmtime(output_image)
+            if addon_prefs.show_image_interval > 0 and os.path.exists(output_image):
+                img_end = time.time() 
+                if addon_prefs.show_image_interval < (img_end - img_start):
+                    new_size = os.path.getsize(output_image)
+                    new_mtime = os.path.getmtime(output_image)
 
-                if new_size != prev_size or new_mtime != prev_mtime:
-                    update_image()
-                    prev_size = new_size
-                    prev_mtime = new_mtime
+                    if new_size != prev_size or new_mtime != prev_mtime:
+                        update_image()
+                        prev_size = new_size
+                        prev_mtime = new_mtime
+                    
+                    img_start = img_end
 
-        if addon_prefs.show_progress:
+        if addon_prefs.show_progress_interval > 0:
             stdout_thread_stop.set()
             stdout_thread.join()
 

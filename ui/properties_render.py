@@ -33,32 +33,29 @@ class RENDER_PT_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "max_pixel_samples")
 
 
-class RENDER_PT_gi(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Global Illumination"
+class RENDER_PT_integrator(RenderButtonsPanel, bpy.types.Panel):
+    bl_label = "Integrator"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        
+
         layout.prop(scene.pearray, "max_diffuse_bounces")
-        layout.prop(scene.pearray, "max_light_samples")
 
+        if scene.pearray.integrator == 'DI' or scene.pearray.integrator == 'BIDI':
+            layout.prop(scene.pearray, "max_light_samples")
 
-class RENDER_PT_photon(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Progressive Photon Mapping (PPM)"
-    COMPAT_ENGINES = {'PEARRAY_RENDER'}
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        
-        layout.prop(scene.pearray, "photon_count")
-        layout.prop(scene.pearray, "photon_passes")
-        layout.prop(scene.pearray, "photon_gather_radius")
-        layout.prop(scene.pearray, "photon_max_gather_count")
-        layout.prop(scene.pearray, "photon_gathering_mode")
-        layout.prop(scene.pearray, "photon_squeeze")
+        if scene.pearray.integrator == 'PPM':
+            layout.separator()
+            layout.prop(scene.pearray, "photon_count")
+            layout.prop(scene.pearray, "photon_passes")
+            col = layout.column(align=True)
+            col.label("Gathering:")
+            col.prop(scene.pearray, "photon_gather_radius")
+            col.prop(scene.pearray, "photon_max_gather_count")
+            col.prop(scene.pearray, "photon_gathering_mode", text="")
+            col.prop(scene.pearray, "photon_squeeze")
 
 
 class RENDER_PT_export_settings(RenderButtonsPanel, bpy.types.Panel):
@@ -74,6 +71,7 @@ class RENDER_PT_export_settings(RenderButtonsPanel, bpy.types.Panel):
         
         layout.prop(scene.pearray, "keep_prc")
         layout.prop(scene.pearray, "beautiful_prc")
+        layout.prop(scene.pearray, "apply_transform")
     
 
 def draw_pearray_render(self, context):

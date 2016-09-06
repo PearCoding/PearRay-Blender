@@ -1,20 +1,21 @@
 import bpy
 
 
-from .properties_render import draw_pearray_render
-
-
-from bl_ui import properties_world
-properties_world.WORLD_PT_preview.COMPAT_ENGINES.add('PEARRAY_RENDER')
-properties_world.WORLD_PT_context_world.COMPAT_ENGINES.add('PEARRAY_RENDER')
-properties_world.WORLD_PT_world.COMPAT_ENGINES.add('PEARRAY_RENDER')
-del properties_world
+from . import (
+            properties_camera,
+            properties_render,
+            properties_render_layer,
+            properties_world,
+            )
 
 
 from bl_ui import properties_scene
 properties_scene.SCENE_PT_scene.COMPAT_ENGINES.add('PEARRAY_RENDER')
 properties_scene.SCENE_PT_unit.COMPAT_ENGINES.add('PEARRAY_RENDER')
+properties_scene.SCENE_PT_keying_sets.COMPAT_ENGINES.add('PEARRAY_RENDER')
 properties_scene.SCENE_PT_color_management.COMPAT_ENGINES.add('PEARRAY_RENDER')
+properties_scene.SCENE_PT_audio.COMPAT_ENGINES.add('PEARRAY_RENDER')
+properties_scene.SCENE_PT_custom_props.COMPAT_ENGINES.add('PEARRAY_RENDER')
 del properties_scene
 
 
@@ -64,10 +65,10 @@ del properties_particle
 
 
 def register():
-    bpy.types.RENDER_PT_render.append(draw_pearray_render)
+    bpy.types.RENDER_PT_render.append(properties_render.draw_pearray_render)
     pass
 
 
 def unregister():
-    bpy.types.RENDER_PT_render.remove(draw_pearray_render)
+    bpy.types.RENDER_PT_render.remove(properties_render.draw_pearray_render)
     pass
