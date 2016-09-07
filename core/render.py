@@ -86,6 +86,7 @@ class PearRayRender(bpy.types.RenderEngine):
         out.close()
 
 
+    
     def _handle_render_stat(self, percent, q):
         str_line = ""
         while True:
@@ -107,11 +108,14 @@ class PearRayRender(bpy.types.RenderEngine):
                         percent = p
                         str_line = v.strip()
 
+        if str_line:
+            self.last_progress_line = str_line
+        
         if percent == -1:
             self.update_stats("", "PearRay: Preprocessing...")
             self.update_progress(0)
         else:
-            self.update_stats("", "PearRay: Rendering [%s]..." % (str_line))
+            self.update_stats("", "PearRay: Rendering [%s]..." % (self.last_progress_line))
             self.update_progress(percent*0.01)
                 
         return percent
@@ -119,6 +123,7 @@ class PearRayRender(bpy.types.RenderEngine):
     def render(self, scene):
         import tempfile
 
+        self.last_progress_line = ""
         self.percent_pattern = re.compile(r"(\d+(\.\d*)?|\.\d+)\%")
 
         render = scene.render

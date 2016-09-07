@@ -3,6 +3,7 @@ import bpy
 
 from . import (
             properties_camera,
+            properties_material,
             properties_render,
             properties_render_layer,
             properties_world,
@@ -28,19 +29,6 @@ for member in dir(properties_texture):
     except:
         pass
 del properties_texture
-
-
-from bl_ui import properties_material
-for member in dir(properties_material):
-    subclass = getattr(properties_material, member)
-    if subclass not in (properties_material.MATERIAL_PT_transp_game,
-                        properties_material.MATERIAL_PT_game_settings,
-                        properties_material.MATERIAL_PT_physics):
-        try:
-            subclass.COMPAT_ENGINES.add('PEARRAY_RENDER')
-        except:
-            pass
-del properties_material
 
 
 from bl_ui import properties_data_lamp

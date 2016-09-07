@@ -4,7 +4,7 @@ from .light import export_light as export_light
 from .material import export_default_materials as export_default_materials
 from .material import export_material as export_material 
 from .mesh import export_mesh as export_mesh
-from .spectral import write_spectral as write_spectral
+from .spectral import write_spectral_color
 
 
 def is_renderable(scene, ob):
@@ -38,9 +38,9 @@ def write_scene(exporter):
 
         if exporter.world:
             color = exporter.world.horizon_color
-            if not (color.r > 0 or color.g > 0 or color.b > 0):
+            if color.r > 0 or color.g > 0 or color.b > 0:
                 w.write(":background '%s'" % background_mat_n)
-                background_spec_n = write_spectral(exporter, "%s_spec" % background_mat_n, color)
+                background_spec_n = write_spectral_color(exporter, "%s_spec" % background_mat_n, color)
                 w.write("(material")
                 w.goIn()
 

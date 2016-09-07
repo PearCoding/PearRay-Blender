@@ -1,5 +1,5 @@
 from .entity import inline_entity_matrix, inline_entity_matrix_pos
-from .spectral import write_spectral as write_spectral
+from .spectral import write_spectral_color
 
 
 def export_pointlight(exporter, light):
@@ -9,7 +9,7 @@ def export_pointlight(exporter, light):
     w.write("; Light %s" % light.name)
 
     color = tuple([c * light_data.energy * exporter.LIGHT_POW_F for c in light_data.color])
-    light_spec_n = write_spectral(exporter, light.name + "_spec", color)
+    light_spec_n = write_spectral_color(exporter, light.name + "_spec", color)
 
     light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 
@@ -43,7 +43,7 @@ def export_arealight(exporter, light):
     w.write("; Light %s" % light.name)
 
     color = tuple([c * light_data.energy * exporter.LIGHT_POW_F for c in light_data.color])
-    light_spec_n = write_spectral(exporter, light.name + "_spec", color)
+    light_spec_n = write_spectral_color(exporter, light.name + "_spec", color)
 
     light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 

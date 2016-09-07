@@ -52,7 +52,7 @@ def export_trimesh(exporter, mw, name, mesh):
         w.goIn()
         line = ":type 'n'"
         for n in verts_normals:
-            nn = M * mathutils.Vector(n)
+            nn = NM * mathutils.Vector(n)
             line = line + ", [%f, %f, %f]" % nn[:]
         w.write(line)
         w.goOut()

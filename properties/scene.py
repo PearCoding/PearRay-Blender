@@ -1,9 +1,7 @@
 import bpy
 
 from bpy.types import (
-        AddonPreferences,
         PropertyGroup,
-        Operator,
         )
 
 from bpy.props import (

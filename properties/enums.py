@@ -38,3 +38,17 @@ enum_photon_gathering_mode= (
 	("DOME", "Dome", "Gather only front side of surface"),
 	("SPHERE", "Sphere", "Gather around a point"),
     )
+
+enum_color_type= (
+	("COLOR", "Color", "Standard RGB value"),
+	("TEMP", "Temperature", "Blackbody Temperature in Kelvin"),
+    )
+
+enum_material_brdf= (
+	("DIFFUSE", "Diffuse", "Simple lambertian material"),
+	("ORENNAYAR", "Oren-Nayar", "Oren-Nayar BRDF"),
+	("WARD", "Ward", "Ward BRDF"),
+	("GRID", "Grid", "Special material grid"),
+	("GLASS", "Glass", "Specialized glass material"),
+	("MIRROR", "Mirror", "Specialized mirror material"),
+    )
