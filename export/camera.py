@@ -1,7 +1,7 @@
 import math
 
 
-from .entity import inline_entity_matrix as inline_entity_matrix
+from .entity import inline_entity_matrix_camera
 
 
 def export_camera(exporter, camera):
@@ -35,7 +35,7 @@ def export_camera(exporter, camera):
     w.write(":zoom %f" % camera.data.pearray.zoom)
     w.write(":fstop %f" % camera.data.pearray.fstop)
     w.write(":apertureRadius %f" % camera.data.pearray.apertureRadius)
-    inline_entity_matrix(exporter, camera)
+    inline_entity_matrix_camera(exporter, camera)
 
     w.goOut()
     w.write(")")

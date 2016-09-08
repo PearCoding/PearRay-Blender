@@ -19,8 +19,8 @@ def inline_material_defaults(exporter, material):
 
 
 def export_material_diffuse(exporter, material):
-    diff_name = export_color(exporter, material, 'diffuse', True)
-    em_name = export_color(exporter, material, 'emission', False)
+    diff_name = export_color(exporter, material, 'diffuse_color', True)
+    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -38,8 +38,8 @@ def export_material_diffuse(exporter, material):
 
 
 def export_material_orennayar(exporter, material):
-    diff_name = export_color(exporter, material, 'diffuse', True)
-    em_name = export_color(exporter, material, 'emission', False)
+    diff_name = export_color(exporter, material, 'diffuse_color', True)
+    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -58,9 +58,9 @@ def export_material_orennayar(exporter, material):
 
 
 def export_material_ward(exporter, material):
-    diff_name = export_color(exporter, material, 'diffuse', True)
-    spec_name = export_color(exporter, material, 'specular', True)
-    em_name = export_color(exporter, material, 'emission', False)
+    diff_name = export_color(exporter, material, 'diffuse_color', True)
+    spec_name = export_color(exporter, material, 'specular_color', True)
+    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -81,8 +81,8 @@ def export_material_ward(exporter, material):
 
 
 def export_material_glass(exporter, material):
-    spec_name = export_color(exporter, material, 'specular', True)
-    em_name = export_color(exporter, material, 'emission', False)
+    spec_name = export_color(exporter, material, 'specular_color', True)
+    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -101,8 +101,8 @@ def export_material_glass(exporter, material):
 
 
 def export_material_mirror(exporter, material):
-    spec_name = export_color(exporter, material, 'specular', True)
-    em_name = export_color(exporter, material, 'emission', False)
+    spec_name = export_color(exporter, material, 'specular_color', True)
+    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -137,11 +137,11 @@ def export_material_grid(exporter, material):
 
 
 def export_color(exporter, material, type, required):
-    name = "%s_%s_color" % (material.name, type)
+    name = "%s_%s" % (material.name, type)
 
-    attr_col = "%s_color" % type
-    attr_temp = "%s_color_temp" % type
-    attr_type = "%s_color_type" % type
+    attr_col = type
+    attr_temp = "%s_temp" % type
+    attr_type = "%s_type" % type
 
     sub_mat = material
     if not hasattr(material, attr_col):

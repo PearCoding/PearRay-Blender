@@ -1,9 +1,11 @@
 import bpy
 import mathutils
+import math
 from math import degrees, radians
 
 from .ini import write_ini
 from .scene import write_scene
+
 
 class Writer:
     def __init__(self, file, useTabs=True):
@@ -30,7 +32,6 @@ class Writer:
         if self.currentLevel < 0:
             print("DEV ERROR: PEARRAY Exporter currentLevel < 0!")
     
-    
 
 class Exporter:
     def __init__(self, filename, scene):
@@ -48,7 +49,8 @@ class Exporter:
 
         # PearRay uses a Y Up vector, but Blender uses a Z Up vector.
         # Here we change it :)
-        self.M_WORLD = mathutils.Matrix([(1,0,0,0), (0,0,1,0), (0,1,0,0), (0,0,0,1)])
+        self.M_WORLD = mathutils.Matrix([(1,0,0,0), (0,1,0,0), (0,0,1,0), (0,0,0,1)])
+        print(self.M_WORLD)
         self.CAM_UNIT_F = 1
         self.LIGHT_POW_F = 1
 

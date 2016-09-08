@@ -76,17 +76,17 @@ class MATERIAL_PT_preview(MaterialButtonsPanel, bpy.types.Panel):
         self.layout.template_preview(context.material)
 
 
-def color_template(mat, layout, name):
-    sub_mat = mat
-    if not hasattr(mat, name):
-        sub_mat = mat.pearray
+def color_template(obj, layout, name):
+    sub_obj = obj
+    if not hasattr(obj, name):
+        sub_obj = obj.pearray
     
-    split = layout.split()
-    split.prop(mat.pearray, '%s_type' % name, text="")
-    if getattr(mat.pearray, '%s_type' % name) == 'TEMP':
-        split.prop(mat.pearray, '%s_temp' % name, text="")
+    col = layout.column(align=True)
+    col.row().prop(obj.pearray, '%s_type' % name, expand=True)
+    if getattr(obj.pearray, '%s_type' % name) == 'TEMP':
+        col.prop(obj.pearray, '%s_temp' % name, text="")
     else:
-        split.prop(sub_mat, name, text="")
+        col.prop(sub_obj, name, text="")
 
 
 class MATERIAL_PT_brdf(MaterialButtonsPanel, bpy.types.Panel):

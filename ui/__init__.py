@@ -3,6 +3,7 @@ import bpy
 
 from . import (
             properties_camera,
+            properties_light,
             properties_material,
             properties_render,
             properties_render_layer,
@@ -29,17 +30,6 @@ for member in dir(properties_texture):
     except:
         pass
 del properties_texture
-
-
-from bl_ui import properties_data_lamp
-for member in dir(properties_data_lamp):
-    subclass = getattr(properties_data_lamp, member)
-    if subclass not in (properties_data_lamp.DATA_PT_shadow,):
-        try:
-            subclass.COMPAT_ENGINES.add('PEARRAY_RENDER')
-        except:
-            pass
-del properties_data_lamp
 
 
 from bl_ui import properties_particle as properties_particle

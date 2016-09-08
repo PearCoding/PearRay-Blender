@@ -1,5 +1,3 @@
-
-
 from bpy.types import (
         PropertyGroup,
         )
