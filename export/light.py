@@ -1,3 +1,6 @@
+import math
+
+
 from .entity import inline_entity_matrix, inline_entity_matrix_pos
 from .spectral import write_spectral_color
 from .material import export_color
@@ -9,7 +12,8 @@ def export_pointlight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
   
-    color_name = export_color(exporter, light_data, 'color', True)
+    factor = 1#4*math.pi*light_data.pearray.point_radius*light_data.pearray.point_radius;
+    color_name = export_color(exporter, light_data, 'color', True, 1/factor)
 
     light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 

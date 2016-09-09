@@ -29,8 +29,9 @@ def export_camera(exporter, camera):
         w.write(":width %f" % (camera.data.ortho_scale * aspectW))
         w.write(":height %f" % (camera.data.ortho_scale * aspectH))
     else:
-        w.write(":width %f" % aspectW)
-        w.write(":height %f" % aspectH)
+        l=0.95#???
+        w.write(":width %f" % (l*aspectW))
+        w.write(":height %f" % (l*aspectH))
 
     w.write(":zoom %f" % camera.data.pearray.zoom)
     w.write(":fstop %f" % camera.data.pearray.fstop)

@@ -50,7 +50,7 @@ def inline_entity_matrix_camera(exporter, obj):
     scale.y = math.copysign(1,scale.y)
     scale.z = math.copysign(1,scale.z)
 
-    rot = rot * mathutils.Quaternion((-1,0,0), math.radians(180))
+    rot = rot * mathutils.Quaternion((0,1,0), math.radians(180))
     rot_s = tuple(math.degrees(a) for a in rot.to_euler())
 
     print("%s: %s" % (obj.name, matrix))

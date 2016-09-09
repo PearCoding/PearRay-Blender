@@ -136,7 +136,7 @@ def export_material_grid(exporter, material):
     exporter.w.write(")")
 
 
-def export_color(exporter, material, type, required):
+def export_color(exporter, material, type, required, factor=1):
     name = "%s_%s" % (material.name, type)
 
     attr_col = type
@@ -150,11 +150,11 @@ def export_color(exporter, material, type, required):
     if getattr(material.pearray, attr_type) == 'COLOR':
         color = getattr(sub_mat, attr_col)
         if required or color.r > 0 or color.g > 0 or color.b > 0:
-            return write_spectral_color(exporter, name, color)
+            return write_spectral_color(exporter, name, factor*color)
     else:
         temp = getattr(material.pearray, attr_temp)
         if required or temp > 0:
-            return write_spectral_temp(exporter, name, temp)
+            return write_spectral_temp(exporter, name, temp)# factor?
 
     return ""
 
