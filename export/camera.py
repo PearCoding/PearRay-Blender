@@ -1,7 +1,7 @@
 import math
 
 
-from .entity import inline_entity_matrix_camera
+from .entity import inline_entity_matrix_pos_rot_sign
 
 
 def export_camera(exporter, camera):
@@ -29,14 +29,17 @@ def export_camera(exporter, camera):
         w.write(":width %f" % (camera.data.ortho_scale * aspectW))
         w.write(":height %f" % (camera.data.ortho_scale * aspectH))
     else:
-        l=0.95#???
+        l=1#0.95#???
         w.write(":width %f" % (l*aspectW))
         w.write(":height %f" % (l*aspectH))
 
     w.write(":zoom %f" % camera.data.pearray.zoom)
     w.write(":fstop %f" % camera.data.pearray.fstop)
     w.write(":apertureRadius %f" % camera.data.pearray.apertureRadius)
-    inline_entity_matrix_camera(exporter, camera)
+    w.write(":localDirection [0,0,-1]")
+    w.write(":localUp [0,-1,0]")
+    w.write(":localRight [1,0,0]")
+    inline_entity_matrix_pos_rot_sign(exporter, camera)
 
     w.goOut()
     w.write(")")
