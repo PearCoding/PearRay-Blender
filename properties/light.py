@@ -32,6 +32,19 @@ class PearRayLightProperties(PropertyGroup):
         min=0, soft_max=100000.00, default=0, step=100
     )
 
+    color_temp_type = EnumProperty(
+        name="Light Color Temperature Type",
+        description="Light Blackbody Color Temperature Type",
+        items=enums.enum_temp_type,
+        default='HEMI'
+    )
+
+    color_temp_factor = FloatProperty(
+        name="Light Color Temperature Normalization Factor",
+        description="Light Blackbody Color Temperature  Normalization Factor",
+        min=0, soft_max=100000.00, default=1, step=100
+    )
+
     # Point Light
     point_radius = FloatProperty(
         name="Sphere radius",

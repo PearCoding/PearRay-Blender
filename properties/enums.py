@@ -44,6 +44,13 @@ enum_color_type= (
 	("TEMP", "Temperature", "Blackbody Temperature in Kelvin"),
     )
 
+enum_temp_type= (
+	("RAW", "Raw", "Raw blackbody curve output"),
+	("HEMI", "Hemi", "Color based on hemisphere radiance"),
+	("SPHERE", "Sphere", "Color based on sphere radiance"),
+	("NORM", "Normalized", "Normalized blackbody output"),
+    )
+
 enum_material_brdf= (
 	("DIFFUSE", "Diffuse", "Simple lambertian material"),
 	("ORENNAYAR", "Oren-Nayar", "Oren-Nayar BRDF"),

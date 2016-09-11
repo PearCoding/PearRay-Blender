@@ -20,10 +20,10 @@ pearray_package = __import__(__name__.split('.')[0])
 class PearRayPreferences(AddonPreferences):
     bl_idname = pearray_package.__package__
     
-    executable = StringProperty(
-                name="Executable",
-                description="Path to renderer executable",
-                subtype='FILE_PATH',
+    executable_dir = StringProperty(
+                name="Executable Directory",
+                description="Path to renderer executables",
+                subtype='DIR_PATH',
                 )
     show_progress_interval = IntProperty(
                 name="Show Progress",
@@ -41,7 +41,7 @@ class PearRayPreferences(AddonPreferences):
                 )
     def draw(self, context):
         layout = self.layout
-        layout.prop(self, "executable")
+        layout.prop(self, "executable_dir")
         col = layout.column(align=True)
         col.prop(self, "show_progress_interval")
         col.prop(self, "show_image_interval")

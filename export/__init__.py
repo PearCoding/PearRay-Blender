@@ -47,10 +47,8 @@ class Exporter:
         self.MISSING_MAT = ''
         self.DEBUG_MAT = ''
 
-        # PearRay uses a Y Up vector, but Blender uses a Z Up vector.
-        # Here we change it :)
         self.M_WORLD = mathutils.Matrix([(1,0,0,0), (0,1,0,0), (0,0,1,0), (0,0,0,1)])
-        print(self.M_WORLD)
+        #print(self.M_WORLD)
         self.CAM_UNIT_F = 1
         self.LIGHT_POW_F = 1
 

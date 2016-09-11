@@ -82,8 +82,12 @@ def color_template(obj, layout, name):
         sub_obj = obj.pearray
     
     col = layout.column(align=True)
-    col.row().prop(obj.pearray, '%s_type' % name, expand=True)
+    col.row(align=True).prop(obj.pearray, '%s_type' % name, expand=True)
     if getattr(obj.pearray, '%s_type' % name) == 'TEMP':
+        r = col.row(align=True)
+        r.prop(obj.pearray, '%s_temp_type' % name, text='')
+        if getattr(obj.pearray, '%s_temp_type' % name) == 'NORM':
+            r.prop(obj.pearray, '%s_temp_factor' % name, text='Factor')
         col.prop(obj.pearray, '%s_temp' % name, text="")
     else:
         col.prop(sub_obj, name, text="")

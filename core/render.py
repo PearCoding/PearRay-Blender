@@ -24,7 +24,7 @@ class PearRayRender(bpy.types.RenderEngine):
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
 
         # Use the system preference if its set.
-        pearray_binary = addon_prefs.executable
+        pearray_binary = bpy.path.resolve_ncase(bpy.path.abspath(addon_prefs.executable_dir + "/pearray" + (".exe" if sys.platform[:3] == "win" else "")))
         if pearray_binary:
             if os.path.exists(pearray_binary):
                 return pearray_binary

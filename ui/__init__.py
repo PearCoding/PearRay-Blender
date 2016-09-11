@@ -43,10 +43,8 @@ del properties_particle
 
 
 def register():
-    bpy.types.RENDER_PT_render.append(properties_render.draw_pearray_render)
     pass
 
 
 def unregister():
-    bpy.types.RENDER_PT_render.remove(properties_render.draw_pearray_render)
     pass

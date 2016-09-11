@@ -39,7 +39,6 @@ def write_scene(exporter):
         if exporter.world:
             color = exporter.world.horizon_color
             if color.r > 0 or color.g > 0 or color.b > 0:
-                w.write(":background '%s'" % background_mat_n)
                 background_spec_n = write_spectral_color(exporter, "%s_spec" % background_mat_n, color)
                 w.write("(material")
                 w.goIn()
@@ -48,6 +47,13 @@ def write_scene(exporter):
                 w.write(":type 'light'")
                 w.write(":emission '%s'" % background_spec_n)
 
+                w.goOut()
+                w.write(")")
+
+                w.write("(light")
+                w.goIn()
+                w.write(":type 'env'")
+                w.write(":material '%s'" % background_mat_n)
                 w.goOut()
                 w.write(")")
 

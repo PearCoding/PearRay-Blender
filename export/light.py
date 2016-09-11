@@ -1,4 +1,5 @@
 import math
+import mathutils
 
 
 from .entity import inline_entity_matrix, inline_entity_matrix_pos
@@ -75,12 +76,44 @@ def export_arealight(exporter, light):
     w.write(")")
 
 
+def export_sunlight(exporter, light):
+    w = exporter.w
+    light_data = light.data
+    w.write("; Light %s" % light.name)
+
+    color_name = export_color(exporter, light_data, 'color', True)
+    light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
+
+    w.write("(material")
+    w.goIn()
+
+    w.write(":name '%s'" % light_mat_n)
+    w.write(":type 'light'")
+    w.write(":emission '%s'" % color_name)
+
+    w.goOut()
+    w.write(")")
+
+    matrix = exporter.M_WORLD * light.matrix_world
+    trans, rot, scale = matrix.decompose()
+    direction = rot * mathutils.Vector((0,0,1))
+    w.write("(light")
+    w.goIn()
+
+    w.write(":type 'distant'")
+    w.write(":direction [%f, %f, %f]" % direction[:])
+    w.write(":material '%s'" % light_mat_n)
+
+    w.goOut()
+    w.write(")")
+
+
 def export_light(exporter, light):
     if light.data.type == 'POINT' or light.data.type == 'SPOT':
         export_pointlight(exporter, light)# Interpret as spherical area light
     elif light.data.type == 'HEMI' or light.data.type == 'AREA':
         export_arealight(exporter, light)
     elif light.data.type == 'SUN':
-        print("PearRay support of Sun type lights still not supported. Coming soon.")
+        export_sunlight(exporter, light)
     else:
         print("PearRay does not support lights of type '%s'" % light.data.type)

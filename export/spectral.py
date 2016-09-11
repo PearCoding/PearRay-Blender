@@ -13,14 +13,21 @@ def write_spectral_color(exporter, spec_name, color):
     return new_name
 
 
-def write_spectral_temp(exporter, spec_name, temp):
+def write_spectral_temp(exporter, spec_name, temp, type, factor):
     new_name = exporter.register_unique_name('SPEC', spec_name)
 
     exporter.w.write("(spectrum")
     exporter.w.goIn()
 
     exporter.w.write(":name '%s'" % spec_name)
-    exporter.w.write(":data (temperature %f)" % temp)
+    if type == 'RAW':
+        exporter.w.write(":data (temperature %f)" % temp)
+    elif type == 'HEMI':
+        exporter.w.write(":data (temperature_hemi %f)" % temp)
+    elif type == 'SPHERE':
+        exporter.w.write(":data (temperature_sphere %f)" % temp)
+    elif type == 'NORM':
+        exporter.w.write(":data (temperature_norm %f %f)" % (temp, factor))
 
     exporter.w.goOut()
     exporter.w.write(")")

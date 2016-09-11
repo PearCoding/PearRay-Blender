@@ -71,6 +71,19 @@ class PearRayMaterialProperties(PropertyGroup):
         min=0, soft_max=100000.00, default=0, step=100
     )
 
+    emission_color_temp_type = EnumProperty(
+        name="Emission Color Temperature Type",
+        description="Emission Blackbody Color Temperature Type",
+        items=enums.enum_temp_type,
+        default='HEMI'
+    )
+
+    emission_color_temp_factor = FloatProperty(
+        name="Emission Color Temperature Normalization Factor",
+        description="Emission Blackbody Color Temperature  Normalization Factor",
+        min=0, soft_max=100000.00, default=1, step=100
+    )
+
     # Diffuse
     diffuse_color_type = EnumProperty(
         name="Diffuse Color Type",
@@ -85,6 +98,19 @@ class PearRayMaterialProperties(PropertyGroup):
         min=0, soft_max=100000.00, default=1000, step=100
     )
 
+    diffuse_color_temp_type = EnumProperty(
+        name="Diffuse Color Temperature Type",
+        description="Diffuse Blackbody Color Temperature Type",
+        items=enums.enum_temp_type,
+        default='HEMI'
+    )
+
+    diffuse_color_temp_factor = FloatProperty(
+        name="Diffuse Color Temperature Normalization Factor",
+        description="Diffuse Blackbody Color Temperature  Normalization Factor",
+        min=0, soft_max=100000.00, default=1, step=100
+    )
+
     # Specular
     specular_color_type = EnumProperty(
         name="Specular Color Type",
@@ -97,6 +123,19 @@ class PearRayMaterialProperties(PropertyGroup):
         name="Specular Color Temperature",
         description="Specular Blackbody Color Temperature",
         min=0, soft_max=100000.00, default=1000, step=100
+    )
+
+    specular_color_temp_type = EnumProperty(
+        name="Specular Color Temperature Type",
+        description="Specular Blackbody Color Temperature Type",
+        items=enums.enum_temp_type,
+        default='HEMI'
+    )
+
+    specular_color_temp_factor = FloatProperty(
+        name="Specular Color Temperature Normalization Factor",
+        description="Specular Blackbody Color Temperature  Normalization Factor",
+        min=0, soft_max=100000.00, default=1, step=100
     )
 
     # Ward

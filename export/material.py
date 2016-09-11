@@ -94,7 +94,7 @@ def export_material_glass(exporter, material):
     
     exporter.w.write(":type 'glass'")
     exporter.w.write(":specularity '%s'" % spec_name)
-    exporter.w.write(":index '%f'" % material.specular_ior)
+    exporter.w.write(":index %f" % material.specular_ior)
     
     exporter.w.goOut()
     exporter.w.write(")")
@@ -114,7 +114,7 @@ def export_material_mirror(exporter, material):
     
     exporter.w.write(":type 'mirror'")
     exporter.w.write(":specularity '%s'" % spec_name)
-    exporter.w.write(":index '%f'" % material.specular_ior)
+    exporter.w.write(":index %f" % material.specular_ior)
     
     exporter.w.goOut()
     exporter.w.write(")")
@@ -141,6 +141,8 @@ def export_color(exporter, material, type, required, factor=1):
 
     attr_col = type
     attr_temp = "%s_temp" % type
+    attr_temp_type = "%s_temp_type" % type
+    attr_temp_factor = "%s_temp_factor" % type
     attr_type = "%s_type" % type
 
     sub_mat = material
@@ -154,7 +156,7 @@ def export_color(exporter, material, type, required, factor=1):
     else:
         temp = getattr(material.pearray, attr_temp)
         if required or temp > 0:
-            return write_spectral_temp(exporter, name, temp)# factor?
+            return write_spectral_temp(exporter, name, temp, getattr(material.pearray, attr_temp_type), getattr(material.pearray, attr_temp_factor))
 
     return ""
 
