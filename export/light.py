@@ -96,7 +96,7 @@ def export_sunlight(exporter, light):
 
     matrix = exporter.M_WORLD * light.matrix_world
     trans, rot, scale = matrix.decompose()
-    direction = rot * mathutils.Vector((0,0,1))
+    direction = rot * mathutils.Vector((0,0,-1))
     w.write("(light")
     w.goIn()
 

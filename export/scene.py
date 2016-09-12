@@ -54,6 +54,7 @@ def write_scene(exporter):
                 w.goIn()
                 w.write(":type 'env'")
                 w.write(":material '%s'" % background_mat_n)
+                w.write(":background true")
                 w.goOut()
                 w.write(")")
 
