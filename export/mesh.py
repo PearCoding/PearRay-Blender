@@ -35,7 +35,7 @@ def export_trimesh(exporter, mw, name, mesh):
 
     # Temporary
     vert_index = 0
-    vert_indices = []
+    vert_indices = {}
     vert_cache = set()
 
     for face in faces:
@@ -59,12 +59,12 @@ def export_trimesh(exporter, mw, name, mesh):
 
             if face.use_smooth:
                 if uv_layer:
-                    if vertex_color_layer:
+                    if color_layer:
                         vert_data = (v.co[:], v.normal[:], uv[:], color[:])
                     else:
                         vert_data = (v.co[:], v.normal[:], uv[:])
                 else:
-                    if vertex_color_layer:
+                    if color_layer:
                         vert_data = (v.co[:], v.normal[:], color[:])
                     else:
                         vert_data = (v.co[:], v.normal[:])
@@ -73,7 +73,7 @@ def export_trimesh(exporter, mw, name, mesh):
                     vert_cache.add(vert_data)
 
                     points.append(vert_data[0])
-                    normals.append(v.vert_data[1])
+                    normals.append(vert_data[1])
 
                     if uv_layer:
                         uvs.append(vert_data[2])
