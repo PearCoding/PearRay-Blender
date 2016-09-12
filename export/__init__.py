@@ -44,6 +44,7 @@ class Exporter:
         self.instances["MESH"] = []
         self.instances["MATERIAL"] = []
         self.instances["SPEC"] = []
+        self.mesh_cache = {}
         self.MISSING_MAT = ''
         self.DEBUG_MAT = ''
 
@@ -65,6 +66,17 @@ class Exporter:
         self.instances[type].append(test_name)
 
         return test_name
+
+
+    def register_mesh_data(self, name, data):
+        for n, d in self.mesh_cache.items():
+            if d == data:
+                return n, True
+
+        # No name check... should be done somewhere else 
+        self.mesh_cache[name] = data
+
+        return name, False
 
 
     def write_ini(self):
