@@ -1,3 +1,4 @@
+import collections
 import bpy
 import mathutils
 from .entity import inline_entity_matrix as inline_entity_matrix
@@ -32,6 +33,7 @@ def export_trimesh(exporter, mw, name, mesh):
     normals = []
     uvs = []
     colors = []
+    materials_counter = collections.Counter()
 
     # Temporary
     vert_index = 0
@@ -39,6 +41,7 @@ def export_trimesh(exporter, mw, name, mesh):
     vert_cache = set()
 
     for face in faces:
+        materials_counter[face.material_index] += 1
         face_data = []
 
         for j, vertex in enumerate(face.vertices):
@@ -109,11 +112,15 @@ def export_trimesh(exporter, mw, name, mesh):
     del vert_indices
     del vert_cache
 
+    materials = [a[0] for a in materials_counter.most_common()]
+    #print(materials_counter)
+    del materials_counter
+
     # If using apply_transform, don't even bother with caches.
     if not exporter.scene.pearray.apply_transform:
-        n, in_cache = exporter.register_mesh_data(name, (points, normals, uvs, colors, face_indices))
+        n, in_cache = exporter.register_mesh_data(name, (points, normals, uvs, colors, face_indices, materials))
         if in_cache:
-            return n
+            return n, materials
 
     w.write("(mesh")
     w.goIn()
@@ -163,11 +170,9 @@ def export_trimesh(exporter, mw, name, mesh):
         w.write(")")
 
     line = "(faces"
-    w.goIn()
     for f in face_indices:
         line = line + ", %i, %i, %i" % (f[0], f[1], f[2])
     w.write(line)
-    w.goOut()
     w.write(")")
 
     w.goOut()
@@ -179,8 +184,9 @@ def export_trimesh(exporter, mw, name, mesh):
         del normals
         del uvs
         del colors
+        del materials
     
-    return name
+    return name, materials
 
 
 def export_mesh(exporter, obj):
@@ -193,7 +199,7 @@ def export_mesh(exporter, obj):
         return
     
     name = exporter.register_unique_name('MESH', obj.data.name)
-    name = export_trimesh(exporter, obj.matrix_world, name, mesh)
+    name, material_indices = export_trimesh(exporter, obj.matrix_world, name, mesh)
     bpy.data.meshes.remove(mesh)
 
     w.write("(entity")
@@ -202,8 +208,8 @@ def export_mesh(exporter, obj):
     w.write(":name '%s'" % obj.name)
     w.write(":type 'mesh'")
 
-    if len(obj.data.materials) >= 1 and obj.data.materials[0]:
-        w.write(":material '%s'" % obj.data.materials[0].name)
+    if len(material_indices) >= 1:
+        w.write(":material '%s'" % obj.data.materials[material_indices[0]].name)
     else:
         w.write(":material '%s'" % exporter.MISSING_MAT)
         print("Mesh %s has no material!" % obj.name)
