@@ -22,21 +22,21 @@ class PearRayLightProperties(PropertyGroup):
     color_type = EnumProperty(
         name="Light Color Type",
         description="Light Color Type",
-        items=enums.enum_color_type,
+        items=enums.enum_flat_color_type,
         default='COLOR'
     )
 
     color_temp = FloatProperty(
         name="Light Color Temperature",
         description="Light Blackbody Color Temperature",
-        min=0, soft_max=100000.00, default=0, step=100
+        min=0, soft_max=100000.00, default=5500, step=100
     )
 
     color_temp_type = EnumProperty(
         name="Light Color Temperature Type",
         description="Light Blackbody Color Temperature Type",
         items=enums.enum_temp_type,
-        default='HEMI'
+        default='RAW'
     )
 
     color_temp_factor = FloatProperty(

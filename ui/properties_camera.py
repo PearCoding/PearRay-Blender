@@ -24,7 +24,7 @@ class CameraDataButtonsPanel():
         return cam and (rd.use_game_engine is False) and (rd.engine in cls.COMPAT_ENGINES)
 
 
-class CAMERA_PT_pearray_cam_settings(CameraDataButtonsPanel, bpy.types.Panel):
+class CAMERA_PT_pr_cam_settings(CameraDataButtonsPanel, bpy.types.Panel):
     bl_label = "PearRay Settings"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 

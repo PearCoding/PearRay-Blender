@@ -42,12 +42,17 @@ enum_photon_gathering_mode= (
 enum_color_type= (
 	("COLOR", "Color", "Standard RGB value"),
 	("TEMP", "Temperature", "Blackbody Temperature in Kelvin"),
+	("TEX", "Texture", "Texture"),
+	#("NODE", "Node", "Node"),
+    )
+
+enum_flat_color_type= (
+	("COLOR", "Color", "Standard RGB value"),
+	("TEMP", "Temperature", "Blackbody Temperature in Kelvin"),
     )
 
 enum_temp_type= (
 	("RAW", "Raw", "Raw blackbody curve output"),
-	("HEMI", "Hemi", "Color based on hemisphere radiance"),
-	("SPHERE", "Sphere", "Color based on sphere radiance"),
 	("NORM", "Normalized", "Normalized blackbody output"),
     )
 

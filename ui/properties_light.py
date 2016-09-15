@@ -10,7 +10,7 @@ properties_data_lamp.DATA_PT_preview.COMPAT_ENGINES.add('PEARRAY_RENDER')
 del properties_data_lamp
 
 
-class DATA_PT_lamp(DataButtonsPanel, bpy.types.Panel):
+class DATA_PT_pr_lamp(DataButtonsPanel, bpy.types.Panel):
     bl_label = "Lamp"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -22,7 +22,7 @@ class DATA_PT_lamp(DataButtonsPanel, bpy.types.Panel):
         layout.prop(lamp, "type", expand=True)
         if lamp.type == 'SPOT':
             layout.label('Spot light will be converted to point light!', icon='INFO')
-        if lamp.type == 'HEMI':
+        elif lamp.type == 'HEMI':
             layout.label('Hemi light will be converted to area light!', icon='INFO')
 
         split = layout.split()

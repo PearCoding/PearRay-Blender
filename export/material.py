@@ -156,13 +156,13 @@ def export_color(exporter, material, type, required, factor=1):
     else:
         temp = getattr(material.pearray, attr_temp)
         if required or temp > 0:
-            return write_spectral_temp(exporter, name, temp, getattr(material.pearray, attr_temp_type), getattr(material.pearray, attr_temp_factor))
+            return write_spectral_temp(exporter, name, temp, getattr(material.pearray, attr_temp_type), factor*getattr(material.pearray, attr_temp_factor))
 
     return ""
 
 
 def export_material(exporter, material):
-    if not material or not material.use_raytrace:
+    if not material:
         return
     
     if material.name in exporter.instances['MATERIAL']:

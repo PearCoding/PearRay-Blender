@@ -18,7 +18,7 @@ class RenderButtonsPanel():
         return (rd.use_game_engine is False) and (rd.engine in cls.COMPAT_ENGINES)
 
 
-class RENDER_PT_render(RenderButtonsPanel, bpy.types.Panel):
+class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Render"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -48,7 +48,7 @@ class RENDER_PT_render(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "max_ray_depth")
 
 
-class RENDER_PT_performance(RenderButtonsPanel, bpy.types.Panel):
+class RENDER_PT_pr_performance(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Performance"
     bl_options = {'DEFAULT_CLOSED'}
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
@@ -72,7 +72,7 @@ class RENDER_PT_performance(RenderButtonsPanel, bpy.types.Panel):
         col.prop(rd, "tile_y", text="Y")
 
 
-class RENDER_PT_output(RenderButtonsPanel, bpy.types.Panel):
+class RENDER_PT_pr_output(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Output"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -90,7 +90,7 @@ class RENDER_PT_output(RenderButtonsPanel, bpy.types.Panel):
         layout.template_image_settings(image_settings, color_management=False)
 
 
-class RENDER_PT_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
+class RENDER_PT_pr_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Pixel Sampler"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -102,7 +102,7 @@ class RENDER_PT_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "max_pixel_samples")
 
 
-class RENDER_PT_integrator(RenderButtonsPanel, bpy.types.Panel):
+class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Integrator"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -127,7 +127,7 @@ class RENDER_PT_integrator(RenderButtonsPanel, bpy.types.Panel):
             col.prop(scene.pearray, "photon_squeeze")
 
 
-class RENDER_PT_export_settings(RenderButtonsPanel, bpy.types.Panel):
+class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Export Settings"
     bl_options = {'DEFAULT_CLOSED'}
     COMPAT_ENGINES = {'PEARRAY_RENDER'}

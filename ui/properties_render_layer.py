@@ -10,7 +10,7 @@ del properties_render_layer
 
 
 
-class RENDERLAYER_PT_layer_options(RenderLayerButtonsPanel, bpy.types.Panel):
+class RENDERLAYER_PT_pr_layer_options(RenderLayerButtonsPanel, bpy.types.Panel):
     bl_label = "Layer"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 

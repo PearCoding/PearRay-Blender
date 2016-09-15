@@ -4,7 +4,7 @@ import bpy
 from bl_ui.properties_material import MaterialButtonsPanel
 
 
-class MATERIAL_PT_context_material(MaterialButtonsPanel, bpy.types.Panel):
+class MATERIAL_PT_pr_context_material(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = ""
     bl_options = {'HIDE_HEADER'}
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
@@ -68,7 +68,7 @@ class MATERIAL_PT_context_material(MaterialButtonsPanel, bpy.types.Panel):
             split.separator()
 
 
-class MATERIAL_PT_preview(MaterialButtonsPanel, bpy.types.Panel):
+class MATERIAL_PT_pr_preview(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "Preview"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -76,24 +76,7 @@ class MATERIAL_PT_preview(MaterialButtonsPanel, bpy.types.Panel):
         self.layout.template_preview(context.material)
 
 
-def color_template(obj, layout, name):
-    sub_obj = obj
-    if not hasattr(obj, name):
-        sub_obj = obj.pearray
-    
-    col = layout.column(align=True)
-    col.row(align=True).prop(obj.pearray, '%s_type' % name, expand=True)
-    if getattr(obj.pearray, '%s_type' % name) == 'TEMP':
-        r = col.row(align=True)
-        r.prop(obj.pearray, '%s_temp_type' % name, text='')
-        if getattr(obj.pearray, '%s_temp_type' % name) == 'NORM':
-            r.prop(obj.pearray, '%s_temp_factor' % name, text='Factor')
-        col.prop(obj.pearray, '%s_temp' % name, text="")
-    else:
-        col.prop(sub_obj, name, text="")
-
-
-class MATERIAL_PT_brdf(MaterialButtonsPanel, bpy.types.Panel):
+class MATERIAL_PT_pr_brdf(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "BRDF"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -123,7 +106,7 @@ class MATERIAL_PT_brdf(MaterialButtonsPanel, bpy.types.Panel):
         col.prop(mat.pearray, "is_shadeable")
 
 
-class MATERIAL_PT_diffuse(MaterialButtonsPanel, bpy.types.Panel):
+class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "Diffuse"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -150,7 +133,7 @@ class MATERIAL_PT_diffuse(MaterialButtonsPanel, bpy.types.Panel):
             col2.prop(mat.pearray, 'roughnessY')            
 
 
-class MATERIAL_PT_grid(MaterialButtonsPanel, bpy.types.Panel):
+class MATERIAL_PT_pr_grid(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "Grid"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -170,7 +153,7 @@ class MATERIAL_PT_grid(MaterialButtonsPanel, bpy.types.Panel):
         col = split.column()
 
 
-class MATERIAL_PT_specular(MaterialButtonsPanel, bpy.types.Panel):
+class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "Specular"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -193,7 +176,7 @@ class MATERIAL_PT_specular(MaterialButtonsPanel, bpy.types.Panel):
             col.prop(mat, 'specular_ior')
 
 
-class MATERIAL_PT_emission(MaterialButtonsPanel, bpy.types.Panel):
+class MATERIAL_PT_pr_emission(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "Emission"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -212,3 +195,24 @@ class MATERIAL_PT_emission(MaterialButtonsPanel, bpy.types.Panel):
 
         col = split.column()
         color_template(mat, col, "emission_color")
+
+
+def color_template(obj, layout, name):
+    sub_obj = obj
+    if not hasattr(obj, name):
+        sub_obj = obj.pearray
+    
+    type = getattr(obj.pearray, '%s_type' % name)
+
+    col = layout.column(align=True)
+    col.row(align=True).prop(obj.pearray, '%s_type' % name, expand=True)
+    if type == 'TEMP':
+        r = col.row(align=True)
+        r.prop(obj.pearray, '%s_temp_type' % name, text="")
+        if getattr(obj.pearray, '%s_temp_type' % name) == 'NORM':
+            r.prop(obj.pearray, '%s_temp_factor' % name, text='Factor')
+        col.prop(obj.pearray, '%s_temp' % name, text="")
+    elif type == 'TEX' and hasattr(obj.pearray, '%s_tex_slot' % name):
+        col.prop(obj.pearray, '%s_tex_slot' % name)
+    else:
+        col.prop(sub_obj, name, text="")

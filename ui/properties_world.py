@@ -18,7 +18,7 @@ class WorldButtonsPanel():
         return context.world and (rd.use_game_engine is False) and (rd.engine in cls.COMPAT_ENGINES)
 
 
-class WORLD_PT_preview(WorldButtonsPanel, bpy.types.Panel):
+class WORLD_PT_pr_preview(WorldButtonsPanel, bpy.types.Panel):
     bl_label = "Preview"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
@@ -26,7 +26,7 @@ class WORLD_PT_preview(WorldButtonsPanel, bpy.types.Panel):
         self.layout.template_preview(context.world)
 
 
-class WORLD_PT_background(WorldButtonsPanel, bpy.types.Panel):
+class WORLD_PT_pr_background(WorldButtonsPanel, bpy.types.Panel):
     bl_label = "Background"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
