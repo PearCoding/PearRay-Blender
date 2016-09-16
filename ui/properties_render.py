@@ -101,6 +101,13 @@ class RENDER_PT_pr_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "pixel_sampler_mode")
         layout.prop(scene.pearray, "max_pixel_samples")
 
+        col = layout.column()
+        col.prop(scene.pearray, "adaptive_sampling", text="Adaptive Sampling")
+        sub = col.column()
+        sub.active = scene.pearray.adaptive_sampling
+        sub.prop(scene.pearray, "min_pixel_samples")
+        sub.prop(scene.pearray, "as_quality")
+
 
 class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Integrator"

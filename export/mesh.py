@@ -162,9 +162,10 @@ def export_trimesh(exporter, mw, name, mesh):
     if color_layer:
         w.write("(attribute")
         w.goIn()
-        line = ":type 'u'"
+        w.write(":type 'u'")
+        line = ":name 'color'"
         for c in colors:
-            line = line + ", [%f, %f, %f, %f]" % c[:]
+            line = line + ", [%f, %f, %f, 1]" % c[:]
         w.write(line)
         w.goOut()
         w.write(")")
@@ -184,7 +185,6 @@ def export_trimesh(exporter, mw, name, mesh):
         del normals
         del uvs
         del colors
-        del materials
     
     return name, materials
 
@@ -208,7 +208,9 @@ def export_mesh(exporter, obj):
     w.write(":name '%s'" % obj.name)
     w.write(":type 'mesh'")
 
-    if len(material_indices) >= 1:
+    if (len(material_indices) >= 1 and
+        material_indices[0] < len(obj.data.materials) and
+        obj.data.materials[material_indices[0]]):
         w.write(":material '%s'" % obj.data.materials[material_indices[0]].name)
     else:
         w.write(":material '%s'" % exporter.MISSING_MAT)

@@ -1,4 +1,5 @@
 from .spectral import write_spectral_color, write_spectral_temp
+from .texture import export_texture
 
 
 def inline_material_defaults(exporter, material):
@@ -28,10 +29,10 @@ def export_material_diffuse(exporter, material):
     inline_material_defaults(exporter, material)
 
     if em_name:
-        exporter.w.write(":emission '%s'" % em_name)
+        exporter.w.write(":emission %s" % em_name)
     
     exporter.w.write(":type 'diffuse'")
-    exporter.w.write(":albedo '%s'" % diff_name)
+    exporter.w.write(":albedo %s" % diff_name)
     
     exporter.w.goOut()
     exporter.w.write(")")
@@ -47,10 +48,10 @@ def export_material_orennayar(exporter, material):
     inline_material_defaults(exporter, material)
 
     if em_name:
-        exporter.w.write(":emission '%s'" % em_name)
+        exporter.w.write(":emission %s" % em_name)
     
     exporter.w.write(":type 'orennayar'")
-    exporter.w.write(":albedo '%s'" % diff_name)
+    exporter.w.write(":albedo %s" % diff_name)
     exporter.w.write(":roughness '%f'" % material.roughness)
     
     exporter.w.goOut()
@@ -68,11 +69,11 @@ def export_material_ward(exporter, material):
     inline_material_defaults(exporter, material)
 
     if em_name:
-        exporter.w.write(":emission '%s'" % em_name)
+        exporter.w.write(":emission %s" % em_name)
     
     exporter.w.write(":type 'ward'")
-    exporter.w.write(":albedo '%s'" % diff_name)
-    exporter.w.write(":specularity '%s'" % spec_name)
+    exporter.w.write(":albedo %s" % diff_name)
+    exporter.w.write(":specularity %s" % spec_name)
     exporter.w.write(":roughnessX '%f'" % material.pearray.roughnessX)
     exporter.w.write(":roughnessY '%f'" % material.pearray.roughnessY)
     
@@ -90,10 +91,10 @@ def export_material_glass(exporter, material):
     inline_material_defaults(exporter, material)
 
     if em_name:
-        exporter.w.write(":emission '%s'" % em_name)
+        exporter.w.write(":emission %s" % em_name)
     
     exporter.w.write(":type 'glass'")
-    exporter.w.write(":specularity '%s'" % spec_name)
+    exporter.w.write(":specularity %s" % spec_name)
     exporter.w.write(":index %f" % material.specular_ior)
     
     exporter.w.goOut()
@@ -110,10 +111,10 @@ def export_material_mirror(exporter, material):
     inline_material_defaults(exporter, material)
 
     if em_name:
-        exporter.w.write(":emission '%s'" % em_name)
+        exporter.w.write(":emission %s" % em_name)
     
     exporter.w.write(":type 'mirror'")
-    exporter.w.write(":specularity '%s'" % spec_name)
+    exporter.w.write(":specularity %s" % spec_name)
     exporter.w.write(":index %f" % material.specular_ior)
     
     exporter.w.goOut()
@@ -144,6 +145,7 @@ def export_color(exporter, material, type, required, factor=1):
     attr_temp_type = "%s_temp_type" % type
     attr_temp_factor = "%s_temp_factor" % type
     attr_type = "%s_type" % type
+    attr_tex_slot = "%s_tex_slot" % type
 
     sub_mat = material
     if not hasattr(material, attr_col):
@@ -152,13 +154,27 @@ def export_color(exporter, material, type, required, factor=1):
     if getattr(material.pearray, attr_type) == 'COLOR':
         color = getattr(sub_mat, attr_col)
         if required or color.r > 0 or color.g > 0 or color.b > 0:
-            return write_spectral_color(exporter, name, factor*color)
+            return "'%s'" % write_spectral_color(exporter, name, factor*color)
+    elif getattr(material.pearray, attr_type) == 'TEX':
+        if len(material.texture_slots) <= 0:
+            if required:
+                return "''"
+            else:
+                return ""
+        
+        tex_slot = getattr(material.pearray, attr_tex_slot)
+        if not tex_slot or tex_slot >= len(material.texture_slots):
+            tex_slot = 0
+        return "(texture '%s')" % export_texture(exporter, material.texture_slots[tex_slot].texture)
     else:
         temp = getattr(material.pearray, attr_temp)
         if required or temp > 0:
-            return write_spectral_temp(exporter, name, temp, getattr(material.pearray, attr_temp_type), factor*getattr(material.pearray, attr_temp_factor))
-
-    return ""
+            return "'%s'" % write_spectral_temp(exporter, name, temp, getattr(material.pearray, attr_temp_type), factor*getattr(material.pearray, attr_temp_factor))
+    
+    if required:
+        return "''"
+    else:
+        return ""
 
 
 def export_material(exporter, material):
@@ -209,7 +225,7 @@ def export_default_materials(exporter):
     exporter.w.goIn()
 
     exporter.w.write(":name '%s'" % exporter.DEBUG_MAT)
-    exporter.w.write(":type 'debugBoundingBox'")
+    exporter.w.write(":type 'debug_bounding_box'")
     exporter.w.write(":color '%s'" % debug_spec_n)
     exporter.w.write(":density 0.3")
 

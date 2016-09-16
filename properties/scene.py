@@ -74,6 +74,25 @@ class PearRaySceneProperties(PropertyGroup):
         subtype="UNSIGNED",
         default=64
         )
+    min_pixel_samples = IntProperty(
+        name="Min Pixel Samples",
+        description="Minimum pixel samples",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=1
+        )
+    adaptive_sampling = BoolProperty(
+        name="Adaptive Sampling",
+        description="Use Adaptive Sampling",
+        default=True
+        )
+    as_quality = FloatProperty(
+        name="Quality",
+        description="Adaptive Sampling Quality",
+        min=0.0, max=100.0, default=80,
+        subtype="PERCENTAGE"
+        )
     max_diffuse_bounces = IntProperty(
         name="Max Diffuse Bounces",
         description="Maximum diffuse bounces",

@@ -1,7 +1,8 @@
 import bpy
 import mathutils
 import math
-from math import degrees, radians
+import tempfile
+import os
 
 from .ini import write_ini
 from .scene import write_scene
@@ -43,7 +44,9 @@ class Exporter:
         self.instances = {}
         self.instances["MESH"] = []
         self.instances["MATERIAL"] = []
+        self.instances["TEXTURE"] = []
         self.instances["SPEC"] = []
+
         self.mesh_cache = {}
         self.MISSING_MAT = ''
         self.DEBUG_MAT = ''
@@ -57,6 +60,20 @@ class Exporter:
         self.world = scene.world
     
     
+    def create_file(self, name_hint=""):
+        if self.scene.pearray.keep_prc:
+            dir = os.path.join(os.path.dirname(self.filename), "generated");
+            if not os.path.exists(dir):
+                os.mkdir(dir)
+            
+            if name_hint:
+                return os.path.join(dir, name_hint)
+            else:
+                return tempfile.NamedTemporaryFile(delete=False, dir=dir).name
+        else:
+            return tempfile.NamedTemporaryFile(delete=False).name
+
+
     def register_unique_name(self, type, name):
         test_name = name
         i = 1
