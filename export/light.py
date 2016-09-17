@@ -23,7 +23,7 @@ def export_pointlight(exporter, light):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'light'")
-    w.write(":cameraVisible false")
+    w.write(":camera_visible false")
     w.write(":emission %s" % color_name)
 
     w.goOut()
@@ -56,7 +56,7 @@ def export_arealight(exporter, light):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'light'")
-    w.write(":cameraVisible false")
+    w.write(":camera_visible false")
     w.write(":emission %s" % color_name)
 
     w.goOut()

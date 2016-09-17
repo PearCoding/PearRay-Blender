@@ -26,8 +26,8 @@ def write_ini(exporter):
     exporter.w.write("min=%i" % s.min_pixel_samples)
     exporter.w.write("adaptive=%s" % str(s.adaptive_sampling).lower())
 
-    max_error = max(0.00000001, math.exp(- s.as_quality / 5))
-    exporter.w.write("max_error=%f" % max_error)
+    max_error = max(0.00000001, math.exp(- s.as_quality / 7))
+    exporter.w.write("max_error=%.8f" % max_error)
 
     exporter.w.write("[globalillumination]")
     exporter.w.write("diffuse_bounces=%i" % s.max_diffuse_bounces)

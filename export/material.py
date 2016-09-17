@@ -6,17 +6,17 @@ def inline_material_defaults(exporter, material):
     exporter.w.write(":name '%s'" % material.name)
 
     if not material.pearray.cast_shadows:
-        #exporter.w.write(":castShadows false")
+        #exporter.w.write(":cast_shadows false")
         pass
 
     if not material.pearray.cast_self_shadows:
-        exporter.w.write(":selfShadow false")
+        exporter.w.write(":self_shadow false")
 
     if not material.pearray.is_shadeable:
         exporter.w.write(":shadeable false")
 
     if not material.pearray.is_camera_visible:
-        exporter.w.write(":cameraVisible false")
+        exporter.w.write(":camera_visible false")
 
 
 def export_material_diffuse(exporter, material):
