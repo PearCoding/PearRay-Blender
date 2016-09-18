@@ -4,9 +4,6 @@ import tempfile
 
 def export_image(exporter, image):
     path = ''
-
-    print(image)
-    print(image.source)
     if image.source in {'GENERATED', 'FILE'}:
         if image.source == 'GENERATED':
             path = exporter.create_file(name_hint=image.name)

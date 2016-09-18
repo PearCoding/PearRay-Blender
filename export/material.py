@@ -6,8 +6,7 @@ def inline_material_defaults(exporter, material):
     exporter.w.write(":name '%s'" % material.name)
 
     if not material.pearray.cast_shadows:
-        #exporter.w.write(":cast_shadows false")
-        pass
+        exporter.w.write(":shadow false")
 
     if not material.pearray.cast_self_shadows:
         exporter.w.write(":self_shadow false")
