@@ -132,6 +132,14 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
             col.prop(scene.pearray, "photon_max_gather_count")
             col.prop(scene.pearray, "photon_gathering_mode", text="")
             col.prop(scene.pearray, "photon_squeeze")
+            col.prop(scene.pearray, "photon_ratio")
+            col = layout.column(align=True)
+            col.label("Projection Map:")
+            col.prop(scene.pearray, "photon_proj_weight", text="Weight")
+            col = col.column(align=True)
+            col.enabled = scene.pearray.photon_proj_weight > 0
+            col.prop(scene.pearray, "photon_proj_qual", text="Quality")
+            col.prop(scene.pearray, "photon_proj_caustic", text="Caustic")
 
 
 class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):

@@ -149,5 +149,30 @@ class PearRaySceneProperties(PropertyGroup):
     photon_squeeze = FloatProperty(
         name="Squeeze Factor",
         description="Squeeze factor to press sphere/dome into a disk",
-        min=0.0, max=1, default=0.0
+        min=0.0, max=100, default=0.0,
+        subtype="PERCENTAGE"
+        )
+    photon_ratio = FloatProperty(
+        name="Contract Ratio",
+        description="Ratio of radius contraction",
+        min=1, max=100, default=20,
+        subtype="PERCENTAGE"
+        )
+    photon_proj_weight = FloatProperty(
+        name="Projection Map Weight",
+        description="Projection Map Weight. 0 disables it",
+        min=0.0, max=100, default=80,
+        subtype="PERCENTAGE"
+        )
+    photon_proj_qual = FloatProperty(
+        name="Projection Map Quality",
+        description="Quality of projection map",
+        min=1, max=100, default=80,
+        subtype="PERCENTAGE"
+        )
+    photon_proj_caustic = FloatProperty(
+        name="Projection Map Caustic Favor",
+        description="Ratio of how much to prefer caustic paths. 0 disables it",
+        min=0, soft_max=100, default=20,
+        subtype="PERCENTAGE"
         )

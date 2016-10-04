@@ -229,13 +229,24 @@ class PearRayRender(bpy.types.RenderEngine):
         result = self.begin_result(0, 0, x, y)
         layer = result.layers[0]
 
-
-        def update_image():# FIXME: How do we prevent crashes? -> Bus Error/Segmentation Faults
+        lock_path = os.path.normpath(renderPath + "/.img_lock")
+        def update_image():
             try:
+                try:
+                    os.mkdir(lock_path)
+                except FileExistsError:
+                    return
+                
                 layer.load_from_file(output_image)
                 self.update_result(result)
             except RuntimeError:
                 pass
+
+            try:
+                if os.path.exists(lock_path):
+                    os.rmdir(lock_path)
+            except RuntimeError:
+                print("ERROR: Couldn't remove .img_lock, even when locking it!")
         
         time.sleep(2)
 
