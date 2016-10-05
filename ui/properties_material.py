@@ -174,6 +174,8 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
         color_template(mat, col, "specular_color")
         if type == 'MIRROR' or type == 'GLASS':
             col.prop(mat, 'specular_ior')
+        if type == 'WARD':
+            col.prop(mat.pearray, 'reflectivity')
 
 
 class MATERIAL_PT_pr_emission(MaterialButtonsPanel, bpy.types.Panel):

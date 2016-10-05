@@ -51,7 +51,7 @@ def export_material_orennayar(exporter, material):
     
     exporter.w.write(":type 'orennayar'")
     exporter.w.write(":albedo %s" % diff_name)
-    exporter.w.write(":roughness '%f'" % material.roughness)
+    exporter.w.write(":roughness %f" % material.roughness)
     
     exporter.w.goOut()
     exporter.w.write(")")
@@ -73,8 +73,13 @@ def export_material_ward(exporter, material):
     exporter.w.write(":type 'ward'")
     exporter.w.write(":albedo %s" % diff_name)
     exporter.w.write(":specularity %s" % spec_name)
-    exporter.w.write(":roughnessX '%f'" % material.pearray.roughnessX)
-    exporter.w.write(":roughnessY '%f'" % material.pearray.roughnessY)
+    exporter.w.write(":reflectivity %f" % material.pearray.reflectivity)
+    
+    if material.pearray.roughnessX == material.pearray.roughnessY:
+        exporter.w.write(":roughness %f" % material.pearray.roughnessX)
+    else:
+        exporter.w.write(":roughnessX %f" % material.pearray.roughnessX)
+        exporter.w.write(":roughnessY %f" % material.pearray.roughnessY)
     
     exporter.w.goOut()
     exporter.w.write(")")
@@ -205,10 +210,8 @@ def export_material(exporter, material):
 
 def export_default_materials(exporter):
     exporter.MISSING_MAT = exporter.register_unique_name('MATERIAL', "_missing_mat")
-    exporter.DEBUG_MAT = exporter.register_unique_name('MATERIAL', "_debug_mat")
 
     missing_spec_n = write_spectral_color(exporter, "%s_spec" % exporter.MISSING_MAT, (10,7,8))
-    debug_spec_n = write_spectral_color(exporter, "%s_spec" % exporter.DEBUG_MAT, (1,0,0))
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -216,17 +219,6 @@ def export_default_materials(exporter):
     exporter.w.write(":name '%s'" % exporter.MISSING_MAT)
     exporter.w.write(":type 'diffuse'")
     exporter.w.write(":emission '%s'" % missing_spec_n)
-
-    exporter.w.goOut()
-    exporter.w.write(")")
-
-    exporter.w.write("(material")
-    exporter.w.goIn()
-
-    exporter.w.write(":name '%s'" % exporter.DEBUG_MAT)
-    exporter.w.write(":type 'debug_bounding_box'")
-    exporter.w.write(":color '%s'" % debug_spec_n)
-    exporter.w.write(":density 0.3")
 
     exporter.w.goOut()
     exporter.w.write(")")

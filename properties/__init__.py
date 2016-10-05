@@ -34,14 +34,20 @@ class PearRayPreferences(AddonPreferences):
                 )
     show_image_interval = IntProperty(
                 name="Show Image",
-                description="(Experimental) Update interval for image updates. Zero disables it",
+                description="Update interval for image updates. Zero disables it",
                 default=5,
                 min=0,
                 soft_max=10
                 )
+    verbose = BoolProperty(
+                name="Verbose",
+                description="Display verbose information in the produced log files",
+                default=True
+                )
     def draw(self, context):
         layout = self.layout
         layout.prop(self, "executable_dir")
+        layout.prop(self, "verbose")
         col = layout.column(align=True)
         col.prop(self, "show_progress_interval")
         col.prop(self, "show_image_interval")

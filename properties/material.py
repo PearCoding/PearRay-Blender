@@ -154,6 +154,11 @@ class PearRayMaterialProperties(PropertyGroup):
         description="Roughness to binormal direction",
         min=0, soft_max=1.00, default=0.50
     )
+    reflectivity = FloatProperty(
+        name="Reflectivity",
+        description="Reflectivity of material",
+        min=0, soft_max=1.00, default=0.50
+    )
 
     # Grid
     grid_first_material = None
