@@ -59,8 +59,27 @@ enum_temp_type= (
 enum_material_brdf= (
 	("DIFFUSE", "Diffuse", "Simple lambertian material"),
 	("ORENNAYAR", "Oren-Nayar", "Oren-Nayar BRDF"),
+	("COOK_TORRANCE", "Cook-Torrance", "Cook-Torrance BRDF"),
 	("WARD", "Ward", "Ward BRDF"),
 	("GRID", "Grid", "Special material grid"),
 	("GLASS", "Glass", "Specialized glass material"),
 	("MIRROR", "Mirror", "Specialized mirror material"),
+    )
+
+enum_material_ct_fresnel_mode= (
+	("DIELECTRIC", "Dielectric", "Dielectric fresnel"),
+	("CONDUCTOR", "Conductor", "Conductor fresnel (for metal). Absorption based on diffuse term"),
+    )
+
+enum_material_ct_distribution_mode= (
+	("BLINN", "Blinn", "Blinn based distribution term"),
+	("BECKMANN", "Beckmann", "Beckmann based distribution term"),
+	("GGX", "GGX", "GGX based distribution term"),
+    )
+
+enum_material_ct_geometry_mode= (
+	("IMPLICIT", "Implicit", "Implicit based geometry term"),
+	("NEUMANN", "Neumann", "Neumann based geometry term"),
+	("COOK_TORRANCE", "Cook-Torrance", "Cook-Torrance based geometry term"),
+	("KELEMEN", "Kelemen", "Kelemen based geometry term"),
     )

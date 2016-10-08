@@ -75,15 +75,53 @@ def export_material_ward(exporter, material):
     exporter.w.write(":specularity %s" % spec_name)
     exporter.w.write(":reflectivity %f" % material.pearray.reflectivity)
     
-    if material.pearray.roughnessX == material.pearray.roughnessY:
-        exporter.w.write(":roughness %f" % material.pearray.roughnessX)
+    if material.pearray.spec_roughness_x == material.pearray.spec_roughness_y:
+        exporter.w.write(":roughness %f" % material.pearray.spec_roughness_x)
     else:
-        exporter.w.write(":roughnessX %f" % material.pearray.roughnessX)
-        exporter.w.write(":roughnessY %f" % material.pearray.roughnessY)
+        exporter.w.write(":roughness_x %f" % material.pearray.spec_roughness_x)
+        exporter.w.write(":roughness_y %f" % material.pearray.spec_roughness_y)
     
     exporter.w.goOut()
     exporter.w.write(")")
 
+
+def export_material_cook_torrance(exporter, material):
+    diff_name = export_color(exporter, material, 'diffuse_color', True)
+    spec_name = export_color(exporter, material, 'specular_color', True)
+    em_name = export_color(exporter, material, 'emission_color', False)
+
+    exporter.w.write("(material")
+    exporter.w.goIn()
+
+    inline_material_defaults(exporter, material)
+
+    if em_name:
+        exporter.w.write(":emission %s" % em_name)
+    
+    exporter.w.write(":type 'cook_torrance'")
+
+    exporter.w.write(":fresnel_mode '%s'" % material.pearray.ct_fresnel_mode.lower())
+    exporter.w.write(":distribution_mode '%s'" % material.pearray.ct_distribution_mode.lower())
+    exporter.w.write(":geometry_mode '%s'" % material.pearray.ct_geometry_mode.lower())
+
+    exporter.w.write(":albedo %s" % diff_name)
+    exporter.w.write(":diffuse_roughness %f" % material.roughness)
+
+    exporter.w.write(":specularity %s" % spec_name)
+
+    exporter.w.write(":index %f" % material.specular_ior)
+    exporter.w.write(":conductor_absorption %s" % diff_name)
+
+    exporter.w.write(":reflectivity %f" % material.pearray.reflectivity)
+    
+    if material.pearray.spec_roughness_x == material.pearray.spec_roughness_y:
+        exporter.w.write(":specular_roughness %f" % material.pearray.spec_roughness_x)
+    else:
+        exporter.w.write(":specular_roughness_x %f" % material.pearray.spec_roughness_x)
+        exporter.w.write(":specular_roughness_y %f" % material.pearray.spec_roughness_y)
+    
+    exporter.w.goOut()
+    exporter.w.write(")")
 
 def export_material_glass(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
@@ -198,6 +236,8 @@ def export_material(exporter, material):
         export_material_orennayar(exporter, material)
     elif brdf == 'WARD':
         export_material_ward(exporter, material)
+    elif brdf == 'COOK_TORRANCE':
+        export_material_cook_torrance(exporter, material)
     elif brdf == 'GLASS':
         export_material_glass(exporter, material)
     elif brdf == 'MIRROR':

@@ -105,6 +105,14 @@ class MATERIAL_PT_pr_brdf(MaterialButtonsPanel, bpy.types.Panel):
         col.prop(mat.pearray, "is_camera_visible")
         col.prop(mat.pearray, "is_shadeable")
 
+        if type == 'COOK_TORRANCE':
+            layout.separator()
+            split = layout.split()
+            col = split.column(align=True)
+            col.prop(mat.pearray, "ct_fresnel_mode")
+            col.prop(mat.pearray, "ct_distribution_mode")
+            col.prop(mat.pearray, "ct_geometry_mode")
+
 
 class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "Diffuse"
@@ -113,7 +121,7 @@ class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (context.material.pearray.brdf in {'DIFFUSE', 'ORENNAYAR', 'WARD'}) and (engine in cls.COMPAT_ENGINES)
+        return context.material and (context.material.pearray.brdf in {'DIFFUSE', 'ORENNAYAR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
@@ -125,12 +133,8 @@ class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
 
         col = split.column()
         color_template(mat, col, "diffuse_color")
-        if type == 'ORENNAYAR':
-            col.prop(mat, 'roughness')
-        elif type == 'WARD':
-            col2 = col.column(align=True)
-            col2.prop(mat.pearray, 'roughnessX')
-            col2.prop(mat.pearray, 'roughnessY')            
+        if type == 'ORENNAYAR' or type == 'COOK_TORRANCE':
+            col.prop(mat, 'roughness')         
 
 
 class MATERIAL_PT_pr_grid(MaterialButtonsPanel, bpy.types.Panel):
@@ -160,7 +164,7 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (context.material.pearray.brdf in {'GLASS', 'MIRROR', 'WARD'}) and (engine in cls.COMPAT_ENGINES)
+        return context.material and (context.material.pearray.brdf in {'GLASS', 'MIRROR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
@@ -172,9 +176,12 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
 
         col = split.column()
         color_template(mat, col, "specular_color")
-        if type == 'MIRROR' or type == 'GLASS':
+        if type == 'MIRROR' or type == 'GLASS' or type == 'COOK_TORRANCE':
             col.prop(mat, 'specular_ior')
-        if type == 'WARD':
+        if type == 'WARD' or type == 'COOK_TORRANCE':
+            col2 = col.column(align=True)
+            col2.prop(mat.pearray, 'spec_roughness_x')
+            col2.prop(mat.pearray, 'spec_roughness_y')   
             col.prop(mat.pearray, 'reflectivity')
 
 

@@ -144,12 +144,12 @@ class PearRayMaterialProperties(PropertyGroup):
     )
 
     # Ward
-    roughnessX = FloatProperty(
+    spec_roughness_x = FloatProperty(
         name="Roughness X",
         description="Roughness to tangent direction",
         min=0, soft_max=1.00, default=0.50
     )
-    roughnessY = FloatProperty(
+    spec_roughness_y = FloatProperty(
         name="Roughness Y",
         description="Roughness to binormal direction",
         min=0, soft_max=1.00, default=0.50
@@ -158,6 +158,28 @@ class PearRayMaterialProperties(PropertyGroup):
         name="Reflectivity",
         description="Reflectivity of material",
         min=0, soft_max=1.00, default=0.50
+    )
+
+    # CookTorrance
+    ct_fresnel_mode = EnumProperty(
+        name="Fresnel Mode",
+        description="Fresnel Mode",
+        items=enums.enum_material_ct_fresnel_mode,
+        default='DIELECTRIC'
+    )
+
+    ct_distribution_mode = EnumProperty(
+        name="Distribution Mode",
+        description="Distribution Mode",
+        items=enums.enum_material_ct_distribution_mode,
+        default='GGX'
+    )
+
+    ct_geometry_mode = EnumProperty(
+        name="Geometry Mode",
+        description="Geometry Mode",
+        items=enums.enum_material_ct_geometry_mode,
+        default='COOK_TORRANCE'
     )
 
     # Grid
