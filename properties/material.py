@@ -19,11 +19,11 @@ from . import enums
 
 
 class PearRayMaterialProperties(PropertyGroup):
-    brdf = EnumProperty(
-        name="BRDF",
-        description="BRDF type",
-        items=enums.enum_material_brdf,
-        default='DIFFUSE'
+    bsdf = EnumProperty(
+        name="BSDF",
+        description="BSDF type",
+        items=enums.enum_material_bsdf,
+        default='COOK_TORRANCE'
     )
 
     cast_shadows = BoolProperty(
@@ -62,6 +62,7 @@ class PearRayMaterialProperties(PropertyGroup):
         description="Emission Color",
         default=(0,0,0),
         subtype="COLOR",
+        soft_max=1,
     )
     emission_color_temp = FloatProperty(
         name="Emission Color Temperature",
@@ -141,6 +142,14 @@ class PearRayMaterialProperties(PropertyGroup):
         name="Texture Slot",
         description="Used Texture Slot",
         min=0, soft_max=100000, default=0
+    )
+    specular_ior = FloatVectorProperty(
+        name="Specular Index of Refraction",
+        description="Specular Index of Refraction",
+        default=(1.55,1.55,1.55),
+        subtype="COLOR",
+        soft_min=1,
+        soft_max=3,
     )
 
     # Ward

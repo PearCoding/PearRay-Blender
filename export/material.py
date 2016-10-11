@@ -89,6 +89,7 @@ def export_material_cook_torrance(exporter, material):
     diff_name = export_color(exporter, material, 'diffuse_color', True)
     spec_name = export_color(exporter, material, 'specular_color', True)
     em_name = export_color(exporter, material, 'emission_color', False)
+    ior_name = write_spectral_color(exporter, "%s_ior" % material.name, material.pearray.specular_ior)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -109,7 +110,7 @@ def export_material_cook_torrance(exporter, material):
 
     exporter.w.write(":specularity %s" % spec_name)
 
-    exporter.w.write(":index %f" % material.specular_ior)
+    exporter.w.write(":index '%s'" % ior_name)
     exporter.w.write(":conductor_absorption %s" % diff_name)
 
     exporter.w.write(":reflectivity %f" % material.pearray.reflectivity)
@@ -126,6 +127,7 @@ def export_material_cook_torrance(exporter, material):
 def export_material_glass(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
     em_name = export_color(exporter, material, 'emission_color', False)
+    ior_name = write_spectral_color(exporter, "%s_ior" % material.name, material.pearray.specular_ior)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -137,7 +139,7 @@ def export_material_glass(exporter, material):
     
     exporter.w.write(":type 'glass'")
     exporter.w.write(":specularity %s" % spec_name)
-    exporter.w.write(":index %f" % material.specular_ior)
+    exporter.w.write(":index '%s'" % ior_name)
     
     exporter.w.goOut()
     exporter.w.write(")")
@@ -146,6 +148,7 @@ def export_material_glass(exporter, material):
 def export_material_mirror(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
     em_name = export_color(exporter, material, 'emission_color', False)
+    ior_name = write_spectral_color(exporter, "%s_ior" % material.name, material.pearray.specular_ior)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -157,7 +160,7 @@ def export_material_mirror(exporter, material):
     
     exporter.w.write(":type 'mirror'")
     exporter.w.write(":specularity %s" % spec_name)
-    exporter.w.write(":index %f" % material.specular_ior)
+    exporter.w.write(":index '%s'" % ior_name)
     
     exporter.w.goOut()
     exporter.w.write(")")
@@ -228,24 +231,24 @@ def export_material(exporter, material):
 
     exporter.register_unique_name('MATERIAL', material.name)
 
-    brdf = material.pearray.brdf
+    bsdf = material.pearray.bsdf
 
-    if brdf == 'DIFFUSE':
+    if bsdf == 'DIFFUSE':
         export_material_diffuse(exporter, material)
-    elif brdf == 'ORENNAYAR':
+    elif bsdf == 'ORENNAYAR':
         export_material_orennayar(exporter, material)
-    elif brdf == 'WARD':
+    elif bsdf == 'WARD':
         export_material_ward(exporter, material)
-    elif brdf == 'COOK_TORRANCE':
+    elif bsdf == 'COOK_TORRANCE':
         export_material_cook_torrance(exporter, material)
-    elif brdf == 'GLASS':
+    elif bsdf == 'GLASS':
         export_material_glass(exporter, material)
-    elif brdf == 'MIRROR':
+    elif bsdf == 'MIRROR':
         export_material_mirror(exporter, material)
-    elif brdf == 'GRID':
+    elif bsdf == 'GRID':
         export_material_grid(exporter, material)
     else:
-        print("UNKNOWN BRDF %s\n" % brdf)
+        print("UNKNOWN BSDF %s\n" % bsdf)
    
 
 def export_default_materials(exporter):

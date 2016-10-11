@@ -56,7 +56,7 @@ enum_temp_type= (
 	("NORM", "Normalized", "Normalized blackbody output"),
     )
 
-enum_material_brdf= (
+enum_material_bsdf= (
 	("DIFFUSE", "Diffuse", "Simple lambertian material"),
 	("ORENNAYAR", "Oren-Nayar", "Oren-Nayar BRDF"),
 	("COOK_TORRANCE", "Cook-Torrance", "Cook-Torrance BRDF"),

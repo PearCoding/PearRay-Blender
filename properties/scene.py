@@ -29,12 +29,17 @@ class PearRaySceneProperties(PropertyGroup):
         name="Keep PRC",
         description="Keep generated prc file after rendering",
         default=False
-        )   
+    )   
     apply_transform = BoolProperty(
         name="Apply Transform",
         description="Apply transform prior export for meshes",
         default=False
-        )  
+    ) 
+    linear_rgb = BoolProperty(
+        name="Use linear sRGB",
+        description="Return output in linear sRGB",
+        default=False
+    )
     debug_mode = EnumProperty(
         name="Debug Mode",
         description="Render in debug mode",

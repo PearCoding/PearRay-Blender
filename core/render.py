@@ -186,6 +186,7 @@ class PearRayRender(bpy.types.RenderEngine):
                 "-C",
                 iniFile,
                 "--img-ext=%s" % image_ext,
+                "--tm_map=none",
                 ]
         if addon_prefs.show_progress_interval > 0:
             args.append("-p" + str(addon_prefs.show_progress_interval))# show progress (ignores quiet option)
@@ -196,6 +197,11 @@ class PearRayRender(bpy.types.RenderEngine):
         if addon_prefs.verbose:
             args.append("-v")
 
+        if scene.pearray.linear_rgb:
+            args.append("--tm_gamma=none")
+        else:
+            args.append("--tm_gamma=srgb")
+        
         if not scene.pearray.debug_mode == 'NONE':
             args.append("--debug=%s" % scene.pearray.debug_mode.lower())
         

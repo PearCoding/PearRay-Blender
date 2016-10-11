@@ -76,8 +76,8 @@ class MATERIAL_PT_pr_preview(MaterialButtonsPanel, bpy.types.Panel):
         self.layout.template_preview(context.material)
 
 
-class MATERIAL_PT_pr_brdf(MaterialButtonsPanel, bpy.types.Panel):
-    bl_label = "BRDF"
+class MATERIAL_PT_pr_bsdf(MaterialButtonsPanel, bpy.types.Panel):
+    bl_label = "BSDF"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
     @classmethod
@@ -89,12 +89,12 @@ class MATERIAL_PT_pr_brdf(MaterialButtonsPanel, bpy.types.Panel):
         layout = self.layout
 
         mat = context.material
-        type = mat.pearray.brdf
+        type = mat.pearray.bsdf
 
         split = layout.split()
 
         col = split.column()
-        col.prop(mat.pearray, "brdf")
+        col.prop(mat.pearray, "bsdf")
 
         split = col.split()
         col = split.column()
@@ -121,13 +121,13 @@ class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (context.material.pearray.brdf in {'DIFFUSE', 'ORENNAYAR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
+        return context.material and (context.material.pearray.bsdf in {'DIFFUSE', 'ORENNAYAR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
 
         mat = context.material
-        type = mat.pearray.brdf
+        type = mat.pearray.bsdf
 
         split = layout.split()
 
@@ -144,13 +144,13 @@ class MATERIAL_PT_pr_grid(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (context.material.pearray.brdf == 'GRID') and (engine in cls.COMPAT_ENGINES)
+        return context.material and (context.material.pearray.bsdf == 'GRID') and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
 
         mat = context.material
-        type = mat.pearray.brdf
+        type = mat.pearray.bsdf
 
         split = layout.split()
 
@@ -164,20 +164,20 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (context.material.pearray.brdf in {'GLASS', 'MIRROR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
+        return context.material and (context.material.pearray.bsdf in {'GLASS', 'MIRROR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
 
         mat = context.material
-        type = mat.pearray.brdf
+        type = mat.pearray.bsdf
 
         split = layout.split()
 
         col = split.column()
         color_template(mat, col, "specular_color")
         if type == 'MIRROR' or type == 'GLASS' or type == 'COOK_TORRANCE':
-            col.prop(mat, 'specular_ior')
+            col.prop(mat.pearray, 'specular_ior', text='IOR')
         if type == 'WARD' or type == 'COOK_TORRANCE':
             col2 = col.column(align=True)
             col2.prop(mat.pearray, 'spec_roughness_x')
@@ -192,13 +192,13 @@ class MATERIAL_PT_pr_emission(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (not context.material.pearray.brdf == 'GRID') and (engine in cls.COMPAT_ENGINES)
+        return context.material and (not context.material.pearray.bsdf == 'GRID') and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
 
         mat = context.material
-        type = mat.pearray.brdf
+        type = mat.pearray.bsdf
 
         split = layout.split()
 
