@@ -36,3 +36,44 @@ class RENDERLAYER_PT_pr_layer_options(RenderLayerButtonsPanel, bpy.types.Panel):
         col = split.column()
         col.label(text="Material:")
         col.prop(rl, "material_override", text="")
+
+
+class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
+    bl_label = "AOVs"
+    bl_options = {'DEFAULT_CLOSED'}
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+
+        scene = context.scene
+        rd = scene.render
+        rl = rd.layers.active
+        rl2 = scene.pearray_layer# Not satisfiying
+
+        split = layout.split()
+
+        col = split.column()
+        col.prop(rl, "use_pass_combined")
+        col.prop(rl, "use_pass_z")
+        col.prop(rl, "use_pass_normal")
+        col.prop(rl2, "aov_ng")
+        col.prop(rl2, "aov_nx")
+        col.prop(rl2, "aov_ny")
+        col.prop(rl, "use_pass_vector")
+        col.prop(rl, "use_pass_uv")
+        col.prop(rl, "use_pass_object_index")
+        col.prop(rl, "use_pass_material_index")
+
+        col = split.column()
+        col.prop(rl2, "aov_p")
+        col.prop(rl2, "aov_dpdu")
+        col.prop(rl2, "aov_dpdv")
+        col.prop(rl2, "aov_dpdw")
+        col.prop(rl2, "aov_dpdx")
+        col.prop(rl2, "aov_dpdy")
+        col.prop(rl2, "aov_dpdz")
+        col.prop(rl2, "aov_t")
+        col.prop(rl2, "aov_q")
+        col.prop(rl2, "aov_samples")
+    

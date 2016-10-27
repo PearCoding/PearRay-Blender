@@ -2,6 +2,7 @@ import bpy
 
 from .camera import PearRayCameraProperties
 from .scene import PearRaySceneProperties
+from .layer import PearRaySceneRenderLayerProperties
 from .material import PearRayMaterialProperties
 from .light import PearRayLightProperties
 
@@ -55,6 +56,7 @@ class PearRayPreferences(AddonPreferences):
 
 def register():
     bpy.types.Scene.pearray = PointerProperty(type=PearRaySceneProperties)
+    bpy.types.Scene.pearray_layer = PointerProperty(type=PearRaySceneRenderLayerProperties)
     bpy.types.Camera.pearray = PointerProperty(type=PearRayCameraProperties)
     bpy.types.Material.pearray = PointerProperty(type=PearRayMaterialProperties)
     bpy.types.Lamp.pearray = PointerProperty(type=PearRayLightProperties)
@@ -62,6 +64,7 @@ def register():
 
 def unregister():
     del bpy.types.Scene.pearray
+    del bpy.types.Scene.pearray_layer
     del bpy.types.Camera.pearray
     del bpy.types.Material.pearray
     del bpy.types.Lamp.pearray

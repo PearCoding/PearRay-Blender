@@ -148,22 +148,6 @@ class PearRayRender(bpy.types.RenderEngine):
         else:
             sceneFile = tempfile.NamedTemporaryFile(suffix=".prc").name
             iniFile = tempfile.NamedTemporaryFile(suffix=".ini").name
-
-        image_name = "image"
-        image_ext = {
-                'BMP': 'bmp',
-                'PNG': 'png',
-                'JPEG': 'jpg',
-                'JPEG2000': 'jp2',
-                'TARGA': 'tga',
-                'OPEN_EXR_MULTILAYER': 'exr',
-                'OPEN_EXR': 'exr',
-                'HDR': 'hdr',
-                'TIFF': 'tiff',
-            }.get(render.image_settings.file_format, 'NONE')
-        if image_ext == 'NONE':
-            self.report({'WARNING'}, "Couldn't work with choosen extension. Setting it back to png")
-            image_ext = 'png'
         
         self.update_stats("", "PearRay: Exporting data")
         ini_exporter = export.Exporter(iniFile, scene)
@@ -185,8 +169,6 @@ class PearRayRender(bpy.types.RenderEngine):
                 "-q",# be quiet
                 "-C",
                 iniFile,
-                "--img-ext=%s" % image_ext,
-                "--tm_map=none",
                 ]
         if addon_prefs.show_progress_interval > 0:
             args.append("-p" + str(addon_prefs.show_progress_interval))# show progress (ignores quiet option)
@@ -196,18 +178,13 @@ class PearRayRender(bpy.types.RenderEngine):
 
         if addon_prefs.verbose:
             args.append("-v")
-
-        if scene.pearray.linear_rgb:
-            args.append("--tm_gamma=none")
-        else:
-            args.append("--tm_gamma=srgb")
         
         if not scene.pearray.debug_mode == 'NONE':
             args.append("--debug=%s" % scene.pearray.debug_mode.lower())
         
         if not os.path.exists(renderPath):
             os.makedirs(renderPath)
-        output_image = os.path.normpath(renderPath + "/" + image_name + "." + image_ext)
+        output_image = os.path.normpath(renderPath + "/image.exr")
 
         if os.path.exists(output_image):
             os.remove(output_image)
@@ -245,7 +222,7 @@ class PearRayRender(bpy.types.RenderEngine):
                 except FileExistsError:
                     return
                 
-                layer.load_from_file(output_image)
+                layer.load_from_file(output_image)#TODO Add different passes etc.                
                 self.update_result(result)
             except RuntimeError:
                 pass

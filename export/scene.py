@@ -32,6 +32,68 @@ def write_scene(exporter):
         w.write(":renderWidth %i" % res_x)
         w.write(":renderHeight %i" % res_y)
         w.write(":camera '%s'" % scene.camera.name)
+
+
+    def export_outputs():
+        rl = scene.render.layers.active
+        w.write("(output")
+        w.goIn()
+        w.write(":name 'image'")
+        if rl.use_pass_combined:
+            w.write("(channel")
+            w.goIn()
+            w.write(":type 'rgb'")
+            w.write(":gamma '%s'" % (scene.pearray.linear_rgb if 'none' else 'srgb'))
+            w.write(":mapper 'none'")
+            w.goOut()
+            w.write(")")
+        
+        if rl.use_pass_z:
+            w.write("(channel")
+            w.goIn()
+            w.write(":type 'depth'")
+            w.write(":mapper 'norm'")
+            w.goOut()
+            w.write(")")
+        
+        if rl.use_pass_normal:
+            w.write("(channel")
+            w.goIn()
+            w.write(":type 'norm'")
+            w.goOut()
+            w.write(")")
+        
+        if rl.use_pass_vector:
+            w.write("(channel")
+            w.goIn()
+            w.write(":type 'dpdt'")
+            w.goOut()
+            w.write(")")
+        
+        if rl.use_pass_uv:
+            w.write("(channel")
+            w.goIn()
+            w.write(":type 'uv'")
+            w.goOut()
+            w.write(")")
+        
+        if rl.use_pass_object_index:
+            w.write("(channel")
+            w.goIn()
+            w.write(":type 'id'")
+            w.goOut()
+            w.write(")")
+        
+        if rl.use_pass_material_index:
+            w.write("(channel")
+            w.goIn()
+            w.write(":type 'mat'")
+            w.goOut()
+            w.write(")")
+        
+        w.goOut()
+        w.write(")")
+
     
     def export_background():# TODO: Add texture support
         background_mat_n = exporter.register_unique_name('MATERIAL', '_blender_world_background')
@@ -64,6 +126,8 @@ def write_scene(exporter):
     w.goIn()
 
     export_scene()
+    w.write("; Outputs")
+    export_outputs()
     w.write("; Default Materials")
     export_default_materials(exporter)
     w.write("; Camera")

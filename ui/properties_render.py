@@ -80,14 +80,7 @@ class RENDER_PT_pr_output(RenderButtonsPanel, bpy.types.Panel):
         layout = self.layout
 
         rd = context.scene.render
-        image_settings = rd.image_settings
-        file_format = image_settings.file_format
-
         layout.prop(rd, "filepath", text="")
-
-        split = layout.split()
-
-        layout.template_image_settings(image_settings, color_management=False)
 
 
 class RENDER_PT_pr_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
