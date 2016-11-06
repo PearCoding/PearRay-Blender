@@ -20,10 +20,14 @@ def write_spectral_temp(exporter, spec_name, temp, type, factor):
     exporter.w.goIn()
 
     exporter.w.write(":name '%s'" % spec_name)
-    if type == 'RAW':
-        exporter.w.write(":data (temperature %f)" % temp)
-    elif type == 'NORM':
+    if type == 'LUM':
+        exporter.w.write(":data (temperature %f %f)" % (temp, factor))
+    elif type == 'RAD':
+        exporter.w.write(":data (temperature_raw %f %f)" % (temp, factor))
+    elif type == 'LUM_NORM':
         exporter.w.write(":data (temperature_norm %f %f)" % (temp, factor))
+    elif type == 'RAD_NORM':
+        exporter.w.write(":data (temperature_raw_norm %f %f)" % (temp, factor))
 
     exporter.w.goOut()
     exporter.w.write(")")

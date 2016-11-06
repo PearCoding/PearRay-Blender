@@ -184,7 +184,7 @@ class PearRayRender(bpy.types.RenderEngine):
         
         if not os.path.exists(renderPath):
             os.makedirs(renderPath)
-        output_image = os.path.normpath(renderPath + "/image.exr")
+        output_image = os.path.normpath(renderPath + "/results/image.exr")
 
         if os.path.exists(output_image):
             os.remove(output_image)

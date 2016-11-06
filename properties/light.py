@@ -36,7 +36,7 @@ class PearRayLightProperties(PropertyGroup):
         name="Light Color Temperature Type",
         description="Light Blackbody Color Temperature Type",
         items=enums.enum_temp_type,
-        default='RAW'
+        default='LUM'
     )
 
     color_temp_factor = FloatProperty(

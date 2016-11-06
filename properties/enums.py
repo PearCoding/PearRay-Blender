@@ -52,8 +52,10 @@ enum_flat_color_type= (
     )
 
 enum_temp_type= (
-	("RAW", "Raw", "Raw blackbody curve output"),
-	("NORM", "Normalized", "Normalized blackbody output"),
+	("LUM", "Luminance", "Blackbody curve output in luminance"),
+	("RAD", "Radiance", "Blackbody curve output in radiance"),
+	("LUM_NORM", "Luminance Normalized", "Normalized luminance blackbody output"),
+	("RAD_NORM", "Radiance Normalized", "Normalized radiance blackbody output"),
     )
 
 enum_material_bsdf= (

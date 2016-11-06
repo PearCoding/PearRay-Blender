@@ -43,6 +43,7 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
     bl_options = {'DEFAULT_CLOSED'}
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
+    # Custom passes do not work well with animation and other render layers. :/
     def draw(self, context):
         layout = self.layout
 
@@ -76,4 +77,9 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         col.prop(rl2, "aov_t")
         col.prop(rl2, "aov_q")
         col.prop(rl2, "aov_samples")
+
+        layout.separator()
+        split = layout.split()
+        split.prop(rl2, "raw_spectral")
+
     

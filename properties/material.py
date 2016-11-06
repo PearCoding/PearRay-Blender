@@ -73,7 +73,7 @@ class PearRayMaterialProperties(PropertyGroup):
         name="Emission Color Temperature Type",
         description="Emission Blackbody Color Temperature Type",
         items=enums.enum_temp_type,
-        default='RAW'
+        default='LUM'
     )
     emission_color_temp_factor = FloatProperty(
         name="Emission Color Temperature Normalization Factor",
@@ -102,7 +102,7 @@ class PearRayMaterialProperties(PropertyGroup):
         name="Diffuse Color Temperature Type",
         description="Diffuse Blackbody Color Temperature Type",
         items=enums.enum_temp_type,
-        default='NORM'
+        default='LUM'
     )
     diffuse_color_temp_factor = FloatProperty(
         name="Diffuse Color Temperature Normalization Factor",
@@ -131,7 +131,7 @@ class PearRayMaterialProperties(PropertyGroup):
         name="Specular Color Temperature Type",
         description="Specular Blackbody Color Temperature Type",
         items=enums.enum_temp_type,
-        default='NORM'
+        default='LUM'
     )
     specular_color_temp_factor = FloatProperty(
         name="Specular Color Temperature Normalization Factor",

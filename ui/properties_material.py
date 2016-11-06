@@ -218,8 +218,7 @@ def color_template(obj, layout, name):
     if type == 'TEMP':
         r = col.row(align=True)
         r.prop(obj.pearray, '%s_temp_type' % name, text="")
-        if getattr(obj.pearray, '%s_temp_type' % name) == 'NORM':
-            r.prop(obj.pearray, '%s_temp_factor' % name, text='Factor')
+        r.prop(obj.pearray, '%s_temp_factor' % name, text='Factor')
         col.prop(obj.pearray, '%s_temp' % name, text="")
     elif type == 'TEX' and hasattr(obj.pearray, '%s_tex_slot' % name):
         col.prop(obj.pearray, '%s_tex_slot' % name)

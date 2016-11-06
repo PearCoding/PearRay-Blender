@@ -35,64 +35,79 @@ def write_scene(exporter):
 
 
     def export_outputs():
-        rl = scene.render.layers.active
-        w.write("(output")
-        w.goIn()
-        w.write(":name 'image'")
-        if rl.use_pass_combined:
+        def start_output(str):
+            w.write("(output")
+            w.goIn()
+            w.write(":name '%s'" % str)
             w.write("(channel")
             w.goIn()
+
+        def end_output():
+            w.goOut()
+            w.write(")")
+            w.goOut()
+            w.write(")")
+
+        def raw_output(str):
+            start_output(str)
+            w.write(":type '%s'" % str)
+            end_output()
+            
+        rl = scene.render.layers.active
+        if rl.use_pass_combined:
+            start_output('image')
             w.write(":type 'rgb'")
             w.write(":gamma '%s'" % (scene.pearray.linear_rgb if 'none' else 'srgb'))
             w.write(":mapper 'none'")
-            w.goOut()
-            w.write(")")
+            end_output()
         
         if rl.use_pass_z:
-            w.write("(channel")
-            w.goIn()
-            w.write(":type 'depth'")
-            w.write(":mapper 'norm'")
-            w.goOut()
-            w.write(")")
-        
+            raw_output('depth')
         if rl.use_pass_normal:
-            w.write("(channel")
-            w.goIn()
-            w.write(":type 'norm'")
-            w.goOut()
-            w.write(")")
-        
+            raw_output('norm')
         if rl.use_pass_vector:
-            w.write("(channel")
-            w.goIn()
-            w.write(":type 'dpdt'")
-            w.goOut()
-            w.write(")")
-        
+            raw_output('dpdt')
         if rl.use_pass_uv:
-            w.write("(channel")
-            w.goIn()
-            w.write(":type 'uv'")
-            w.goOut()
-            w.write(")")
-        
+            raw_output('uv')
         if rl.use_pass_object_index:
-            w.write("(channel")
-            w.goIn()
-            w.write(":type 'id'")
-            w.goOut()
-            w.write(")")
-        
+            raw_output('id')
         if rl.use_pass_material_index:
-            w.write("(channel")
+            raw_output('mat')
+
+        rl2 = scene.pearray_layer
+        if rl2.aov_ng:
+            raw_output('ng')
+        if rl2.aov_nx:
+            raw_output('nx')
+        if rl2.aov_ny:
+            raw_output('ny')
+        if rl2.aov_p:
+            raw_output('p')
+        if rl2.aov_dpdu:
+            raw_output('dpdu')
+        if rl2.aov_dpdv:
+            raw_output('dpdv')
+        if rl2.aov_dpdw:
+            raw_output('dpdw')
+        if rl2.aov_dpdx:
+            raw_output('dpdx')
+        if rl2.aov_dpdy:
+            raw_output('dpdy')
+        if rl2.aov_dpdz:
+            raw_output('dpdz')
+        if rl2.aov_t:
+            raw_output('t')
+        if rl2.aov_q:
+            raw_output('q')
+        if rl2.aov_samples:
+            raw_output('samples')
+
+        if rl2.raw_spectral:
+            w.write("(output_spectral")
             w.goIn()
-            w.write(":type 'mat'")
+            w.write(":name 'spectral'")
             w.goOut()
             w.write(")")
-        
-        w.goOut()
-        w.write(")")
 
     
     def export_background():# TODO: Add texture support
