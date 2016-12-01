@@ -3,7 +3,6 @@ import mathutils
 
 
 from .entity import inline_entity_matrix, inline_entity_matrix_pos
-from .spectral import write_spectral_color
 from .material import export_color
 
 
@@ -12,7 +11,7 @@ def export_pointlight(exporter, light):
 
     light_data = light.data
     w.write("; Light %s" % light.name)
-  
+
     factor = 1#4*math.pi*light_data.pearray.point_radius*light_data.pearray.point_radius;
     color_name = export_color(exporter, light_data, 'color', True, 1/factor)
 
@@ -57,8 +56,8 @@ def export_arealight(exporter, light):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'light'")
-    w.write(":shadow false")
-    w.write(":camera_visible false")
+    #w.write(":shadow false")
+    #w.write(":camera_visible false")
     w.write(":emission %s" % color_name)
 
     w.goOut()
@@ -69,8 +68,9 @@ def export_arealight(exporter, light):
 
     w.write(":name '%s'" % light.name)
     w.write(":type 'plane'")
+    w.write(":centering true")
     w.write(":xAxis %f" % light_data.size)
-    w.write(":yAxis %f" % light_data.size_y)
+    w.write(":yAxis %f" % -light_data.size_y)
     w.write(":material '%s'" % light_mat_n)
     inline_entity_matrix(exporter, light)
 
@@ -98,7 +98,7 @@ def export_sunlight(exporter, light):
 
     matrix = exporter.M_WORLD * light.matrix_world
     trans, rot, scale = matrix.decompose()
-    direction = rot * mathutils.Vector((0,0,-1))
+    direction = rot * mathutils.Vector((0, 0, -1))
     w.write("(light")
     w.goIn()
 
