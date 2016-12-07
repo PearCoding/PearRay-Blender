@@ -20,6 +20,9 @@ def write_ini(exporter):
     exporter.w.write("tile_x=%i" % scene.render.tile_x)
     exporter.w.write("tile_y=%i" % scene.render.tile_y)
 
+    exporter.w.write("[distortion]")
+    exporter.w.write("quality=%f" % (s.distortion_quality/100))
+
     exporter.w.write("[pixelsampler]")
     exporter.w.write("mode=%s" % s.pixel_sampler_mode.lower())
     exporter.w.write("max=%i" % s.max_pixel_samples)

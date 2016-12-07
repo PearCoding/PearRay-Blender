@@ -65,6 +65,12 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_integrator_mode,
         default='BIDI'
         )
+    distortion_quality = FloatProperty(
+        name="Quality",
+        description="Distortion Quality",
+        min=0.0, max=100.0, default=10,
+        subtype="PERCENTAGE"
+        )
     pixel_sampler_mode = EnumProperty(
         name="Sampler Mode",
         description="Pixel sampling technique",

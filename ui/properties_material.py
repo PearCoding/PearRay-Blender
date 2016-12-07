@@ -181,8 +181,10 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
         if type == 'WARD' or type == 'COOK_TORRANCE':
             col2 = col.column(align=True)
             col2.prop(mat.pearray, 'spec_roughness_x')
-            col2.prop(mat.pearray, 'spec_roughness_y')   
+            col2.prop(mat.pearray, 'spec_roughness_y')
             col.prop(mat.pearray, 'reflectivity')
+        if type == 'GLASS':
+            col.prop(mat.pearray, 'glass_is_thin')
 
 
 class MATERIAL_PT_pr_emission(MaterialButtonsPanel, bpy.types.Panel):

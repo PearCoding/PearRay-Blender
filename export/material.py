@@ -136,11 +136,17 @@ def export_material_glass(exporter, material):
 
     if em_name:
         exporter.w.write(":emission %s" % em_name)
-    
+
     exporter.w.write(":type 'glass'")
     exporter.w.write(":specularity %s" % spec_name)
     exporter.w.write(":index '%s'" % ior_name)
-    
+
+    if material.pearray.specular_ior[1:] != material.pearray.specular_ior[:-1]:
+        exporter.w.write(":sample_index true")
+
+    if material.pearray.glass_is_thin:
+        exporter.w.write(":thin true")
+
     exporter.w.goOut()
     exporter.w.write(")")
 
@@ -148,7 +154,8 @@ def export_material_glass(exporter, material):
 def export_material_mirror(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
     em_name = export_color(exporter, material, 'emission_color', False)
-    ior_name = write_spectral_color(exporter, "%s_ior" % material.name, material.pearray.specular_ior)
+    ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
+                                    material.pearray.specular_ior)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -157,11 +164,11 @@ def export_material_mirror(exporter, material):
 
     if em_name:
         exporter.w.write(":emission %s" % em_name)
-    
+
     exporter.w.write(":type 'mirror'")
     exporter.w.write(":specularity %s" % spec_name)
     exporter.w.write(":index '%s'" % ior_name)
-    
+
     exporter.w.goOut()
     exporter.w.write(")")
 

@@ -15,7 +15,8 @@ COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER
 COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:73
 COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:81
 COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:107
-COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:141
+COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:140
+COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:152
 COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:23
 COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:54
 COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:77
@@ -43,7 +44,8 @@ PearRaySceneProperties	properties/scene.py	/^class PearRaySceneProperties(Proper
 PearRaySceneRenderLayerProperties	properties/layer.py	/^class PearRaySceneRenderLayerProperties(PropertyGroup):$/;"	kind:class	line:22
 RENDERLAYER_PT_pr_layer_aovs	ui/properties_render_layer.py	/^class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:41
 RENDERLAYER_PT_pr_layer_options	ui/properties_render_layer.py	/^class RENDERLAYER_PT_pr_layer_options(RenderLayerButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:13
-RENDER_PT_pr_export_settings	ui/properties_render.py	/^class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:138
+RENDER_PT_pr_distortion	ui/properties_render.py	/^class RENDER_PT_pr_distortion(RenderButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:138
+RENDER_PT_pr_export_settings	ui/properties_render.py	/^class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:149
 RENDER_PT_pr_integrator	ui/properties_render.py	/^class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:105
 RENDER_PT_pr_output	ui/properties_render.py	/^class RENDER_PT_pr_output(RenderButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:75
 RENDER_PT_pr_performance	ui/properties_render.py	/^class RENDER_PT_pr_performance(RenderButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:51
@@ -69,7 +71,7 @@ _handle_render_stat	core/render.py	/^    def _handle_render_stat(self, percent, 
 _locate_binary	core/rayview.py	/^    def _locate_binary():$/;"	kind:member	line:16
 _locate_binary	core/render.py	/^    def _locate_binary():$/;"	kind:member	line:23
 _proc_wait	core/render.py	/^    def _proc_wait(self):$/;"	kind:member	line:57
-adaptive_sampling	properties/scene.py	/^    adaptive_sampling = BoolProperty($/;"	kind:variable	line:90
+adaptive_sampling	properties/scene.py	/^    adaptive_sampling = BoolProperty($/;"	kind:variable	line:96
 aov_dpdu	properties/layer.py	/^    aov_dpdu = BoolProperty($/;"	kind:variable	line:64
 aov_dpdv	properties/layer.py	/^    aov_dpdv = BoolProperty($/;"	kind:variable	line:69
 aov_dpdw	properties/layer.py	/^    aov_dpdw = BoolProperty($/;"	kind:variable	line:74
@@ -86,7 +88,7 @@ aov_t	properties/layer.py	/^    aov_t = BoolProperty($/;"	kind:variable	line:23
 aov_v	properties/layer.py	/^    aov_v = BoolProperty($/;"	kind:variable	line:59
 apertureRadius	properties/camera.py	/^    apertureRadius = FloatProperty($/;"	kind:variable	line:19
 apply_transform	properties/scene.py	/^    apply_transform = BoolProperty($/;"	kind:variable	line:33
-as_quality	properties/scene.py	/^    as_quality = FloatProperty($/;"	kind:variable	line:95
+as_quality	properties/scene.py	/^    as_quality = FloatProperty($/;"	kind:variable	line:101
 beautiful_prc	properties/scene.py	/^    beautiful_prc = BoolProperty($/;"	kind:variable	line:23
 bl_context	ui/properties_camera.py	/^    bl_context = "data"$/;"	kind:variable	line:17
 bl_context	ui/properties_render.py	/^    bl_context = "render"$/;"	kind:variable	line:12
@@ -106,7 +108,8 @@ bl_label	ui/properties_material.py	/^    bl_label = "Emission"$/;"	kind:variable
 bl_label	ui/properties_material.py	/^    bl_label = "Grid"$/;"	kind:variable	line:141
 bl_label	ui/properties_material.py	/^    bl_label = "Preview"$/;"	kind:variable	line:72
 bl_label	ui/properties_material.py	/^    bl_label = "Specular"$/;"	kind:variable	line:161
-bl_label	ui/properties_render.py	/^    bl_label = "Export Settings"$/;"	kind:variable	line:139
+bl_label	ui/properties_render.py	/^    bl_label = "Distortion"$/;"	kind:variable	line:139
+bl_label	ui/properties_render.py	/^    bl_label = "Export Settings"$/;"	kind:variable	line:150
 bl_label	ui/properties_render.py	/^    bl_label = "Integrator"$/;"	kind:variable	line:106
 bl_label	ui/properties_render.py	/^    bl_label = "Output"$/;"	kind:variable	line:76
 bl_label	ui/properties_render.py	/^    bl_label = "Performance"$/;"	kind:variable	line:52
@@ -117,7 +120,7 @@ bl_label	ui/properties_render_layer.py	/^    bl_label = "Layer"$/;"	kind:variabl
 bl_label	ui/properties_world.py	/^    bl_label = "Background"$/;"	kind:variable	line:30
 bl_label	ui/properties_world.py	/^    bl_label = "Preview"$/;"	kind:variable	line:22
 bl_options	ui/properties_material.py	/^    bl_options = {'HIDE_HEADER'}$/;"	kind:variable	line:9
-bl_options	ui/properties_render.py	/^    bl_options = {'DEFAULT_CLOSED'}$/;"	kind:variable	line:140
+bl_options	ui/properties_render.py	/^    bl_options = {'DEFAULT_CLOSED'}$/;"	kind:variable	line:151
 bl_options	ui/properties_render.py	/^    bl_options = {'DEFAULT_CLOSED'}$/;"	kind:variable	line:53
 bl_options	ui/properties_render_layer.py	/^    bl_options = {'DEFAULT_CLOSED'}$/;"	kind:variable	line:43
 bl_region_type	ui/properties_camera.py	/^    bl_region_type = 'WINDOW'$/;"	kind:variable	line:16
@@ -181,23 +184,23 @@ default	properties/material.py	/^        default=True$/;"	kind:variable	line:38
 default	properties/material.py	/^        default=True$/;"	kind:variable	line:44
 default	properties/material.py	/^        default=True$/;"	kind:variable	line:50
 default	properties/scene.py	/^        default='BIDI'$/;"	kind:variable	line:66
-default	properties/scene.py	/^        default='MJITT'$/;"	kind:variable	line:72
+default	properties/scene.py	/^        default='MJITT'$/;"	kind:variable	line:78
 default	properties/scene.py	/^        default='NONE'$/;"	kind:variable	line:47
-default	properties/scene.py	/^        default='SPHERE'$/;"	kind:variable	line:152
-default	properties/scene.py	/^        default=1$/;"	kind:variable	line:115
-default	properties/scene.py	/^        default=1$/;"	kind:variable	line:88
-default	properties/scene.py	/^        default=100000$/;"	kind:variable	line:124
-default	properties/scene.py	/^        default=2$/;"	kind:variable	line:107
-default	properties/scene.py	/^        default=50$/;"	kind:variable	line:132
-default	properties/scene.py	/^        default=500$/;"	kind:variable	line:146
-default	properties/scene.py	/^        default=64$/;"	kind:variable	line:80
+default	properties/scene.py	/^        default='SPHERE'$/;"	kind:variable	line:158
+default	properties/scene.py	/^        default=1$/;"	kind:variable	line:121
+default	properties/scene.py	/^        default=1$/;"	kind:variable	line:94
+default	properties/scene.py	/^        default=100000$/;"	kind:variable	line:130
+default	properties/scene.py	/^        default=2$/;"	kind:variable	line:113
+default	properties/scene.py	/^        default=50$/;"	kind:variable	line:138
+default	properties/scene.py	/^        default=500$/;"	kind:variable	line:152
+default	properties/scene.py	/^        default=64$/;"	kind:variable	line:86
 default	properties/scene.py	/^        default=8$/;"	kind:variable	line:60
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:26
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:31
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:36
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:41
 default	properties/scene.py	/^        default=True$/;"	kind:variable	line:52
-default	properties/scene.py	/^        default=True$/;"	kind:variable	line:93
+default	properties/scene.py	/^        default=True$/;"	kind:variable	line:99
 description	properties/__init__.py	/^                description="Display verbose information in the produced log files",$/;"	kind:variable	line:45
 description	properties/__init__.py	/^                description="Path to renderer executables",$/;"	kind:variable	line:26
 description	properties/__init__.py	/^                description="Update interval for image updates. Zero disables it",$/;"	kind:variable	line:38
@@ -255,36 +258,38 @@ description	properties/material.py	/^        description="Used Texture Slot",$/;
 description	properties/material.py	/^        description="Used Texture Slot",$/;"	kind:variable	line:143
 description	properties/material.py	/^        description="Used Texture Slot",$/;"	kind:variable	line:85
 description	properties/material.py	/^        description="Will be shaded",$/;"	kind:variable	line:49
-description	properties/scene.py	/^        description="Adaptive Sampling Quality",$/;"	kind:variable	line:97
-description	properties/scene.py	/^        description="Amount of photons emitted per pass into scene",$/;"	kind:variable	line:119
+description	properties/scene.py	/^        description="Adaptive Sampling Quality",$/;"	kind:variable	line:103
+description	properties/scene.py	/^        description="Amount of photons emitted per pass into scene",$/;"	kind:variable	line:125
 description	properties/scene.py	/^        description="Apply transform prior export for meshes",$/;"	kind:variable	line:35
+description	properties/scene.py	/^        description="Distortion Quality",$/;"	kind:variable	line:70
 description	properties/scene.py	/^        description="Export the prc in a beautiful way. (Just using tabs :P)",$/;"	kind:variable	line:25
-description	properties/scene.py	/^        description="Gathering mode used for estimating radiance",$/;"	kind:variable	line:150
+description	properties/scene.py	/^        description="Gathering mode used for estimating radiance",$/;"	kind:variable	line:156
 description	properties/scene.py	/^        description="Integrator to be used",$/;"	kind:variable	line:64
 description	properties/scene.py	/^        description="Keep generated prc file after rendering",$/;"	kind:variable	line:30
-description	properties/scene.py	/^        description="Maximum amount of photons used for estimating radiance",$/;"	kind:variable	line:141
-description	properties/scene.py	/^        description="Maximum count of passes",$/;"	kind:variable	line:128
-description	properties/scene.py	/^        description="Maximum diffuse bounces",$/;"	kind:variable	line:103
-description	properties/scene.py	/^        description="Maximum light samples",$/;"	kind:variable	line:111
-description	properties/scene.py	/^        description="Maximum pixel samples",$/;"	kind:variable	line:76
-description	properties/scene.py	/^        description="Maximum radius of gathering",$/;"	kind:variable	line:136
+description	properties/scene.py	/^        description="Maximum amount of photons used for estimating radiance",$/;"	kind:variable	line:147
+description	properties/scene.py	/^        description="Maximum count of passes",$/;"	kind:variable	line:134
+description	properties/scene.py	/^        description="Maximum diffuse bounces",$/;"	kind:variable	line:109
+description	properties/scene.py	/^        description="Maximum light samples",$/;"	kind:variable	line:117
+description	properties/scene.py	/^        description="Maximum pixel samples",$/;"	kind:variable	line:82
+description	properties/scene.py	/^        description="Maximum radius of gathering",$/;"	kind:variable	line:142
 description	properties/scene.py	/^        description="Maximum ray depth",$/;"	kind:variable	line:56
-description	properties/scene.py	/^        description="Minimum pixel samples",$/;"	kind:variable	line:84
-description	properties/scene.py	/^        description="Pixel sampling technique",$/;"	kind:variable	line:70
-description	properties/scene.py	/^        description="Projection Map Weight. 0 disables it",$/;"	kind:variable	line:168
-description	properties/scene.py	/^        description="Quality of projection map",$/;"	kind:variable	line:174
-description	properties/scene.py	/^        description="Ratio of how much to prefer caustic paths. 0 disables it",$/;"	kind:variable	line:180
-description	properties/scene.py	/^        description="Ratio of radius contraction",$/;"	kind:variable	line:162
+description	properties/scene.py	/^        description="Minimum pixel samples",$/;"	kind:variable	line:90
+description	properties/scene.py	/^        description="Pixel sampling technique",$/;"	kind:variable	line:76
+description	properties/scene.py	/^        description="Projection Map Weight. 0 disables it",$/;"	kind:variable	line:174
+description	properties/scene.py	/^        description="Quality of projection map",$/;"	kind:variable	line:180
+description	properties/scene.py	/^        description="Ratio of how much to prefer caustic paths. 0 disables it",$/;"	kind:variable	line:186
+description	properties/scene.py	/^        description="Ratio of radius contraction",$/;"	kind:variable	line:168
 description	properties/scene.py	/^        description="Render in debug mode",$/;"	kind:variable	line:45
 description	properties/scene.py	/^        description="Render incremental and improve after each step",$/;"	kind:variable	line:51
 description	properties/scene.py	/^        description="Return output in linear sRGB",$/;"	kind:variable	line:40
-description	properties/scene.py	/^        description="Squeeze factor to press sphere\/dome into a disk",$/;"	kind:variable	line:156
-description	properties/scene.py	/^        description="Use Adaptive Sampling",$/;"	kind:variable	line:92
+description	properties/scene.py	/^        description="Squeeze factor to press sphere\/dome into a disk",$/;"	kind:variable	line:162
+description	properties/scene.py	/^        description="Use Adaptive Sampling",$/;"	kind:variable	line:98
 diffuse_color_temp	properties/material.py	/^    diffuse_color_temp = FloatProperty($/;"	kind:variable	line:96
 diffuse_color_temp_factor	properties/material.py	/^    diffuse_color_temp_factor = FloatProperty($/;"	kind:variable	line:107
 diffuse_color_temp_type	properties/material.py	/^    diffuse_color_temp_type = EnumProperty($/;"	kind:variable	line:101
 diffuse_color_tex_slot	properties/material.py	/^    diffuse_color_tex_slot = IntProperty($/;"	kind:variable	line:112
 diffuse_color_type	properties/material.py	/^    diffuse_color_type = EnumProperty($/;"	kind:variable	line:90
+distortion_quality	properties/scene.py	/^    distortion_quality = FloatProperty($/;"	kind:variable	line:68
 draw	properties/__init__.py	/^    def draw(self, context):$/;"	kind:member	line:48
 draw	ui/properties_camera.py	/^    def draw(self, context):$/;"	kind:member	line:34
 draw	ui/properties_light.py	/^    def draw(self, context):$/;"	kind:member	line:17
@@ -296,7 +301,8 @@ draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	li
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:75
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:88
 draw	ui/properties_render.py	/^    def draw(self, context):$/;"	kind:member	line:109
-draw	ui/properties_render.py	/^    def draw(self, context):$/;"	kind:member	line:146
+draw	ui/properties_render.py	/^    def draw(self, context):$/;"	kind:member	line:142
+draw	ui/properties_render.py	/^    def draw(self, context):$/;"	kind:member	line:157
 draw	ui/properties_render.py	/^    def draw(self, context):$/;"	kind:member	line:25
 draw	ui/properties_render.py	/^    def draw(self, context):$/;"	kind:member	line:56
 draw	ui/properties_render.py	/^    def draw(self, context):$/;"	kind:member	line:79
@@ -306,7 +312,7 @@ draw	ui/properties_render_layer.py	/^    def draw(self, context):$/;"	kind:membe
 draw	ui/properties_world.py	/^    def draw(self, context):$/;"	kind:member	line:25
 draw	ui/properties_world.py	/^    def draw(self, context):$/;"	kind:member	line:33
 draw_header	ui/properties_camera.py	/^    def draw_header(self, context):$/;"	kind:member	line:31
-draw_header	ui/properties_render.py	/^    def draw_header(self, context):$/;"	kind:member	line:143
+draw_header	ui/properties_render.py	/^    def draw_header(self, context):$/;"	kind:member	line:154
 emission_color	properties/material.py	/^    emission_color = FloatVectorProperty($/;"	kind:variable	line:60
 emission_color_temp	properties/material.py	/^    emission_color_temp = FloatProperty($/;"	kind:variable	line:67
 emission_color_temp_factor	properties/material.py	/^    emission_color_temp_factor = FloatProperty($/;"	kind:variable	line:78
@@ -332,16 +338,16 @@ execute	core/rayview.py	/^    def execute(self, context):$/;"	kind:member	line:4
 export_arealight	export/light.py	/^def export_arealight(exporter, light):$/;"	kind:function	line:45
 export_background	export/scene.py	/^    def export_background():# TODO: Add texture support$/;"	kind:function	line:113
 export_camera	export/camera.py	/^def export_camera(exporter, camera):$/;"	kind:function	line:7
-export_color	export/material.py	/^def export_color(exporter, material, type, required, factor=1):$/;"	kind:function	line:185
-export_default_materials	export/material.py	/^def export_default_materials(exporter):$/;"	kind:function	line:254
+export_color	export/material.py	/^def export_color(exporter, material, type, required, factor=1):$/;"	kind:function	line:188
+export_default_materials	export/material.py	/^def export_default_materials(exporter):$/;"	kind:function	line:257
 export_image	export/texture.py	/^def export_image(exporter, image):$/;"	kind:function	line:5
 export_light	export/light.py	/^def export_light(exporter, light):$/;"	kind:function	line:113
-export_material	export/material.py	/^def export_material(exporter, material):$/;"	kind:function	line:225
+export_material	export/material.py	/^def export_material(exporter, material):$/;"	kind:function	line:228
 export_material_cook_torrance	export/material.py	/^def export_material_cook_torrance(exporter, material):$/;"	kind:function	line:88
 export_material_diffuse	export/material.py	/^def export_material_diffuse(exporter, material):$/;"	kind:function	line:21
 export_material_glass	export/material.py	/^def export_material_glass(exporter, material):$/;"	kind:function	line:127
-export_material_grid	export/material.py	/^def export_material_grid(exporter, material):$/;"	kind:function	line:169
-export_material_mirror	export/material.py	/^def export_material_mirror(exporter, material):$/;"	kind:function	line:148
+export_material_grid	export/material.py	/^def export_material_grid(exporter, material):$/;"	kind:function	line:172
+export_material_mirror	export/material.py	/^def export_material_mirror(exporter, material):$/;"	kind:function	line:151
 export_material_orennayar	export/material.py	/^def export_material_orennayar(exporter, material):$/;"	kind:function	line:40
 export_material_ward	export/material.py	/^def export_material_ward(exporter, material):$/;"	kind:function	line:60
 export_mesh	export/mesh.py	/^def export_mesh(exporter, obj):$/;"	kind:function	line:192
@@ -384,8 +390,8 @@ items	properties/material.py	/^        items=enums.enum_temp_type,$/;"	kind:vari
 items	properties/material.py	/^        items=enums.enum_temp_type,$/;"	kind:variable	line:75
 items	properties/scene.py	/^        items=enums.enum_debug_mode,$/;"	kind:variable	line:46
 items	properties/scene.py	/^        items=enums.enum_integrator_mode,$/;"	kind:variable	line:65
-items	properties/scene.py	/^        items=enums.enum_photon_gathering_mode,$/;"	kind:variable	line:151
-items	properties/scene.py	/^        items=enums.enum_pixel_sampler_mode,$/;"	kind:variable	line:71
+items	properties/scene.py	/^        items=enums.enum_photon_gathering_mode,$/;"	kind:variable	line:157
+items	properties/scene.py	/^        items=enums.enum_pixel_sampler_mode,$/;"	kind:variable	line:77
 keep_prc	properties/scene.py	/^    keep_prc = BoolProperty($/;"	kind:variable	line:28
 layer.py	properties/layer.py	1;"	kind:file	line:1
 light.py	export/light.py	1;"	kind:file	line:1
@@ -393,22 +399,22 @@ light.py	properties/light.py	1;"	kind:file	line:1
 linear_rgb	properties/scene.py	/^    linear_rgb = BoolProperty($/;"	kind:variable	line:38
 material.py	export/material.py	1;"	kind:file	line:1
 material.py	properties/material.py	1;"	kind:file	line:1
-max_diffuse_bounces	properties/scene.py	/^    max_diffuse_bounces = IntProperty($/;"	kind:variable	line:101
-max_light_samples	properties/scene.py	/^    max_light_samples = IntProperty($/;"	kind:variable	line:109
-max_pixel_samples	properties/scene.py	/^    max_pixel_samples = IntProperty($/;"	kind:variable	line:74
+max_diffuse_bounces	properties/scene.py	/^    max_diffuse_bounces = IntProperty($/;"	kind:variable	line:107
+max_light_samples	properties/scene.py	/^    max_light_samples = IntProperty($/;"	kind:variable	line:115
+max_pixel_samples	properties/scene.py	/^    max_pixel_samples = IntProperty($/;"	kind:variable	line:80
 max_ray_depth	properties/scene.py	/^    max_ray_depth = IntProperty($/;"	kind:variable	line:54
 mesh.py	export/mesh.py	1;"	kind:file	line:1
 min	properties/__init__.py	/^                min=0,$/;"	kind:variable	line:33
 min	properties/__init__.py	/^                min=0,$/;"	kind:variable	line:40
-min	properties/scene.py	/^        min=0,$/;"	kind:variable	line:104
-min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:112
-min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:120
-min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:129
-min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:142
+min	properties/scene.py	/^        min=0,$/;"	kind:variable	line:110
+min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:118
+min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:126
+min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:135
+min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:148
 min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:57
-min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:77
-min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:85
-min_pixel_samples	properties/scene.py	/^    min_pixel_samples = IntProperty($/;"	kind:variable	line:82
+min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:83
+min	properties/scene.py	/^        min=1,$/;"	kind:variable	line:91
+min_pixel_samples	properties/scene.py	/^    min_pixel_samples = IntProperty($/;"	kind:variable	line:88
 name	properties/__init__.py	/^                name="Executable Directory",$/;"	kind:variable	line:25
 name	properties/__init__.py	/^                name="Show Image",$/;"	kind:variable	line:37
 name	properties/__init__.py	/^                name="Show Progress",$/;"	kind:variable	line:30
@@ -466,45 +472,46 @@ name	properties/material.py	/^        name="Texture Slot",$/;"	kind:variable	lin
 name	properties/material.py	/^        name="Texture Slot",$/;"	kind:variable	line:142
 name	properties/material.py	/^        name="Texture Slot",$/;"	kind:variable	line:84
 name	properties/material.py	/^        name="Tile UV",$/;"	kind:variable	line:203
-name	properties/scene.py	/^        name="Adaptive Sampling",$/;"	kind:variable	line:91
+name	properties/scene.py	/^        name="Adaptive Sampling",$/;"	kind:variable	line:97
 name	properties/scene.py	/^        name="Apply Transform",$/;"	kind:variable	line:34
 name	properties/scene.py	/^        name="Beautiful PRC",$/;"	kind:variable	line:24
-name	properties/scene.py	/^        name="Contract Ratio",$/;"	kind:variable	line:161
+name	properties/scene.py	/^        name="Contract Ratio",$/;"	kind:variable	line:167
 name	properties/scene.py	/^        name="Debug Mode",$/;"	kind:variable	line:44
-name	properties/scene.py	/^        name="Gather Radius",$/;"	kind:variable	line:135
-name	properties/scene.py	/^        name="Gathering Mode",$/;"	kind:variable	line:149
+name	properties/scene.py	/^        name="Gather Radius",$/;"	kind:variable	line:141
+name	properties/scene.py	/^        name="Gathering Mode",$/;"	kind:variable	line:155
 name	properties/scene.py	/^        name="Incremental",$/;"	kind:variable	line:50
 name	properties/scene.py	/^        name="Integrator",$/;"	kind:variable	line:63
 name	properties/scene.py	/^        name="Keep PRC",$/;"	kind:variable	line:29
-name	properties/scene.py	/^        name="Max Diffuse Bounces",$/;"	kind:variable	line:102
-name	properties/scene.py	/^        name="Max Gather Count",$/;"	kind:variable	line:140
-name	properties/scene.py	/^        name="Max Light Samples",$/;"	kind:variable	line:110
-name	properties/scene.py	/^        name="Max Passes",$/;"	kind:variable	line:127
-name	properties/scene.py	/^        name="Max Pixel Samples",$/;"	kind:variable	line:75
+name	properties/scene.py	/^        name="Max Diffuse Bounces",$/;"	kind:variable	line:108
+name	properties/scene.py	/^        name="Max Gather Count",$/;"	kind:variable	line:146
+name	properties/scene.py	/^        name="Max Light Samples",$/;"	kind:variable	line:116
+name	properties/scene.py	/^        name="Max Passes",$/;"	kind:variable	line:133
+name	properties/scene.py	/^        name="Max Pixel Samples",$/;"	kind:variable	line:81
 name	properties/scene.py	/^        name="Max Ray Depth",$/;"	kind:variable	line:55
-name	properties/scene.py	/^        name="Min Pixel Samples",$/;"	kind:variable	line:83
-name	properties/scene.py	/^        name="Photons",$/;"	kind:variable	line:118
-name	properties/scene.py	/^        name="Projection Map Caustic Favor",$/;"	kind:variable	line:179
-name	properties/scene.py	/^        name="Projection Map Quality",$/;"	kind:variable	line:173
-name	properties/scene.py	/^        name="Projection Map Weight",$/;"	kind:variable	line:167
-name	properties/scene.py	/^        name="Quality",$/;"	kind:variable	line:96
-name	properties/scene.py	/^        name="Sampler Mode",$/;"	kind:variable	line:69
-name	properties/scene.py	/^        name="Squeeze Factor",$/;"	kind:variable	line:155
+name	properties/scene.py	/^        name="Min Pixel Samples",$/;"	kind:variable	line:89
+name	properties/scene.py	/^        name="Photons",$/;"	kind:variable	line:124
+name	properties/scene.py	/^        name="Projection Map Caustic Favor",$/;"	kind:variable	line:185
+name	properties/scene.py	/^        name="Projection Map Quality",$/;"	kind:variable	line:179
+name	properties/scene.py	/^        name="Projection Map Weight",$/;"	kind:variable	line:173
+name	properties/scene.py	/^        name="Quality",$/;"	kind:variable	line:102
+name	properties/scene.py	/^        name="Quality",$/;"	kind:variable	line:69
+name	properties/scene.py	/^        name="Sampler Mode",$/;"	kind:variable	line:75
+name	properties/scene.py	/^        name="Squeeze Factor",$/;"	kind:variable	line:161
 name	properties/scene.py	/^        name="Use linear sRGB",$/;"	kind:variable	line:39
 pearray_package	core/rayview.py	/^pearray_package = __import__(__name__.split('.')[0])$/;"	kind:variable	line:8
 pearray_package	core/render.py	/^pearray_package = __import__(__name__.split('.')[0])$/;"	kind:variable	line:12
 pearray_package	properties/__init__.py	/^pearray_package = __import__(__name__.split('.')[0])$/;"	kind:variable	line:20
-photon_count	properties/scene.py	/^    photon_count = IntProperty($/;"	kind:variable	line:117
-photon_gather_radius	properties/scene.py	/^    photon_gather_radius = FloatProperty($/;"	kind:variable	line:134
-photon_gathering_mode	properties/scene.py	/^    photon_gathering_mode = EnumProperty($/;"	kind:variable	line:148
-photon_max_gather_count	properties/scene.py	/^    photon_max_gather_count = IntProperty($/;"	kind:variable	line:139
-photon_passes	properties/scene.py	/^    photon_passes = IntProperty($/;"	kind:variable	line:126
-photon_proj_caustic	properties/scene.py	/^    photon_proj_caustic = FloatProperty($/;"	kind:variable	line:178
-photon_proj_qual	properties/scene.py	/^    photon_proj_qual = FloatProperty($/;"	kind:variable	line:172
-photon_proj_weight	properties/scene.py	/^    photon_proj_weight = FloatProperty($/;"	kind:variable	line:166
-photon_ratio	properties/scene.py	/^    photon_ratio = FloatProperty($/;"	kind:variable	line:160
-photon_squeeze	properties/scene.py	/^    photon_squeeze = FloatProperty($/;"	kind:variable	line:154
-pixel_sampler_mode	properties/scene.py	/^    pixel_sampler_mode = EnumProperty($/;"	kind:variable	line:68
+photon_count	properties/scene.py	/^    photon_count = IntProperty($/;"	kind:variable	line:123
+photon_gather_radius	properties/scene.py	/^    photon_gather_radius = FloatProperty($/;"	kind:variable	line:140
+photon_gathering_mode	properties/scene.py	/^    photon_gathering_mode = EnumProperty($/;"	kind:variable	line:154
+photon_max_gather_count	properties/scene.py	/^    photon_max_gather_count = IntProperty($/;"	kind:variable	line:145
+photon_passes	properties/scene.py	/^    photon_passes = IntProperty($/;"	kind:variable	line:132
+photon_proj_caustic	properties/scene.py	/^    photon_proj_caustic = FloatProperty($/;"	kind:variable	line:184
+photon_proj_qual	properties/scene.py	/^    photon_proj_qual = FloatProperty($/;"	kind:variable	line:178
+photon_proj_weight	properties/scene.py	/^    photon_proj_weight = FloatProperty($/;"	kind:variable	line:172
+photon_ratio	properties/scene.py	/^    photon_ratio = FloatProperty($/;"	kind:variable	line:166
+photon_squeeze	properties/scene.py	/^    photon_squeeze = FloatProperty($/;"	kind:variable	line:160
+pixel_sampler_mode	properties/scene.py	/^    pixel_sampler_mode = EnumProperty($/;"	kind:variable	line:74
 point_radius	properties/light.py	/^    point_radius = FloatProperty($/;"	kind:variable	line:49
 poll	ui/properties_camera.py	/^    def poll(cls, context):$/;"	kind:member	line:21
 poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:122
@@ -541,14 +548,14 @@ soft_max	properties/__init__.py	/^                soft_max=10$/;"	kind:variable	
 soft_max	properties/__init__.py	/^                soft_max=10$/;"	kind:variable	line:41
 soft_max	properties/material.py	/^        soft_max=1,$/;"	kind:variable	line:65
 soft_max	properties/material.py	/^        soft_max=3,$/;"	kind:variable	line:152
-soft_max	properties/scene.py	/^        soft_max=1000000000,$/;"	kind:variable	line:121
-soft_max	properties/scene.py	/^        soft_max=1000000000,$/;"	kind:variable	line:130
-soft_max	properties/scene.py	/^        soft_max=1000000000,$/;"	kind:variable	line:143
-soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:105
-soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:113
+soft_max	properties/scene.py	/^        soft_max=1000000000,$/;"	kind:variable	line:127
+soft_max	properties/scene.py	/^        soft_max=1000000000,$/;"	kind:variable	line:136
+soft_max	properties/scene.py	/^        soft_max=1000000000,$/;"	kind:variable	line:149
+soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:111
+soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:119
 soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:58
-soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:78
-soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:86
+soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:84
+soft_max	properties/scene.py	/^        soft_max=4096,$/;"	kind:variable	line:92
 soft_min	properties/material.py	/^        soft_min=1,$/;"	kind:variable	line:151
 spec_roughness_x	properties/material.py	/^    spec_roughness_x = FloatProperty($/;"	kind:variable	line:156
 spec_roughness_y	properties/material.py	/^    spec_roughness_y = FloatProperty($/;"	kind:variable	line:161
@@ -560,27 +567,28 @@ specular_color_tex_slot	properties/material.py	/^    specular_color_tex_slot = I
 specular_color_type	properties/material.py	/^    specular_color_type = EnumProperty($/;"	kind:variable	line:119
 specular_ior	properties/material.py	/^    specular_ior = FloatVectorProperty($/;"	kind:variable	line:146
 start_output	export/scene.py	/^        def start_output(str):$/;"	kind:function	line:38
-step	properties/scene.py	/^        step=100,$/;"	kind:variable	line:122
-step	properties/scene.py	/^        step=100,$/;"	kind:variable	line:144
+step	properties/scene.py	/^        step=100,$/;"	kind:variable	line:128
+step	properties/scene.py	/^        step=100,$/;"	kind:variable	line:150
 subclass	ui/__init__.py	/^    subclass = getattr(properties_particle, member)$/;"	kind:variable	line:35
 subclass	ui/properties_camera.py	/^    subclass = getattr(properties_data_camera, member)$/;"	kind:variable	line:6
 subtype	properties/__init__.py	/^                subtype='DIR_PATH',$/;"	kind:variable	line:27
 subtype	properties/material.py	/^        subtype="COLOR",$/;"	kind:variable	line:150
 subtype	properties/material.py	/^        subtype="COLOR",$/;"	kind:variable	line:64
-subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:158
+subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:105
 subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:164
 subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:170
 subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:176
 subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:182
-subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:99
-subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:106
-subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:114
-subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:123
-subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:131
-subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:145
+subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:188
+subtype	properties/scene.py	/^        subtype="PERCENTAGE"$/;"	kind:variable	line:72
+subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:112
+subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:120
+subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:129
+subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:137
+subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:151
 subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:59
-subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:79
-subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:87
+subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:85
+subtype	properties/scene.py	/^        subtype="UNSIGNED",$/;"	kind:variable	line:93
 texture.py	export/texture.py	1;"	kind:file	line:1
 unregister	__init__.py	/^def unregister():$/;"	kind:function	line:37
 unregister	properties/__init__.py	/^def unregister():$/;"	kind:function	line:65

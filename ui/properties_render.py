@@ -135,6 +135,17 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
             col.prop(scene.pearray, "photon_proj_caustic", text="Caustic")
 
 
+class RENDER_PT_pr_distortion(RenderButtonsPanel, bpy.types.Panel):
+    bl_label = "Distortion"
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+
+        layout.prop(scene.pearray, "distortion_quality")
+
+
 class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
     bl_label = "Export Settings"
     bl_options = {'DEFAULT_CLOSED'}

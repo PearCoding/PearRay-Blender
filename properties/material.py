@@ -204,3 +204,10 @@ class PearRayMaterialProperties(PropertyGroup):
         description="Tile the UV coordinates",
         default=True
     )
+
+    # Glass
+    glass_is_thin = BoolProperty(
+        name="Thin",
+        description="Disables total reflections",
+        default=False
+    )
