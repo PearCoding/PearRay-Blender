@@ -29,12 +29,12 @@ class PearRaySceneProperties(PropertyGroup):
         name="Keep PRC",
         description="Keep generated prc file after rendering",
         default=False
-    )   
+    )
     apply_transform = BoolProperty(
         name="Apply Transform",
         description="Apply transform prior export for meshes",
         default=False
-    ) 
+    )
     linear_rgb = BoolProperty(
         name="Use linear sRGB",
         description="Return output in linear sRGB",
@@ -83,7 +83,7 @@ class PearRaySceneProperties(PropertyGroup):
         min=1,
         soft_max=4096,
         subtype="UNSIGNED",
-        default=64
+        default=4
         )
     min_pixel_samples = IntProperty(
         name="Min Pixel Samples",
@@ -96,7 +96,7 @@ class PearRaySceneProperties(PropertyGroup):
     adaptive_sampling = BoolProperty(
         name="Adaptive Sampling",
         description="Use Adaptive Sampling",
-        default=True
+        default=False
         )
     as_quality = FloatProperty(
         name="Quality",
@@ -118,7 +118,7 @@ class PearRaySceneProperties(PropertyGroup):
         min=1,
         soft_max=4096,
         subtype="UNSIGNED",
-        default=1
+        default=2
         )
     photon_count = IntProperty(
         name="Photons",
@@ -127,7 +127,7 @@ class PearRaySceneProperties(PropertyGroup):
         soft_max=1000000000,
         step=100,
         subtype="UNSIGNED",
-        default=100000
+        default=1000000
         )
     photon_passes = IntProperty(
         name="Max Passes",
@@ -149,7 +149,7 @@ class PearRaySceneProperties(PropertyGroup):
         soft_max=1000000000,
         step=100,
         subtype="UNSIGNED",
-        default=500
+        default=1000
         )
     photon_gathering_mode = EnumProperty(
         name="Gathering Mode",

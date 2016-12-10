@@ -56,8 +56,8 @@ def export_arealight(exporter, light):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'light'")
-    #w.write(":shadow false")
-    #w.write(":camera_visible false")
+    w.write(":shadow false")
+    w.write(":camera_visible false")
     w.write(":emission %s" % color_name)
 
     w.goOut()
@@ -66,11 +66,16 @@ def export_arealight(exporter, light):
     w.write("(entity")
     w.goIn()
 
+    if light_data.shape == 'SQUARE':
+        ysize = light_data.size
+    else:
+        ysize = light_data.size_y
+
     w.write(":name '%s'" % light.name)
     w.write(":type 'plane'")
     w.write(":centering true")
     w.write(":xAxis %f" % light_data.size)
-    w.write(":yAxis %f" % -light_data.size_y)
+    w.write(":yAxis %f" % -ysize)
     w.write(":material '%s'" % light_mat_n)
     inline_entity_matrix(exporter, light)
 

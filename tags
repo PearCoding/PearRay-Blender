@@ -11,7 +11,7 @@ COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER
 COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:119
 COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:142
 COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:162
-COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:190
+COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:192
 COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:73
 COMPAT_ENGINES	ui/properties_material.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:81
 COMPAT_ENGINES	ui/properties_render.py	/^    COMPAT_ENGINES = {'PEARRAY_RENDER'}$/;"	kind:variable	line:107
@@ -31,7 +31,7 @@ Exporter	export/__init__.py	/^class Exporter:$/;"	kind:class	line:37
 MATERIAL_PT_pr_bsdf	ui/properties_material.py	/^class MATERIAL_PT_pr_bsdf(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:79
 MATERIAL_PT_pr_context_material	ui/properties_material.py	/^class MATERIAL_PT_pr_context_material(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:7
 MATERIAL_PT_pr_diffuse	ui/properties_material.py	/^class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:117
-MATERIAL_PT_pr_emission	ui/properties_material.py	/^class MATERIAL_PT_pr_emission(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:188
+MATERIAL_PT_pr_emission	ui/properties_material.py	/^class MATERIAL_PT_pr_emission(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:190
 MATERIAL_PT_pr_grid	ui/properties_material.py	/^class MATERIAL_PT_pr_grid(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:140
 MATERIAL_PT_pr_preview	ui/properties_material.py	/^class MATERIAL_PT_pr_preview(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:71
 MATERIAL_PT_pr_specular	ui/properties_material.py	/^class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:160
@@ -104,7 +104,7 @@ bl_label	ui/properties_light.py	/^    bl_label = "Lamp"$/;"	kind:variable	line:1
 bl_label	ui/properties_material.py	/^    bl_label = ""$/;"	kind:variable	line:8
 bl_label	ui/properties_material.py	/^    bl_label = "BSDF"$/;"	kind:variable	line:80
 bl_label	ui/properties_material.py	/^    bl_label = "Diffuse"$/;"	kind:variable	line:118
-bl_label	ui/properties_material.py	/^    bl_label = "Emission"$/;"	kind:variable	line:189
+bl_label	ui/properties_material.py	/^    bl_label = "Emission"$/;"	kind:variable	line:191
 bl_label	ui/properties_material.py	/^    bl_label = "Grid"$/;"	kind:variable	line:141
 bl_label	ui/properties_material.py	/^    bl_label = "Preview"$/;"	kind:variable	line:72
 bl_label	ui/properties_material.py	/^    bl_label = "Specular"$/;"	kind:variable	line:161
@@ -139,7 +139,7 @@ close	export/__init__.py	/^    def close(self):$/;"	kind:member	line:117
 color_temp	properties/light.py	/^    color_temp = FloatProperty($/;"	kind:variable	line:29
 color_temp_factor	properties/light.py	/^    color_temp_factor = FloatProperty($/;"	kind:variable	line:42
 color_temp_type	properties/light.py	/^    color_temp_type = EnumProperty($/;"	kind:variable	line:35
-color_template	ui/properties_material.py	/^def color_template(obj, layout, name):$/;"	kind:function	line:209
+color_template	ui/properties_material.py	/^def color_template(obj, layout, name):$/;"	kind:function	line:211
 color_type	properties/light.py	/^    color_type = EnumProperty($/;"	kind:variable	line:22
 create_file	export/__init__.py	/^    def create_file(self, name_hint=""):$/;"	kind:member	line:62
 ct_distribution_mode	properties/material.py	/^    ct_distribution_mode = EnumProperty($/;"	kind:variable	line:180
@@ -178,6 +178,7 @@ default	properties/material.py	/^        default='LUM'$/;"	kind:variable	line:13
 default	properties/material.py	/^        default='LUM'$/;"	kind:variable	line:76
 default	properties/material.py	/^        default=(0,0,0),$/;"	kind:variable	line:63
 default	properties/material.py	/^        default=(1.55,1.55,1.55),$/;"	kind:variable	line:149
+default	properties/material.py	/^        default=False$/;"	kind:variable	line:212
 default	properties/material.py	/^        default=True$/;"	kind:variable	line:205
 default	properties/material.py	/^        default=True$/;"	kind:variable	line:32
 default	properties/material.py	/^        default=True$/;"	kind:variable	line:38
@@ -235,6 +236,7 @@ description	properties/material.py	/^        description="Diffuse Blackbody Colo
 description	properties/material.py	/^        description="Diffuse Blackbody Color Temperature Type",$/;"	kind:variable	line:103
 description	properties/material.py	/^        description="Diffuse Blackbody Color Temperature",$/;"	kind:variable	line:98
 description	properties/material.py	/^        description="Diffuse Color Type",$/;"	kind:variable	line:92
+description	properties/material.py	/^        description="Disables total reflections",$/;"	kind:variable	line:211
 description	properties/material.py	/^        description="Distribution Mode",$/;"	kind:variable	line:182
 description	properties/material.py	/^        description="Emission Blackbody Color Temperature Normalization Factor",$/;"	kind:variable	line:80
 description	properties/material.py	/^        description="Emission Blackbody Color Temperature Type",$/;"	kind:variable	line:74
@@ -296,7 +298,7 @@ draw	ui/properties_light.py	/^    def draw(self, context):$/;"	kind:member	line:
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:126
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:149
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:169
-draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:197
+draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:199
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:20
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:75
 draw	ui/properties_material.py	/^    def draw(self, context):$/;"	kind:member	line:88
@@ -338,16 +340,16 @@ execute	core/rayview.py	/^    def execute(self, context):$/;"	kind:member	line:4
 export_arealight	export/light.py	/^def export_arealight(exporter, light):$/;"	kind:function	line:45
 export_background	export/scene.py	/^    def export_background():# TODO: Add texture support$/;"	kind:function	line:113
 export_camera	export/camera.py	/^def export_camera(exporter, camera):$/;"	kind:function	line:7
-export_color	export/material.py	/^def export_color(exporter, material, type, required, factor=1):$/;"	kind:function	line:188
-export_default_materials	export/material.py	/^def export_default_materials(exporter):$/;"	kind:function	line:257
+export_color	export/material.py	/^def export_color(exporter, material, type, required, factor=1):$/;"	kind:function	line:192
+export_default_materials	export/material.py	/^def export_default_materials(exporter):$/;"	kind:function	line:261
 export_image	export/texture.py	/^def export_image(exporter, image):$/;"	kind:function	line:5
 export_light	export/light.py	/^def export_light(exporter, light):$/;"	kind:function	line:113
-export_material	export/material.py	/^def export_material(exporter, material):$/;"	kind:function	line:228
+export_material	export/material.py	/^def export_material(exporter, material):$/;"	kind:function	line:232
 export_material_cook_torrance	export/material.py	/^def export_material_cook_torrance(exporter, material):$/;"	kind:function	line:88
 export_material_diffuse	export/material.py	/^def export_material_diffuse(exporter, material):$/;"	kind:function	line:21
 export_material_glass	export/material.py	/^def export_material_glass(exporter, material):$/;"	kind:function	line:127
-export_material_grid	export/material.py	/^def export_material_grid(exporter, material):$/;"	kind:function	line:172
-export_material_mirror	export/material.py	/^def export_material_mirror(exporter, material):$/;"	kind:function	line:151
+export_material_grid	export/material.py	/^def export_material_grid(exporter, material):$/;"	kind:function	line:176
+export_material_mirror	export/material.py	/^def export_material_mirror(exporter, material):$/;"	kind:function	line:154
 export_material_orennayar	export/material.py	/^def export_material_orennayar(exporter, material):$/;"	kind:function	line:40
 export_material_ward	export/material.py	/^def export_material_ward(exporter, material):$/;"	kind:function	line:60
 export_mesh	export/mesh.py	/^def export_mesh(exporter, obj):$/;"	kind:function	line:192
@@ -358,6 +360,7 @@ export_sunlight	export/light.py	/^def export_sunlight(exporter, light):$/;"	kind
 export_texture	export/texture.py	/^def export_texture(exporter, texture):$/;"	kind:function	line:21
 export_trimesh	export/mesh.py	/^def export_trimesh(exporter, mw, name, mesh):$/;"	kind:function	line:6
 fstop	properties/camera.py	/^    fstop = FloatProperty($/;"	kind:variable	line:13
+glass_is_thin	properties/material.py	/^    glass_is_thin = BoolProperty($/;"	kind:variable	line:209
 goIn	export/__init__.py	/^    def goIn(self):$/;"	kind:member	line:27
 goOut	export/__init__.py	/^    def goOut(self):$/;"	kind:member	line:31
 grid_count	properties/material.py	/^    grid_count = IntProperty($/;"	kind:variable	line:197
@@ -471,6 +474,7 @@ name	properties/material.py	/^        name="Specular Index of Refraction",$/;"	k
 name	properties/material.py	/^        name="Texture Slot",$/;"	kind:variable	line:113
 name	properties/material.py	/^        name="Texture Slot",$/;"	kind:variable	line:142
 name	properties/material.py	/^        name="Texture Slot",$/;"	kind:variable	line:84
+name	properties/material.py	/^        name="Thin",$/;"	kind:variable	line:210
 name	properties/material.py	/^        name="Tile UV",$/;"	kind:variable	line:203
 name	properties/scene.py	/^        name="Adaptive Sampling",$/;"	kind:variable	line:97
 name	properties/scene.py	/^        name="Apply Transform",$/;"	kind:variable	line:34
@@ -518,7 +522,7 @@ poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	lin
 poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:13
 poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:145
 poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:165
-poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:193
+poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:195
 poll	ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:84
 poll	ui/properties_render.py	/^    def poll(cls, context):$/;"	kind:member	line:16
 poll	ui/properties_world.py	/^    def poll(cls, context):$/;"	kind:member	line:16
