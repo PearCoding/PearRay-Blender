@@ -178,10 +178,11 @@ class PearRayRender(bpy.types.RenderEngine):
 
         if addon_prefs.verbose:
             args.append("-v")
-        
+            args.append("-I")
+
         if not scene.pearray.debug_mode == 'NONE':
             args.append("--debug=%s" % scene.pearray.debug_mode.lower())
-        
+
         if not os.path.exists(renderPath):
             os.makedirs(renderPath)
         output_image = os.path.normpath(renderPath + "/results/image.exr")

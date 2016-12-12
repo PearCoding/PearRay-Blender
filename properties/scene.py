@@ -172,7 +172,7 @@ class PearRaySceneProperties(PropertyGroup):
     photon_proj_weight = FloatProperty(
         name="Projection Map Weight",
         description="Projection Map Weight. 0 disables it",
-        min=0.0, max=100, default=80,
+        min=0.0, max=100, default=0,
         subtype="PERCENTAGE"
         )
     photon_proj_qual = FloatProperty(

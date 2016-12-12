@@ -188,20 +188,20 @@ default	properties/scene.py	/^        default='BIDI'$/;"	kind:variable	line:66
 default	properties/scene.py	/^        default='MJITT'$/;"	kind:variable	line:78
 default	properties/scene.py	/^        default='NONE'$/;"	kind:variable	line:47
 default	properties/scene.py	/^        default='SPHERE'$/;"	kind:variable	line:158
-default	properties/scene.py	/^        default=1$/;"	kind:variable	line:121
 default	properties/scene.py	/^        default=1$/;"	kind:variable	line:94
-default	properties/scene.py	/^        default=100000$/;"	kind:variable	line:130
+default	properties/scene.py	/^        default=1000$/;"	kind:variable	line:152
+default	properties/scene.py	/^        default=1000000$/;"	kind:variable	line:130
 default	properties/scene.py	/^        default=2$/;"	kind:variable	line:113
+default	properties/scene.py	/^        default=2$/;"	kind:variable	line:121
+default	properties/scene.py	/^        default=4$/;"	kind:variable	line:86
 default	properties/scene.py	/^        default=50$/;"	kind:variable	line:138
-default	properties/scene.py	/^        default=500$/;"	kind:variable	line:152
-default	properties/scene.py	/^        default=64$/;"	kind:variable	line:86
 default	properties/scene.py	/^        default=8$/;"	kind:variable	line:60
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:26
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:31
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:36
 default	properties/scene.py	/^        default=False$/;"	kind:variable	line:41
+default	properties/scene.py	/^        default=False$/;"	kind:variable	line:99
 default	properties/scene.py	/^        default=True$/;"	kind:variable	line:52
-default	properties/scene.py	/^        default=True$/;"	kind:variable	line:99
 description	properties/__init__.py	/^                description="Display verbose information in the produced log files",$/;"	kind:variable	line:45
 description	properties/__init__.py	/^                description="Path to renderer executables",$/;"	kind:variable	line:26
 description	properties/__init__.py	/^                description="Update interval for image updates. Zero disables it",$/;"	kind:variable	line:38
@@ -337,13 +337,13 @@ enum_temp_type	properties/enums.py	/^enum_temp_type= ($/;"	kind:variable	line:54
 enums.py	properties/enums.py	1;"	kind:file	line:1
 executable_dir	properties/__init__.py	/^    executable_dir = StringProperty($/;"	kind:variable	line:24
 execute	core/rayview.py	/^    def execute(self, context):$/;"	kind:member	line:49
-export_arealight	export/light.py	/^def export_arealight(exporter, light):$/;"	kind:function	line:45
+export_arealight	export/light.py	/^def export_arealight(exporter, light):$/;"	kind:function	line:44
 export_background	export/scene.py	/^    def export_background():# TODO: Add texture support$/;"	kind:function	line:113
 export_camera	export/camera.py	/^def export_camera(exporter, camera):$/;"	kind:function	line:7
 export_color	export/material.py	/^def export_color(exporter, material, type, required, factor=1):$/;"	kind:function	line:192
 export_default_materials	export/material.py	/^def export_default_materials(exporter):$/;"	kind:function	line:261
 export_image	export/texture.py	/^def export_image(exporter, image):$/;"	kind:function	line:5
-export_light	export/light.py	/^def export_light(exporter, light):$/;"	kind:function	line:113
+export_light	export/light.py	/^def export_light(exporter, light):$/;"	kind:function	line:116
 export_material	export/material.py	/^def export_material(exporter, material):$/;"	kind:function	line:232
 export_material_cook_torrance	export/material.py	/^def export_material_cook_torrance(exporter, material):$/;"	kind:function	line:88
 export_material_diffuse	export/material.py	/^def export_material_diffuse(exporter, material):$/;"	kind:function	line:21
@@ -356,7 +356,7 @@ export_mesh	export/mesh.py	/^def export_mesh(exporter, obj):$/;"	kind:function	l
 export_outputs	export/scene.py	/^    def export_outputs():$/;"	kind:function	line:37
 export_pointlight	export/light.py	/^def export_pointlight(exporter, light):$/;"	kind:function	line:9
 export_scene	export/scene.py	/^    def export_scene():$/;"	kind:function	line:30
-export_sunlight	export/light.py	/^def export_sunlight(exporter, light):$/;"	kind:function	line:81
+export_sunlight	export/light.py	/^def export_sunlight(exporter, light):$/;"	kind:function	line:84
 export_texture	export/texture.py	/^def export_texture(exporter, texture):$/;"	kind:function	line:21
 export_trimesh	export/mesh.py	/^def export_trimesh(exporter, mw, name, mesh):$/;"	kind:function	line:6
 fstop	properties/camera.py	/^    fstop = FloatProperty($/;"	kind:variable	line:13

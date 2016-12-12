@@ -8,7 +8,7 @@ from .spectral import write_spectral_color
 
 
 def is_renderable(scene, ob):
-    return (ob.is_visible(scene) and not ob.hide_render)
+    return (not ob.hide_render)
 
 
 def renderable_objects(scene):
