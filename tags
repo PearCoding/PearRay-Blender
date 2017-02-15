@@ -597,7 +597,7 @@ texture.py	export/texture.py	1;"	kind:file	line:1
 unregister	__init__.py	/^def unregister():$/;"	kind:function	line:37
 unregister	properties/__init__.py	/^def unregister():$/;"	kind:function	line:65
 unregister	ui/__init__.py	/^def unregister():$/;"	kind:function	line:47
-update_image	core/render.py	/^        def update_image():$/;"	kind:function	line:218
+update_image	core/render.py	/^        def update_image():$/;"	kind:function	line:219
 verbose	properties/__init__.py	/^    verbose = BoolProperty($/;"	kind:variable	line:43
 write	export/__init__.py	/^    def write(self, str):$/;"	kind:member	line:18
 write_ini	export/__init__.py	/^    def write_ini(self):$/;"	kind:member	line:98

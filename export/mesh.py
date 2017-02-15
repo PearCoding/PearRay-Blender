@@ -29,11 +29,11 @@ def export_trimesh(exporter, mw, name, mesh):
         color_layer = None
 
     face_indices = []
+    material_indices = []
     points = []
     normals = []
     uvs = []
     colors = []
-    materials_counter = collections.Counter()
 
     # Temporary
     vert_index = 0
@@ -41,7 +41,6 @@ def export_trimesh(exporter, mw, name, mesh):
     vert_cache = set()
 
     for face in faces:
-        materials_counter[face.material_index] += 1
         face_data = []
 
         for j, vertex in enumerate(face.vertices):
@@ -106,21 +105,20 @@ def export_trimesh(exporter, mw, name, mesh):
                 vert_index += 1
             
         face_indices.append(face_data[0:3])
+        material_indices.append(face.material_index)
         if len(face_data) == 4: # Triangulate
             face_indices.append((face_data[0], face_data[2], face_data[3]))
+            material_indices.append(face.material_index)
     
     del vert_indices
     del vert_cache
 
-    materials = [a[0] for a in materials_counter.most_common()]
-    #print(materials_counter)
-    del materials_counter
 
     # If using apply_transform, don't even bother with caches.
     if not exporter.scene.pearray.apply_transform:
-        n, in_cache = exporter.register_mesh_data(name, (points, normals, uvs, colors, face_indices, materials))
+        n, in_cache = exporter.register_mesh_data(name, (points, normals, uvs, colors, face_indices, material_indices))
         if in_cache:
-            return n, materials
+            return n
 
     w.write("(mesh")
     w.goIn()
@@ -170,6 +168,12 @@ def export_trimesh(exporter, mw, name, mesh):
         w.goOut()
         w.write(")")
 
+    line = "(materials"
+    for ind in material_indices:
+        line = line + ", %i" % ind
+    w.write(line)
+    w.write(")")
+
     line = "(faces"
     for f in face_indices:
         line = line + ", %i, %i, %i" % (f[0], f[1], f[2])
@@ -181,12 +185,13 @@ def export_trimesh(exporter, mw, name, mesh):
 
     if exporter.scene.pearray.apply_transform:
         del face_indices
+        del material_indices
         del points
         del normals
         del uvs
         del colors
     
-    return name, materials
+    return name
 
 
 def export_mesh(exporter, obj):
@@ -199,7 +204,7 @@ def export_mesh(exporter, obj):
         return
     
     name = exporter.register_unique_name('MESH', obj.data.name)
-    name, material_indices = export_trimesh(exporter, obj.matrix_world, name, mesh)
+    name = export_trimesh(exporter, obj.matrix_world, name, mesh)
     bpy.data.meshes.remove(mesh)
 
     w.write("(entity")
@@ -208,10 +213,10 @@ def export_mesh(exporter, obj):
     w.write(":name '%s'" % obj.name)
     w.write(":type 'mesh'")
 
-    if (len(material_indices) >= 1 and
-        material_indices[0] < len(obj.data.materials) and
-        obj.data.materials[material_indices[0]]):
-        w.write(":material '%s'" % obj.data.materials[material_indices[0]].name)
+    if len(obj.data.materials) == 1:
+        w.write(":materials '%s'" % obj.data.materials[0].name)
+    elif len(obj.data.materials) > 1:
+        w.write(":materials [%s]" % ', '.join(['"%s"' % m.name for m in obj.data.materials]))
     else:
         w.write(":material '%s'" % exporter.MISSING_MAT)
         print("Mesh %s has no material!" % obj.name)
