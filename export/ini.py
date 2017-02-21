@@ -19,6 +19,7 @@ def write_ini(exporter):
     exporter.w.write("count=%i" % threads)
     exporter.w.write("tile_x=%i" % scene.render.tile_x)
     exporter.w.write("tile_y=%i" % scene.render.tile_y)
+    exporter.w.write("tile_mode=%s" % s.render_tile_mode.lower())
 
     exporter.w.write("[distortion]")
     exporter.w.write("quality=%f" % (s.distortion_quality/100))
@@ -26,11 +27,6 @@ def write_ini(exporter):
     exporter.w.write("[pixelsampler]")
     exporter.w.write("mode=%s" % s.pixel_sampler_mode.lower())
     exporter.w.write("max=%i" % s.max_pixel_samples)
-    exporter.w.write("min=%i" % s.min_pixel_samples)
-    exporter.w.write("adaptive=%s" % str(s.adaptive_sampling).lower())
-
-    max_error = max(0.00000001, math.exp(- s.as_quality / 7))
-    exporter.w.write("max_error=%.8f" % max_error)
 
     exporter.w.write("[globalillumination]")
     exporter.w.write("diffuse_bounces=%i" % s.max_diffuse_bounces)

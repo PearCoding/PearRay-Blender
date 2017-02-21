@@ -34,6 +34,12 @@ enum_integrator_mode= (
     ('PPM', "Progressive Photon Mapping", "Progressive Photon Mapping"),
     )
 
+enum_tile_mode= (
+	("LINEAR", "Linear", "From top-left to bottom-right"),
+	("TILE", "Tile", "From top-left to bottom-right in intervals"),
+	("SPIRAL", "Spiral", "From the mid to border"),
+    )
+
 enum_photon_gathering_mode= (
 	("DOME", "Dome", "Gather only front side of surface"),
 	("SPHERE", "Sphere", "Gather around a point"),

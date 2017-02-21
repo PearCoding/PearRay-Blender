@@ -65,6 +65,12 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_integrator_mode,
         default='BIDI'
         )
+    render_tile_mode = EnumProperty(
+        name="Tile Mode",
+        description="Tiling Mode to be used while rendering",
+        items=enums.enum_tile_mode,
+        default='LINEAR'
+        )
     distortion_quality = FloatProperty(
         name="Quality",
         description="Distortion Quality",
@@ -84,25 +90,6 @@ class PearRaySceneProperties(PropertyGroup):
         soft_max=4096,
         subtype="UNSIGNED",
         default=4
-        )
-    min_pixel_samples = IntProperty(
-        name="Min Pixel Samples",
-        description="Minimum pixel samples",
-        min=1,
-        soft_max=4096,
-        subtype="UNSIGNED",
-        default=1
-        )
-    adaptive_sampling = BoolProperty(
-        name="Adaptive Sampling",
-        description="Use Adaptive Sampling",
-        default=False
-        )
-    as_quality = FloatProperty(
-        name="Quality",
-        description="Adaptive Sampling Quality",
-        min=0.0, max=100.0, default=80,
-        subtype="PERCENTAGE"
         )
     max_diffuse_bounces = IntProperty(
         name="Max Diffuse Bounces",

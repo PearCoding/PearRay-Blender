@@ -42,6 +42,13 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
 
         layout.separator()
 
+        split = layout.split(percentage=0.33)
+        split.label(text="Tile Mode:")
+        row = split.row(align=True)
+        row.prop(context.scene.pearray, "render_tile_mode", expand=True)
+
+        layout.separator()
+
         layout.prop(scene.pearray, "integrator")
         layout.prop(scene.pearray, "debug_mode")
         layout.prop(scene.pearray, "incremental")
@@ -93,13 +100,6 @@ class RENDER_PT_pr_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
         
         layout.prop(scene.pearray, "pixel_sampler_mode")
         layout.prop(scene.pearray, "max_pixel_samples")
-
-        col = layout.column()
-        col.prop(scene.pearray, "adaptive_sampling", text="Adaptive Sampling")
-        sub = col.column()
-        sub.active = scene.pearray.adaptive_sampling
-        sub.prop(scene.pearray, "min_pixel_samples")
-        sub.prop(scene.pearray, "as_quality")
 
 
 class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
