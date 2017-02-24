@@ -90,16 +90,33 @@ class RENDER_PT_pr_output(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(rd, "filepath", text="")
 
 
-class RENDER_PT_pr_pixel_sampler(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Pixel Sampler"
+class RENDER_PT_pr_sampler(RenderButtonsPanel, bpy.types.Panel):
+    bl_label = "Sampler"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         
-        layout.prop(scene.pearray, "pixel_sampler_mode")
-        layout.prop(scene.pearray, "max_pixel_samples")
+        layout.prop(scene.pearray, "sampler_aa_mode", text="AA")
+        layout.prop(scene.pearray, "sampler_max_aa_samples")
+        layout.separator()
+        layout.prop(scene.pearray, "sampler_lens_mode", text="Lens")
+        layout.prop(scene.pearray, "sampler_max_lens_samples")
+        layout.separator()
+        layout.prop(scene.pearray, "sampler_time_mode", text="Time")
+        layout.prop(scene.pearray, "sampler_max_time_samples")
+        layout.prop(scene.pearray, "sampler_time_mapping_mode", expand=True)
+        layout.prop(scene.pearray, "sampler_time_scale")
+        layout.separator()
+        layout.prop(scene.pearray, "sampler_spectral_mode", text="Spectral")
+        layout.prop(scene.pearray, "sampler_max_spectral_samples")
+        layout.separator()
+        layout.label(text="Max Samples: %i" % 
+            (scene.pearray.sampler_max_aa_samples *
+             scene.pearray.sampler_max_lens_samples *
+             scene.pearray.sampler_max_time_samples *
+             scene.pearray.sampler_max_spectral_samples))
 
 
 class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
@@ -133,17 +150,6 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
             col.enabled = scene.pearray.photon_proj_weight > 0
             col.prop(scene.pearray, "photon_proj_qual", text="Quality")
             col.prop(scene.pearray, "photon_proj_caustic", text="Caustic")
-
-
-class RENDER_PT_pr_distortion(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Distortion"
-    COMPAT_ENGINES = {'PEARRAY_RENDER'}
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-
-        layout.prop(scene.pearray, "distortion_quality")
 
 
 class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):

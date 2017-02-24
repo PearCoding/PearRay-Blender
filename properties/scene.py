@@ -71,25 +71,75 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_tile_mode,
         default='LINEAR'
         )
-    distortion_quality = FloatProperty(
-        name="Quality",
-        description="Distortion Quality",
-        min=0.0, max=100.0, default=10,
-        subtype="PERCENTAGE"
-        )
-    pixel_sampler_mode = EnumProperty(
-        name="Sampler Mode",
-        description="Pixel sampling technique",
-        items=enums.enum_pixel_sampler_mode,
+    sampler_aa_mode = EnumProperty(
+        name="AA Sampler Mode",
+        description="AA sampling technique",
+        items=enums.enum_sampler_mode,
         default='MJITT'
         )
-    max_pixel_samples = IntProperty(
-        name="Max Pixel Samples",
-        description="Maximum pixel samples",
+    sampler_max_aa_samples = IntProperty(
+        name="Max AA Samples",
+        description="Maximum AA samples",
         min=1,
         soft_max=4096,
         subtype="UNSIGNED",
         default=4
+        )
+    sampler_lens_mode = EnumProperty(
+        name="Lens Sampler Mode",
+        description="Lens sampling technique",
+        items=enums.enum_sampler_mode,
+        default='MJITT'
+        )
+    sampler_max_lens_samples = IntProperty(
+        name="Max Lens Samples",
+        description="Maximum Lens samples",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=1
+        )
+    sampler_time_mode = EnumProperty(
+        name="Time Sampler Mode",
+        description="Time sampling technique",
+        items=enums.enum_sampler_mode,
+        default='MJITT'
+        )
+    sampler_max_time_samples = IntProperty(
+        name="Max Time Samples",
+        description="Maximum Time samples",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=1
+        )
+    sampler_time_mapping_mode = EnumProperty(
+        name="Time Mapping Mode",
+        description="Time Mapping Mode",
+        items=enums.enum_time_mapping_mode,
+        default='CENTER'
+        )
+    sampler_time_scale = FloatProperty(
+        name="Time Scale",
+        description="Time Scale",
+        min=0,
+        soft_min=0.001,
+        soft_max=1000,
+        default=1
+        )
+    sampler_spectral_mode = EnumProperty(
+        name="Spectral Sampler Mode",
+        description="Spectral sampling technique",
+        items=enums.enum_sampler_mode,
+        default='MJITT'
+        )
+    sampler_max_spectral_samples = IntProperty(
+        name="Max Spectral Samples",
+        description="Maximum Spectral samples",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=1
         )
     max_diffuse_bounces = IntProperty(
         name="Max Diffuse Bounces",

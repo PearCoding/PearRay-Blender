@@ -20,12 +20,18 @@ enum_debug_mode= (
     ('VALIDITY', "Validity", "Show if material is valid"),
     )
 
-enum_pixel_sampler_mode= (
+enum_sampler_mode= (
 	("RAND", "Random", "Random sampling technique"),
 	("UNIF", "Uniform", "Uniform sampling technique"),
 	("JITT", "Jitter", "Jitter sampling technique"),
 	("MJITT", "Multi-Jitter", "Multi-Jitter sampling technique"),
 	("HALTON", "Halton QMC", "Quasi-Monte Carlo sampling method based on the Halton sequence"),
+    )
+
+enum_time_mapping_mode= (
+	("CENTER", "Center", "Center Mapping [-1/2,1/2]"),
+	("LEFT", "Left", "Left Mapping [-1,0]"),
+	("RIGHT", "Right", "Right Mapping [0,1]"),
     )
 
 enum_integrator_mode= (

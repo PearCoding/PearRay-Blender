@@ -21,12 +21,17 @@ def write_ini(exporter):
     exporter.w.write("tile_y=%i" % scene.render.tile_y)
     exporter.w.write("tile_mode=%s" % s.render_tile_mode.lower())
 
-    exporter.w.write("[distortion]")
-    exporter.w.write("quality=%f" % (s.distortion_quality/100))
-
-    exporter.w.write("[pixelsampler]")
-    exporter.w.write("mode=%s" % s.pixel_sampler_mode.lower())
-    exporter.w.write("max=%i" % s.max_pixel_samples)
+    exporter.w.write("[sampler]")
+    exporter.w.write("aa_mode=%s" % s.sampler_aa_mode.lower())
+    exporter.w.write("aa_max=%i" % s.sampler_max_aa_samples)
+    exporter.w.write("lens_mode=%s" % s.sampler_lens_mode.lower())
+    exporter.w.write("lens_max=%i" % s.sampler_max_lens_samples)
+    exporter.w.write("time_mode=%s" % s.sampler_time_mode.lower())
+    exporter.w.write("time_max=%i" % s.sampler_max_time_samples)
+    exporter.w.write("time_mapping=%s" % s.sampler_time_mapping_mode.lower())
+    exporter.w.write("time_scale=%f" % s.sampler_time_scale)
+    exporter.w.write("spectral_mode=%s" % s.sampler_spectral_mode.lower())
+    exporter.w.write("spectral_max=%i" % s.sampler_max_spectral_samples)
 
     exporter.w.write("[globalillumination]")
     exporter.w.write("diffuse_bounces=%i" % s.max_diffuse_bounces)
