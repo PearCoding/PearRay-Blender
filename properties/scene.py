@@ -63,7 +63,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Integrator",
         description="Integrator to be used",
         items=enums.enum_integrator_mode,
-        default='BIDI'
+        default='BIDIRECT'
         )
     render_tile_mode = EnumProperty(
         name="Tile Mode",
@@ -75,7 +75,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="AA Sampler Mode",
         description="AA sampling technique",
         items=enums.enum_sampler_mode,
-        default='MJITT'
+        default='MULTIJITTER'
         )
     sampler_max_aa_samples = IntProperty(
         name="Max AA Samples",
@@ -89,7 +89,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Lens Sampler Mode",
         description="Lens sampling technique",
         items=enums.enum_sampler_mode,
-        default='MJITT'
+        default='MULTIJITTER'
         )
     sampler_max_lens_samples = IntProperty(
         name="Max Lens Samples",
@@ -103,7 +103,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Time Sampler Mode",
         description="Time sampling technique",
         items=enums.enum_sampler_mode,
-        default='MJITT'
+        default='MULTIJITTER'
         )
     sampler_max_time_samples = IntProperty(
         name="Max Time Samples",
@@ -131,7 +131,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Spectral Sampler Mode",
         description="Spectral sampling technique",
         items=enums.enum_sampler_mode,
-        default='MJITT'
+        default='MULTIJITTER'
         )
     sampler_max_spectral_samples = IntProperty(
         name="Max Spectral Samples",

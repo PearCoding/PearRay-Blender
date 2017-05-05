@@ -4,7 +4,7 @@ import math
 import tempfile
 import os
 
-from .ini import write_ini
+from .settings import setup_settings
 from .scene import write_scene
 
 
@@ -93,14 +93,6 @@ class Exporter:
         self.mesh_cache[name] = data
 
         return name, False
-
-
-    def write_ini(self):
-        self.file = open(self.filename, 'w')
-        self.w = Writer(self.file, False)
-        ini.write_ini(self)
-        self.close()
-    
     
     def write_scene(self):
         self.file = open(self.filename, 'w')

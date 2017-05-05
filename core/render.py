@@ -3,9 +3,10 @@ import os
 import sys
 import time
 import subprocess
-import queue
 import threading
 import re
+import importlib
+from collections import deque
 
 from .. import export
 
@@ -20,113 +21,54 @@ class PearRayRender(bpy.types.RenderEngine):
 
 
     @staticmethod
-    def _locate_binary():
+    def _setup_package():
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
 
-        # Use the system preference if its set.
-        pearray_binary = bpy.path.resolve_ncase(bpy.path.abspath(addon_prefs.executable_dir + "/pearray" + (".exe" if sys.platform[:3] == "win" else "")))
-        if pearray_binary:
-            if os.path.exists(pearray_binary):
-                return pearray_binary
-            else:
-                self.report({'ERROR'}, "User Preferences path to pearray %r NOT FOUND, checking $PATH" % pearray_binary)
+        if addon_prefs.package_dir:
+            sys.path.append(bpy.path.resolve_ncase(bpy.path.abspath(addon_prefs.package_dir)))
 
-        # Windows Only
-        if sys.platform[:3] == "win":
-            import winreg
-            win_reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                "Software\\PearRay\\v0.9\\Windows")
-            win_home = winreg.QueryValueEx(win_reg_key, "Home")[0]
-            
-            pearray_binary = os.path.join(win_home, "bin", "pearray.exe")
-            if os.path.exists(pearray_binary):
-                return pearray_binary
-
-        # search the path all os's
-        pearray_binary_default = "pearray"
-
-        os_path_ls = os.getenv("PATH").split(':') + [""]
-
-        for dir_name in os_path_ls:
-            pearray_binary = os.path.join(dir_name, pearray_binary_default)
-            if os.path.exists(pearray_binary):
-                return pearray_binary
-        return ""
+        return importlib.import_module("pypearray")
 
 
-    def _proc_wait(self):
-        time.sleep(0.5)
+    def _proc_wait(self, renderer):
+        time.sleep(0.25)
 
         # User interrupts the rendering
         if self.test_break():
             try:
-                self._process.terminate()
+                renderer.stop()
                 print("<<< PEARRAY INTERRUPTED >>>")
             except OSError:
                 pass
             return False
-
-        poll_result = self._process.poll()
-
-        # PearRay process is finised, one way or the other
-        if poll_result is not None:
-            if poll_result < 0:
-                self.report({'ERROR'}, "PearRay process failed with return code %i" % poll_result)
-                self.update_stats("", "PearRay: Failed")
+        
+        if renderer.finished:
             return False
-
+        
         return True
 
-
-    def _enqueue_output(out, queue, stop_event):
-        for line in iter(out.readline, b''):
-            if stop_event.is_set():
-                break
-            queue.put(line)
-        out.close()
-
-
     
-    def _handle_render_stat(self, percent, q):
-        str_line = ""
-        while True:
-            try:
-                line = q.get_nowait()
-            except queue.Empty:
-                break
-            else:
-                if line == 'preprocess':
-                    pass
-                else:
-                    v = str(line,'utf-8')
-                    m = self.percent_pattern.match(v)
-                    if not m:
-                        continue
-                    
-                    p = float(m.group(1))
-                    if p > percent:
-                        percent = p
-                        str_line = v.strip()
-
-        if str_line:
-            self.last_progress_line = str_line
+    def _handle_render_stat(self, renderer):
+        stat = renderer.status
         
-        if percent == -1:
-            self.update_stats("", "PearRay: Preprocessing...")
-            self.update_progress(0)
-        else:
-            self.update_stats("", "PearRay: Rendering [%s]..." % (self.last_progress_line))
-            self.update_progress(percent*0.01)
-                
-        return percent
+        line = "Pass %s S %i R %i EH %i BH %i" % (renderer.currentPass+1,
+             stat['global.pixel_sample_count'],
+             stat['global.ray_count'],
+             stat['global.entity_hit_count'],
+             stat['global.background_hit_count'])
+        
+        self.update_stats("", "PearRay: Rendering [%s]..." % (line))
+        self.update_progress(stat.percentage)
+
 
     def render(self, scene):
+        pr = PearRayRender._setup_package()
+
         import tempfile
-
-        self.last_progress_line = ""
-        self.percent_pattern = re.compile(r"(\d+(\.\d*)?|\.\d+)\%")
-
         render = scene.render
+
+        x = int(render.resolution_x * render.resolution_percentage * 0.01)
+        y = int(render.resolution_y * render.resolution_percentage * 0.01)
 
         print("<<< START PEARRAY >>>")
         blendSceneName = bpy.data.filepath.split(os.path.sep)[-1].split(".")[0]
@@ -134,153 +76,88 @@ class PearRayRender(bpy.types.RenderEngine):
             blendSceneName = "blender_scene"
 
         sceneFile = ""
-        iniFile = ""
         renderPath = ""
 
         # has to be called to update the frame on exporting animations
         scene.frame_set(scene.frame_current)
 
         renderPath = bpy.path.resolve_ncase(bpy.path.abspath(render.filepath))
-
+        
+        if not render.filepath:
+            renderPath = tempfile.gettempdir()
+        
         if scene.pearray.keep_prc:
             sceneFile = os.path.normpath(renderPath + "/scene.prc")
-            iniFile = os.path.normpath(renderPath + "/scene.ini")
         else:
             sceneFile = tempfile.NamedTemporaryFile(suffix=".prc").name
-            iniFile = tempfile.NamedTemporaryFile(suffix=".ini").name
-        
+
         self.update_stats("", "PearRay: Exporting data")
-        ini_exporter = export.Exporter(iniFile, scene)
-        ini_exporter.write_ini()
         scene_exporter = export.Exporter(sceneFile, scene)
         scene_exporter.write_scene()
 
         self.update_stats("", "PearRay: Starting render")
-        pearray_binary = PearRayRender._locate_binary()
-        if not pearray_binary:
-            self.report({'ERROR'}, "PearRay: could not execute pearray, possibly PearRay isn't installed")
+        environment = pr.SceneLoader.loadFromFile(sceneFile)
+
+        toneMapper = pr.ToneMapper(x, y)
+        toneMapper.colorMode = pr.ToneColorMode.SRGB
+        toneMapper.gammaMode = pr.ToneGammaMode.NONE
+        toneMapper.mapperMode = pr.ToneMapperMode.NONE
+
+        factory = pr.RenderFactory(x, y, environment.scene, renderPath)
+        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
+        export.setup_settings(pr, factory.settings, scene)
+
+        renderer = factory.create()
+
+        if not renderer:
+            self.report({'ERROR'}, "PearRay: could not create pearray instance")
             print("<<< PEARRAY FAILED >>>")
             return
 
-        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
-
-        args = [sceneFile,
-                renderPath, 
-                "-q",# be quiet
-                "-C",
-                iniFile,
-                ]
-        if addon_prefs.show_progress_interval > 0:
-            args.append("-p" + str(addon_prefs.show_progress_interval))# show progress (ignores quiet option)
-
-        if addon_prefs.show_image_interval > 0:
-            args.append("--img-update=" + str(addon_prefs.show_image_interval))
-
-        if addon_prefs.verbose:
-            args.append("-v")
-            args.append("-I")
-
-        if not scene.pearray.debug_mode == 'NONE':
-            args.append("--debug=%s" % scene.pearray.debug_mode.lower())
+        environment.setup(renderer)
 
         if not os.path.exists(renderPath):
             os.makedirs(renderPath)
-        output_image = os.path.normpath(renderPath + "/results/image.exr")
 
-        if os.path.exists(output_image):
-            os.remove(output_image)
-        
-        # Start Rendering!
-        try:
-            self._process = subprocess.Popen([pearray_binary] + args,
-                                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        except OSError:
-            self.report({'ERROR'}, "PearRay: could not execute '%s'" % pearray_binary)
-            import traceback
-            traceback.print_exc()
-            print ("<<< PEARRAY FAILED >>>")
-            return
+        threads = 0
+        if scene.render.threads_mode == 'FIXED':
+            threads = scene.render.threads
 
-        else:
-            print ("<<< PEARRAY STARTED >>>")
-            print ("Command line arguments passed: " + str(args))
+        renderer.start(scene.render.tile_x, scene.render.tile_y, threads)
 
         # Update image
-        x = int(render.resolution_x * render.resolution_percentage * 0.01)
-        y = int(render.resolution_y * render.resolution_percentage * 0.01)
-        xmin = int(render.border_min_x * x)
-        ymin = int(render.border_min_y * y)
-        xmax = int(render.border_max_x * x)
-        ymax = int(render.border_max_y * y)
         result = self.begin_result(0, 0, x, y)
         layer = result.layers[0]
 
-        lock_path = os.path.normpath(renderPath + "/.img_lock")
         def update_image():
-            try:
-                try:
-                    os.mkdir(lock_path)
-                except FileExistsError:
-                    return
-                
-                layer.load_from_file(output_image)#TODO Add different passes etc.                
-                self.update_result(result)
-            except RuntimeError:
-                pass
+            color = toneMapper.map(renderer.output.spectral)
+            nc = []
+            for r in reversed(color):
+                for c in r:
+                    nc.append((c[0],c[1],c[2],1))
+            layer.passes["Combined"].rect = nc
+            self.update_result(result)
 
-            try:
-                if os.path.exists(lock_path):
-                    os.rmdir(lock_path)
-            except RuntimeError:
-                print("ERROR: Couldn't remove .img_lock, even when locking it!")
-        
-        time.sleep(2)
-
-        if addon_prefs.show_image_interval > 0:
-            update_image()
-            
-        # Line handler
-        if addon_prefs.show_progress_interval > 0:
-            stdout_queue = queue.Queue()
-            stdout_thread_stop = threading.Event()
-            stdout_thread = threading.Thread(target=PearRayRender._enqueue_output, args=(self._process.stdout, stdout_queue, stdout_thread_stop))
-            stdout_thread.daemon = True # thread dies with the program
-            stdout_thread.start()
-
-        prev_size = -1
-        prev_mtime = -1
-        percent = -1
+        update_image()
 
         prog_start = time.time()
         img_start = time.time()
-        while self._proc_wait():
-            if addon_prefs.show_progress_interval > 0:
-                prog_end = time.time() 
-                if addon_prefs.show_progress_interval < (prog_end - prog_start):
-                    percent = self._handle_render_stat(percent, stdout_queue)
-                    prog_start = prog_end
-            else:
-                self.update_stats("", "PearRay: Rendering...")
+        while self._proc_wait(renderer):
+            prog_end = time.time() 
+            if addon_prefs.show_progress_interval < (prog_end - prog_start):
+                self._handle_render_stat(renderer)
+                prog_start = prog_end
 
-            if addon_prefs.show_image_interval > 0 and os.path.exists(output_image):
+            if addon_prefs.show_image_interval > 0:
                 img_end = time.time() 
                 if addon_prefs.show_image_interval < (img_end - img_start):
-                    new_size = os.path.getsize(output_image)
-                    new_mtime = os.path.getmtime(output_image)
-
-                    if new_size != prev_size or new_mtime != prev_mtime:
-                        update_image()
-                        prev_size = new_size
-                        prev_mtime = new_mtime
-                    
+                    update_image()
                     img_start = img_end
-
-        if addon_prefs.show_progress_interval > 0:
-            stdout_thread_stop.set()
-            stdout_thread.join()
 
         update_image()
         self.end_result(result)
+
+        environment.save(renderer, toneMapper, True)
 
         if not scene.pearray.keep_prc:
             os.remove(sceneFile)
