@@ -62,7 +62,9 @@ class PearRayRender(bpy.types.RenderEngine):
 
 
     def render(self, scene):
+        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
         pr = PearRayRender._setup_package()
+        pr.Logger.instance.verbose = addon_prefs.verbose
 
         import tempfile
         render = scene.render
@@ -91,6 +93,7 @@ class PearRayRender(bpy.types.RenderEngine):
         else:
             sceneFile = tempfile.NamedTemporaryFile(suffix=".prc").name
 
+        
         self.update_stats("", "PearRay: Exporting data")
         scene_exporter = export.Exporter(sceneFile, scene)
         scene_exporter.write_scene()
