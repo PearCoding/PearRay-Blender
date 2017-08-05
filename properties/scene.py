@@ -164,7 +164,7 @@ class PearRaySceneProperties(PropertyGroup):
         soft_max=1000000000,
         step=100,
         subtype="UNSIGNED",
-        default=1000000
+        default=200000
         )
     photon_passes = IntProperty(
         name="Max Passes",

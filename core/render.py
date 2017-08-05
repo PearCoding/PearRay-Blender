@@ -106,7 +106,7 @@ class PearRayRender(bpy.types.RenderEngine):
         toneMapper.gammaMode = pr.ToneGammaMode.NONE
         toneMapper.mapperMode = pr.ToneMapperMode.NONE
 
-        factory = pr.RenderFactory(x, y, environment.scene, renderPath)
+        factory = pr.RenderFactory(x, y, environment.scene, renderPath, False)
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
         export.setup_settings(pr, factory.settings, scene)
 
