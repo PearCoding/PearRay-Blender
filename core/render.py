@@ -137,7 +137,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
         def update_image():
             colorBuffer.map(toneMapper, renderer.output.spectral)
-            arr = np.array(colorBuffer, copy=False).astype(type('float', (float,), {}))
+            arr = np.array(colorBuffer, copy=False)
             arr = np.reshape(np.flip(arr,0), (x*y,4), 'C')
             layer.passes["Combined"].rect = arr
             self.update_result(result)
