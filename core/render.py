@@ -6,6 +6,7 @@ import subprocess
 import threading
 import re
 import importlib
+import numpy as np
 from collections import deque
 
 from .. import export
@@ -106,6 +107,8 @@ class PearRayRender(bpy.types.RenderEngine):
         toneMapper.gammaMode = pr.ToneGammaMode.NONE
         toneMapper.mapperMode = pr.ToneMapperMode.NONE
 
+        colorBuffer = pr.ColorBuffer(x,y,pr.ColorBufferMode.RGBA)
+
         factory = pr.RenderFactory(x, y, environment.scene, renderPath, False)
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
         export.setup_settings(pr, factory.settings, scene)
@@ -133,12 +136,10 @@ class PearRayRender(bpy.types.RenderEngine):
         layer = result.layers[0]
 
         def update_image():
-            color = toneMapper.map(renderer.output.spectral)
-            nc = []
-            for r in reversed(color):
-                for c in r:
-                    nc.append((c[0],c[1],c[2],1))
-            layer.passes["Combined"].rect = nc
+            colorBuffer.map(toneMapper, renderer.output.spectral)
+            arr = np.array(colorBuffer, copy=False).astype(type('float', (float,), {}))
+            arr = np.reshape(np.flip(arr,0), (x*y,4), 'C')
+            layer.passes["Combined"].rect = arr
             self.update_result(result)
 
         update_image()
