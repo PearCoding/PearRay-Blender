@@ -22,8 +22,11 @@ def export_pointlight(exporter, light):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'light'")
-    w.write(":camera_visible false")
     w.write(":emission %s" % color_name)
+    if not light_data.pearray.camera_visible:
+        w.write(":camera_visible false")
+    else:
+        w.write(":albedo %s" % color_name)
 
     w.goOut()
     w.write(")")
@@ -55,8 +58,11 @@ def export_arealight(exporter, light):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'light'")
-    w.write(":camera_visible false")
     w.write(":emission %s" % color_name)
+    if not light_data.pearray.camera_visible:
+        w.write(":camera_visible false")
+    else:
+        w.write(":albedo %s" % color_name)
 
     w.goOut()
     w.write(")")
@@ -73,7 +79,7 @@ def export_arealight(exporter, light):
     w.write(":type 'plane'")
     w.write(":centering true")
     w.write(":xAxis %f" % light_data.size)
-    w.write(":yAxis %f" % -ysize)
+    w.write(":yAxis %f" % ysize)
     w.write(":material '%s'" % light_mat_n)
     inline_entity_matrix(exporter, light)
 

@@ -129,7 +129,7 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
 
         layout.prop(scene.pearray, "max_diffuse_bounces")
 
-        if scene.pearray.integrator == 'DI' or scene.pearray.integrator == 'BIDI':
+        if scene.pearray.integrator == 'DIRECT' or scene.pearray.integrator == 'BIDIRECT':
             layout.prop(scene.pearray, "max_light_samples")
 
         if scene.pearray.integrator == 'PPM':

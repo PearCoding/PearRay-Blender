@@ -45,6 +45,13 @@ class PearRayLightProperties(PropertyGroup):
         min=0, soft_max=100000.00, default=1, step=100
     )
 
+    # Point and Area Light
+    camera_visible = BoolProperty(
+        name="Camera Visible",
+        description="Will be visible by the camera",
+        default=False
+    )
+
     # Point Light
     point_radius = FloatProperty(
         name="Sphere radius",

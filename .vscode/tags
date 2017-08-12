@@ -38,7 +38,7 @@ PearRayCameraProperties	../properties/camera.py	/^class PearRayCameraProperties(
 PearRayLightProperties	../properties/light.py	/^class PearRayLightProperties(PropertyGroup):$/;"	kind:class	line:21
 PearRayMaterialProperties	../properties/material.py	/^class PearRayMaterialProperties(PropertyGroup):$/;"	kind:class	line:21
 PearRayPreferences	../properties/__init__.py	/^class PearRayPreferences(AddonPreferences):$/;"	kind:class	line:21
-PearRayRender	../core/render.py	/^class PearRayRender(bpy.types.RenderEngine):$/;"	kind:class	line:16
+PearRayRender	../core/render.py	/^class PearRayRender(bpy.types.RenderEngine):$/;"	kind:class	line:17
 PearRaySceneProperties	../properties/scene.py	/^class PearRaySceneProperties(PropertyGroup):$/;"	kind:class	line:22
 PearRaySceneRenderLayerProperties	../properties/layer.py	/^class PearRaySceneRenderLayerProperties(PropertyGroup):$/;"	kind:class	line:22
 RENDERLAYER_PT_pr_layer_aovs	../ui/properties_render_layer.py	/^class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):$/;"	kind:class	line:41
@@ -64,10 +64,10 @@ __init__.py	../core/__init__.py	1;"	kind:file	line:1
 __init__.py	../export/__init__.py	1;"	kind:file	line:1
 __init__.py	../properties/__init__.py	1;"	kind:file	line:1
 __init__.py	../ui/__init__.py	1;"	kind:file	line:1
-_handle_render_stat	../core/render.py	/^    def _handle_render_stat(self, renderer):$/;"	kind:member	line:51
+_handle_render_stat	../core/render.py	/^    def _handle_render_stat(self, renderer):$/;"	kind:member	line:52
 _locate_binary	../core/rayview.py	/^    def _locate_binary():$/;"	kind:member	line:16
-_proc_wait	../core/render.py	/^    def _proc_wait(self, renderer):$/;"	kind:member	line:33
-_setup_package	../core/render.py	/^    def _setup_package():$/;"	kind:member	line:24
+_proc_wait	../core/render.py	/^    def _proc_wait(self, renderer):$/;"	kind:member	line:34
+_setup_package	../core/render.py	/^    def _setup_package():$/;"	kind:member	line:25
 aov_dpdu	../properties/layer.py	/^    aov_dpdu = BoolProperty($/;"	kind:variable	line:64
 aov_dpdv	../properties/layer.py	/^    aov_dpdv = BoolProperty($/;"	kind:variable	line:69
 aov_dpdw	../properties/layer.py	/^    aov_dpdw = BoolProperty($/;"	kind:variable	line:74
@@ -89,11 +89,11 @@ bl_context	../ui/properties_camera.py	/^    bl_context = "data"$/;"	kind:variabl
 bl_context	../ui/properties_render.py	/^    bl_context = "render"$/;"	kind:variable	line:12
 bl_context	../ui/properties_world.py	/^    bl_context = "world"$/;"	kind:variable	line:12
 bl_idname	../core/rayview.py	/^    bl_idname = "pearray.run_rayview"$/;"	kind:variable	line:12
-bl_idname	../core/render.py	/^    bl_idname = 'PEARRAY_RENDER'$/;"	kind:variable	line:17
+bl_idname	../core/render.py	/^    bl_idname = 'PEARRAY_RENDER'$/;"	kind:variable	line:18
 bl_idname	../properties/__init__.py	/^    bl_idname = pearray_package.__package__$/;"	kind:variable	line:22
 bl_info	../__init__.py	/^bl_info = {$/;"	kind:variable	line:1
 bl_label	../core/rayview.py	/^    bl_label = "Run RayView"$/;"	kind:variable	line:13
-bl_label	../core/render.py	/^    bl_label = "PearRay"$/;"	kind:variable	line:18
+bl_label	../core/render.py	/^    bl_label = "PearRay"$/;"	kind:variable	line:19
 bl_label	../ui/properties_camera.py	/^    bl_label = "PearRay Settings"$/;"	kind:variable	line:28
 bl_label	../ui/properties_light.py	/^    bl_label = "Lamp"$/;"	kind:variable	line:14
 bl_label	../ui/properties_material.py	/^    bl_label = ""$/;"	kind:variable	line:8
@@ -123,7 +123,7 @@ bl_region_type	../ui/properties_world.py	/^    bl_region_type = 'WINDOW'$/;"	kin
 bl_space_type	../ui/properties_camera.py	/^    bl_space_type = 'PROPERTIES'$/;"	kind:variable	line:15
 bl_space_type	../ui/properties_render.py	/^    bl_space_type = 'PROPERTIES'$/;"	kind:variable	line:10
 bl_space_type	../ui/properties_world.py	/^    bl_space_type = 'PROPERTIES'$/;"	kind:variable	line:10
-bl_use_exclude_layers	../core/render.py	/^    bl_use_exclude_layers = True$/;"	kind:variable	line:20
+bl_use_exclude_layers	../core/render.py	/^    bl_use_exclude_layers = True$/;"	kind:variable	line:21
 bsdf	../properties/material.py	/^    bsdf = EnumProperty($/;"	kind:variable	line:22
 camera.py	../export/camera.py	1;"	kind:file	line:1
 camera.py	../properties/camera.py	1;"	kind:file	line:1
@@ -519,7 +519,7 @@ name	../properties/scene.py	/^        name="Time Scale",$/;"	kind:variable	line:
 name	../properties/scene.py	/^        name="Use linear sRGB",$/;"	kind:variable	line:39
 package_dir	../properties/__init__.py	/^    package_dir = StringProperty($/;"	kind:variable	line:24
 pearray_package	../core/rayview.py	/^pearray_package = __import__(__name__.split('.')[0])$/;"	kind:variable	line:8
-pearray_package	../core/render.py	/^pearray_package = __import__(__name__.split('.')[0])$/;"	kind:variable	line:13
+pearray_package	../core/render.py	/^pearray_package = __import__(__name__.split('.')[0])$/;"	kind:variable	line:14
 pearray_package	../properties/__init__.py	/^pearray_package = __import__(__name__.split('.')[0])$/;"	kind:variable	line:20
 photon_count	../properties/scene.py	/^    photon_count = IntProperty($/;"	kind:variable	line:160
 photon_gather_radius	../properties/scene.py	/^    photon_gather_radius = FloatProperty($/;"	kind:variable	line:177
@@ -556,7 +556,7 @@ register	../properties/__init__.py	/^def register():$/;"	kind:function	line:57
 register	../ui/__init__.py	/^def register():$/;"	kind:function	line:43
 register_mesh_data	../export/__init__.py	/^    def register_mesh_data(self, name, data):$/;"	kind:member	line:87
 register_unique_name	../export/__init__.py	/^    def register_unique_name(self, type, name):$/;"	kind:member	line:76
-render	../core/render.py	/^    def render(self, scene):$/;"	kind:member	line:64
+render	../core/render.py	/^    def render(self, scene):$/;"	kind:member	line:65
 render.py	../core/render.py	1;"	kind:file	line:1
 render_tile_mode	../properties/scene.py	/^    render_tile_mode = EnumProperty($/;"	kind:variable	line:68
 renderable_objects	../export/scene.py	/^def renderable_objects(scene):$/;"	kind:function	line:14
@@ -629,7 +629,7 @@ texture.py	../export/texture.py	1;"	kind:file	line:1
 unregister	../__init__.py	/^def unregister():$/;"	kind:function	line:37
 unregister	../properties/__init__.py	/^def unregister():$/;"	kind:function	line:65
 unregister	../ui/__init__.py	/^def unregister():$/;"	kind:function	line:47
-update_image	../core/render.py	/^        def update_image():$/;"	kind:function	line:135
+update_image	../core/render.py	/^        def update_image():$/;"	kind:function	line:138
 verbose	../properties/__init__.py	/^    verbose = BoolProperty($/;"	kind:variable	line:43
 write	../export/__init__.py	/^    def write(self, str):$/;"	kind:member	line:18
 write_scene	../export/__init__.py	/^    def write_scene(self):$/;"	kind:member	line:97
