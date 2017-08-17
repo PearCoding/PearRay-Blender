@@ -79,7 +79,7 @@ def export_arealight(exporter, light):
     w.write(":type 'plane'")
     w.write(":centering true")
     w.write(":xAxis %f" % light_data.size)
-    w.write(":yAxis %f" % ysize)
+    w.write(":yAxis %f" % (-ysize))
     w.write(":material '%s'" % light_mat_n)
     inline_entity_matrix(exporter, light)
 

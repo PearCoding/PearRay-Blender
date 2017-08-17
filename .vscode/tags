@@ -127,6 +127,7 @@ bl_use_exclude_layers	../core/render.py	/^    bl_use_exclude_layers = True$/;"	k
 bsdf	../properties/material.py	/^    bsdf = EnumProperty($/;"	kind:variable	line:22
 camera.py	../export/camera.py	1;"	kind:file	line:1
 camera.py	../properties/camera.py	1;"	kind:file	line:1
+camera_visible	../properties/light.py	/^    camera_visible = BoolProperty($/;"	kind:variable	line:49
 cast_self_shadows	../properties/material.py	/^    cast_self_shadows = BoolProperty($/;"	kind:variable	line:35
 cast_shadows	../properties/material.py	/^    cast_shadows = BoolProperty($/;"	kind:variable	line:29
 close	../export/__init__.py	/^    def close(self):$/;"	kind:member	line:109
@@ -160,6 +161,7 @@ default	../properties/layer.py	/^        default=False$/;"	kind:variable	line:92
 default	../properties/layer.py	/^        default=False$/;"	kind:variable	line:98
 default	../properties/light.py	/^        default='COLOR'$/;"	kind:variable	line:26
 default	../properties/light.py	/^        default='LUM'$/;"	kind:variable	line:39
+default	../properties/light.py	/^        default=False$/;"	kind:variable	line:52
 default	../properties/material.py	/^        default='COLOR'$/;"	kind:variable	line:123
 default	../properties/material.py	/^        default='COLOR'$/;"	kind:variable	line:58
 default	../properties/material.py	/^        default='COLOR'$/;"	kind:variable	line:94
@@ -229,7 +231,8 @@ description	../properties/light.py	/^        description="Light Blackbody Color 
 description	../properties/light.py	/^        description="Light Blackbody Color Temperature Type",$/;"	kind:variable	line:37
 description	../properties/light.py	/^        description="Light Blackbody Color Temperature",$/;"	kind:variable	line:31
 description	../properties/light.py	/^        description="Light Color Type",$/;"	kind:variable	line:24
-description	../properties/light.py	/^        description="Sphere radius of point light",$/;"	kind:variable	line:51
+description	../properties/light.py	/^        description="Sphere radius of point light",$/;"	kind:variable	line:58
+description	../properties/light.py	/^        description="Will be visible by the camera",$/;"	kind:variable	line:51
 description	../properties/material.py	/^        description="BSDF type",$/;"	kind:variable	line:24
 description	../properties/material.py	/^        description="Cast Shadows",$/;"	kind:variable	line:31
 description	../properties/material.py	/^        description="Cast shadows on himself",$/;"	kind:variable	line:37
@@ -327,28 +330,28 @@ emission_color_tex_slot	../properties/material.py	/^    emission_color_tex_slot 
 emission_color_type	../properties/material.py	/^    emission_color_type = EnumProperty($/;"	kind:variable	line:54
 end_output	../export/scene.py	/^        def end_output():$/;"	kind:function	line:45
 entity.py	../export/entity.py	1;"	kind:file	line:1
-enum_color_type	../properties/enums.py	/^enum_color_type= ($/;"	kind:variable	line:54
+enum_color_type	../properties/enums.py	/^enum_color_type= ($/;"	kind:variable	line:55
 enum_debug_mode	../properties/enums.py	/^enum_debug_mode= ($/;"	kind:variable	line:2
-enum_flat_color_type	../properties/enums.py	/^enum_flat_color_type= ($/;"	kind:variable	line:61
-enum_integrator_mode	../properties/enums.py	/^enum_integrator_mode= ($/;"	kind:variable	line:37
-enum_material_bsdf	../properties/enums.py	/^enum_material_bsdf= ($/;"	kind:variable	line:73
-enum_material_ct_distribution_mode	../properties/enums.py	/^enum_material_ct_distribution_mode= ($/;"	kind:variable	line:88
-enum_material_ct_fresnel_mode	../properties/enums.py	/^enum_material_ct_fresnel_mode= ($/;"	kind:variable	line:83
-enum_material_ct_geometry_mode	../properties/enums.py	/^enum_material_ct_geometry_mode= ($/;"	kind:variable	line:94
-enum_photon_gathering_mode	../properties/enums.py	/^enum_photon_gathering_mode= ($/;"	kind:variable	line:49
-enum_sampler_mode	../properties/enums.py	/^enum_sampler_mode= ($/;"	kind:variable	line:23
-enum_temp_type	../properties/enums.py	/^enum_temp_type= ($/;"	kind:variable	line:66
-enum_tile_mode	../properties/enums.py	/^enum_tile_mode= ($/;"	kind:variable	line:43
-enum_time_mapping_mode	../properties/enums.py	/^enum_time_mapping_mode= ($/;"	kind:variable	line:31
+enum_flat_color_type	../properties/enums.py	/^enum_flat_color_type= ($/;"	kind:variable	line:62
+enum_integrator_mode	../properties/enums.py	/^enum_integrator_mode= ($/;"	kind:variable	line:38
+enum_material_bsdf	../properties/enums.py	/^enum_material_bsdf= ($/;"	kind:variable	line:74
+enum_material_ct_distribution_mode	../properties/enums.py	/^enum_material_ct_distribution_mode= ($/;"	kind:variable	line:89
+enum_material_ct_fresnel_mode	../properties/enums.py	/^enum_material_ct_fresnel_mode= ($/;"	kind:variable	line:84
+enum_material_ct_geometry_mode	../properties/enums.py	/^enum_material_ct_geometry_mode= ($/;"	kind:variable	line:95
+enum_photon_gathering_mode	../properties/enums.py	/^enum_photon_gathering_mode= ($/;"	kind:variable	line:50
+enum_sampler_mode	../properties/enums.py	/^enum_sampler_mode= ($/;"	kind:variable	line:24
+enum_temp_type	../properties/enums.py	/^enum_temp_type= ($/;"	kind:variable	line:67
+enum_tile_mode	../properties/enums.py	/^enum_tile_mode= ($/;"	kind:variable	line:44
+enum_time_mapping_mode	../properties/enums.py	/^enum_time_mapping_mode= ($/;"	kind:variable	line:32
 enums.py	../properties/enums.py	1;"	kind:file	line:1
 execute	../core/rayview.py	/^    def execute(self, context):$/;"	kind:member	line:49
-export_arealight	../export/light.py	/^def export_arealight(exporter, light):$/;"	kind:function	line:44
+export_arealight	../export/light.py	/^def export_arealight(exporter, light):$/;"	kind:function	line:47
 export_background	../export/scene.py	/^    def export_background():# TODO: Add texture support$/;"	kind:function	line:113
 export_camera	../export/camera.py	/^def export_camera(exporter, camera):$/;"	kind:function	line:7
 export_color	../export/material.py	/^def export_color(exporter, material, type, required, factor=1):$/;"	kind:function	line:192
 export_default_materials	../export/material.py	/^def export_default_materials(exporter):$/;"	kind:function	line:261
 export_image	../export/texture.py	/^def export_image(exporter, image):$/;"	kind:function	line:5
-export_light	../export/light.py	/^def export_light(exporter, light):$/;"	kind:function	line:116
+export_light	../export/light.py	/^def export_light(exporter, light):$/;"	kind:function	line:122
 export_material	../export/material.py	/^def export_material(exporter, material):$/;"	kind:function	line:232
 export_material_cook_torrance	../export/material.py	/^def export_material_cook_torrance(exporter, material):$/;"	kind:function	line:88
 export_material_diffuse	../export/material.py	/^def export_material_diffuse(exporter, material):$/;"	kind:function	line:21
@@ -361,7 +364,7 @@ export_mesh	../export/mesh.py	/^def export_mesh(exporter, obj):$/;"	kind:functio
 export_outputs	../export/scene.py	/^    def export_outputs():$/;"	kind:function	line:37
 export_pointlight	../export/light.py	/^def export_pointlight(exporter, light):$/;"	kind:function	line:9
 export_scene	../export/scene.py	/^    def export_scene():$/;"	kind:function	line:30
-export_sunlight	../export/light.py	/^def export_sunlight(exporter, light):$/;"	kind:function	line:84
+export_sunlight	../export/light.py	/^def export_sunlight(exporter, light):$/;"	kind:function	line:90
 export_texture	../export/texture.py	/^def export_texture(exporter, texture):$/;"	kind:function	line:21
 export_trimesh	../export/mesh.py	/^def export_trimesh(exporter, mw, name, mesh):$/;"	kind:function	line:6
 fstop	../properties/camera.py	/^    fstop = FloatProperty($/;"	kind:variable	line:13
@@ -450,11 +453,12 @@ name	../properties/layer.py	/^        name="dPdW",$/;"	kind:variable	line:75
 name	../properties/layer.py	/^        name="dPdX",$/;"	kind:variable	line:80
 name	../properties/layer.py	/^        name="dPdY",$/;"	kind:variable	line:85
 name	../properties/layer.py	/^        name="dPdZ",$/;"	kind:variable	line:90
+name	../properties/light.py	/^        name="Camera Visible",$/;"	kind:variable	line:50
 name	../properties/light.py	/^        name="Light Color Temperature Normalization Factor",$/;"	kind:variable	line:43
 name	../properties/light.py	/^        name="Light Color Temperature Type",$/;"	kind:variable	line:36
 name	../properties/light.py	/^        name="Light Color Temperature",$/;"	kind:variable	line:30
 name	../properties/light.py	/^        name="Light Color Type",$/;"	kind:variable	line:23
-name	../properties/light.py	/^        name="Sphere radius",$/;"	kind:variable	line:50
+name	../properties/light.py	/^        name="Sphere radius",$/;"	kind:variable	line:57
 name	../properties/material.py	/^        name="BSDF",$/;"	kind:variable	line:23
 name	../properties/material.py	/^        name="Camera Visible",$/;"	kind:variable	line:42
 name	../properties/material.py	/^        name="Cast Self Shadows",$/;"	kind:variable	line:36
@@ -531,7 +535,7 @@ photon_proj_qual	../properties/scene.py	/^    photon_proj_qual = FloatProperty($
 photon_proj_weight	../properties/scene.py	/^    photon_proj_weight = FloatProperty($/;"	kind:variable	line:209
 photon_ratio	../properties/scene.py	/^    photon_ratio = FloatProperty($/;"	kind:variable	line:203
 photon_squeeze	../properties/scene.py	/^    photon_squeeze = FloatProperty($/;"	kind:variable	line:197
-point_radius	../properties/light.py	/^    point_radius = FloatProperty($/;"	kind:variable	line:49
+point_radius	../properties/light.py	/^    point_radius = FloatProperty($/;"	kind:variable	line:56
 poll	../ui/properties_camera.py	/^    def poll(cls, context):$/;"	kind:member	line:21
 poll	../ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:122
 poll	../ui/properties_material.py	/^    def poll(cls, context):$/;"	kind:member	line:13
