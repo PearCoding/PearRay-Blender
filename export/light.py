@@ -12,8 +12,8 @@ def export_pointlight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
 
-    factor = 1#4*math.pi*light_data.pearray.point_radius*light_data.pearray.point_radius;
-    color_name = export_color(exporter, light_data, 'color', True, 1/factor)
+    factor = 4*math.pi*light_data.pearray.point_radius*light_data.pearray.point_radius
+    color_name = export_color(exporter, light_data, 'color', True, factor)
 
     light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 
@@ -49,7 +49,12 @@ def export_arealight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
 
-    color_name = export_color(exporter, light_data, 'color', True)
+    if light_data.shape == 'SQUARE':
+        ysize = light_data.size
+    else:
+        ysize = light_data.size_y
+
+    color_name = export_color(exporter, light_data, 'color', True, light_data.size * ysize)
 
     light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
 
@@ -69,11 +74,6 @@ def export_arealight(exporter, light):
 
     w.write("(entity")
     w.goIn()
-
-    if light_data.shape == 'SQUARE':
-        ysize = light_data.size
-    else:
-        ysize = light_data.size_y
 
     w.write(":name '%s'" % light.name)
     w.write(":type 'plane'")

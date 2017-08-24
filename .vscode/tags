@@ -330,19 +330,19 @@ emission_color_tex_slot	../properties/material.py	/^    emission_color_tex_slot 
 emission_color_type	../properties/material.py	/^    emission_color_type = EnumProperty($/;"	kind:variable	line:54
 end_output	../export/scene.py	/^        def end_output():$/;"	kind:function	line:45
 entity.py	../export/entity.py	1;"	kind:file	line:1
-enum_color_type	../properties/enums.py	/^enum_color_type= ($/;"	kind:variable	line:55
+enum_color_type	../properties/enums.py	/^enum_color_type= ($/;"	kind:variable	line:56
 enum_debug_mode	../properties/enums.py	/^enum_debug_mode= ($/;"	kind:variable	line:2
-enum_flat_color_type	../properties/enums.py	/^enum_flat_color_type= ($/;"	kind:variable	line:62
-enum_integrator_mode	../properties/enums.py	/^enum_integrator_mode= ($/;"	kind:variable	line:38
-enum_material_bsdf	../properties/enums.py	/^enum_material_bsdf= ($/;"	kind:variable	line:74
-enum_material_ct_distribution_mode	../properties/enums.py	/^enum_material_ct_distribution_mode= ($/;"	kind:variable	line:89
-enum_material_ct_fresnel_mode	../properties/enums.py	/^enum_material_ct_fresnel_mode= ($/;"	kind:variable	line:84
-enum_material_ct_geometry_mode	../properties/enums.py	/^enum_material_ct_geometry_mode= ($/;"	kind:variable	line:95
-enum_photon_gathering_mode	../properties/enums.py	/^enum_photon_gathering_mode= ($/;"	kind:variable	line:50
-enum_sampler_mode	../properties/enums.py	/^enum_sampler_mode= ($/;"	kind:variable	line:24
-enum_temp_type	../properties/enums.py	/^enum_temp_type= ($/;"	kind:variable	line:67
-enum_tile_mode	../properties/enums.py	/^enum_tile_mode= ($/;"	kind:variable	line:44
-enum_time_mapping_mode	../properties/enums.py	/^enum_time_mapping_mode= ($/;"	kind:variable	line:32
+enum_flat_color_type	../properties/enums.py	/^enum_flat_color_type= ($/;"	kind:variable	line:63
+enum_integrator_mode	../properties/enums.py	/^enum_integrator_mode= ($/;"	kind:variable	line:39
+enum_material_bsdf	../properties/enums.py	/^enum_material_bsdf= ($/;"	kind:variable	line:75
+enum_material_ct_distribution_mode	../properties/enums.py	/^enum_material_ct_distribution_mode= ($/;"	kind:variable	line:90
+enum_material_ct_fresnel_mode	../properties/enums.py	/^enum_material_ct_fresnel_mode= ($/;"	kind:variable	line:85
+enum_material_ct_geometry_mode	../properties/enums.py	/^enum_material_ct_geometry_mode= ($/;"	kind:variable	line:96
+enum_photon_gathering_mode	../properties/enums.py	/^enum_photon_gathering_mode= ($/;"	kind:variable	line:51
+enum_sampler_mode	../properties/enums.py	/^enum_sampler_mode= ($/;"	kind:variable	line:25
+enum_temp_type	../properties/enums.py	/^enum_temp_type= ($/;"	kind:variable	line:68
+enum_tile_mode	../properties/enums.py	/^enum_tile_mode= ($/;"	kind:variable	line:45
+enum_time_mapping_mode	../properties/enums.py	/^enum_time_mapping_mode= ($/;"	kind:variable	line:33
 enums.py	../properties/enums.py	1;"	kind:file	line:1
 execute	../core/rayview.py	/^    def execute(self, context):$/;"	kind:member	line:49
 export_arealight	../export/light.py	/^def export_arealight(exporter, light):$/;"	kind:function	line:47
