@@ -18,7 +18,7 @@ enum_debug_mode= (
     ('PDF', "PDF", "Show probability distribution function values"),
     ('EMISSION', "Emission", "Show emission part of the rendering equation"),
     ('VALIDITY', "Validity", "Show if material is valid"),
-    ('FLAG_INSIDE', "Flag Inside", "Show if surface is inside or outside"),
+    ('FLAG_INSIDE', "Flag Inside", "Show if surface is inside or outside. Green inside, Red outside."),
     ('CONTAINER_ID', "Container ID", "Show id of the container which the primitive belongs to"),
     )
 
