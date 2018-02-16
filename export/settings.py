@@ -2,7 +2,6 @@ def setup_settings(pr, settings, scene):
     s = scene.pearray
     settings.integratorMode = pr.IntegratorMode.__members__[s.integrator]
     settings.debugMode = pr.DebugMode.__members__[s.debug_mode]
-    settings.incremental = s.incremental
     settings.maxRayDepth = s.max_ray_depth
 
     settings.tileMode = pr.TileMode.__members__[s.render_tile_mode]

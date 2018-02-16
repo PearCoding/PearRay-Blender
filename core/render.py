@@ -67,6 +67,8 @@ class PearRayRender(bpy.types.RenderEngine):
         pr = PearRayRender._setup_package()
         pr.Logger.instance.verbose = addon_prefs.verbose
 
+        specDesc = pr.SpectrumDescriptor.createStandardSpectral()
+
         import tempfile
         render = scene.render
 
@@ -109,14 +111,21 @@ class PearRayRender(bpy.types.RenderEngine):
 
         colorBuffer = pr.ColorBuffer(x,y,pr.ColorBufferMode.RGBA)
 
-        factory = pr.RenderFactory(x, y, environment.scene, renderPath, False)
+        pr_scene = environment.sceneFactory.create()
+        if not pr_scene:
+            self.report({'ERROR'}, "PearRay: could not create pearray scene instance")
+            print("<<< PEARRAY FAILED >>>")
+            return
+
+        factory = pr.RenderFactory(specDesc, x, y, pr_scene, renderPath, False)
+
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
         export.setup_settings(pr, factory.settings, scene)
 
         renderer = factory.create()
 
         if not renderer:
-            self.report({'ERROR'}, "PearRay: could not create pearray instance")
+            self.report({'ERROR'}, "PearRay: could not create pearray render instance")
             print("<<< PEARRAY FAILED >>>")
             return
 
@@ -136,7 +145,7 @@ class PearRayRender(bpy.types.RenderEngine):
         layer = result.layers[0]
 
         def update_image():
-            colorBuffer.map(toneMapper, renderer.output.spectral)
+            colorBuffer.map(toneMapper, renderer.output.spectral, specDesc.samples)
             arr = np.array(colorBuffer, copy=False)
             arr = np.reshape(np.flip(arr,0), (x*y,4), 'C')
             layer.passes["Combined"].rect = arr

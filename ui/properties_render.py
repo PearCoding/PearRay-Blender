@@ -51,7 +51,6 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
 
         layout.prop(scene.pearray, "integrator")
         layout.prop(scene.pearray, "debug_mode")
-        layout.prop(scene.pearray, "incremental")
         layout.prop(scene.pearray, "max_ray_depth")
 
 

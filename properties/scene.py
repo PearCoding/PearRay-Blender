@@ -46,11 +46,6 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_debug_mode,
         default='NONE'
         )
-    incremental = BoolProperty(
-        name="Incremental",
-        description="Render incremental and improve after each step",
-        default=True
-        )
     max_ray_depth = IntProperty(
         name="Max Ray Depth",
         description="Maximum ray depth",
