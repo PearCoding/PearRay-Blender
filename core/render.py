@@ -117,7 +117,7 @@ class PearRayRender(bpy.types.RenderEngine):
             print("<<< PEARRAY FAILED >>>")
             return
 
-        factory = pr.RenderFactory(specDesc, x, y, pr_scene, renderPath, False)
+        factory = pr.RenderFactory(specDesc, x, y, pr_scene, renderPath)
 
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
         export.setup_settings(pr, factory.settings, scene)
@@ -145,7 +145,7 @@ class PearRayRender(bpy.types.RenderEngine):
         layer = result.layers[0]
 
         def update_image():
-            colorBuffer.map(toneMapper, renderer.output.spectral, specDesc.samples)
+            colorBuffer.map(toneMapper, renderer.output.spectral)
             arr = np.array(colorBuffer, copy=False)
             arr = np.reshape(np.flip(arr,0), (x*y,4), 'C')
             layer.passes["Combined"].rect = arr
