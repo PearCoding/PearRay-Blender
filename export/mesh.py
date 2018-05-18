@@ -1,16 +1,10 @@
 import collections
 import bpy
 import mathutils
-from .entity import inline_entity_matrix as inline_entity_matrix
+from .entity import inline_entity_matrix
+
 
 def export_trimesh(exporter, mw, name, mesh):
-    if not exporter.scene.pearray.apply_transform:
-        M = mathutils.Matrix.Identity(4)
-    else:
-        M = exporter.M_WORLD * mw
-
-    NM = M.inverted_safe().transposed()
-
     w = exporter.w
 
     # First collect vertex data
@@ -45,7 +39,7 @@ def export_trimesh(exporter, mw, name, mesh):
 
         for j, vertex in enumerate(face.vertices):
             v = mesh.vertices[vertex]
-            
+
             if uv_layer:
                 uv = uv_layer[face.index].uv[j]
 
@@ -79,7 +73,7 @@ def export_trimesh(exporter, mw, name, mesh):
 
                     if uv_layer:
                         uvs.append(vert_data[2])
-                    
+
                     if color_layer:
                         colors.append(vert_data[-1])
 
@@ -96,29 +90,27 @@ def export_trimesh(exporter, mw, name, mesh):
 
                 if uv_layer:
                     uvs.append(uv[:])
-                    
+
                 if color_layer:
                     colors.append(color[:])
-            
+
                 face_data.append(vert_index)
 
                 vert_index += 1
-            
+
         face_indices.append(face_data[0:3])
         material_indices.append(face.material_index)
-        if len(face_data) == 4: # Triangulate
+        if len(face_data) == 4:  # Triangulate
             face_indices.append((face_data[0], face_data[2], face_data[3]))
             material_indices.append(face.material_index)
-    
+
     del vert_indices
     del vert_cache
 
-
-    # If using apply_transform, don't even bother with caches.
-    if not exporter.scene.pearray.apply_transform:
-        n, in_cache = exporter.register_mesh_data(name, (points, normals, uvs, colors, face_indices, material_indices))
-        if in_cache:
-            return n
+    n, in_cache = exporter.register_mesh_data(
+        name, (points, normals, uvs, colors, face_indices, material_indices))
+    if in_cache:
+        return n
 
     w.write("(mesh")
     w.goIn()
@@ -130,8 +122,7 @@ def export_trimesh(exporter, mw, name, mesh):
     w.goIn()
     line = ":type 'p'"
     for v in points:
-        nv = M * mathutils.Vector(v)
-        line = line + ", [%f, %f, %f]" % nv[:]
+        line = line + ", [%f, %f, %f]" % v[:]
     w.write(line)
 
     w.goOut()
@@ -141,8 +132,7 @@ def export_trimesh(exporter, mw, name, mesh):
     w.goIn()
     line = ":type 'n'"
     for n in normals:
-        nn = NM * mathutils.Vector(n)
-        line = line + ", [%f, %f, %f]" % nn[:]
+        line = line + ", [%f, %f, %f]" % n[:]
     w.write(line)
     w.goOut()
     w.write(")")
@@ -168,29 +158,28 @@ def export_trimesh(exporter, mw, name, mesh):
         w.goOut()
         w.write(")")
 
-    line = "(materials"
-    for ind in material_indices:
-        line = line + ", %i" % ind
-    w.write(line)
+    w.write("(materials")
+    w.goIn()
+    w.write(",".join(map(str, material_indices)))
+    w.goOut()
     w.write(")")
 
-    line = "(faces"
-    for f in face_indices:
-        line = line + ", %i, %i, %i" % (f[0], f[1], f[2])
-    w.write(line)
+    w.write("(faces")
+    w.goIn()
+    w.write(",".join(",".join(map(str, f)) for f in face_indices))
+    w.goOut()
     w.write(")")
 
     w.goOut()
     w.write(")")
 
-    if exporter.scene.pearray.apply_transform:
-        del face_indices
-        del material_indices
-        del points
-        del normals
-        del uvs
-        del colors
-    
+    del face_indices
+    del material_indices
+    del points
+    del normals
+    del uvs
+    del colors
+
     return name
 
 
@@ -198,11 +187,16 @@ def export_mesh(exporter, obj):
     w = exporter.w
 
     try:
-        mesh = obj.to_mesh(exporter.scene, True, 'RENDER', calc_tessface=True)
+        mesh = obj.to_mesh(
+            exporter.scene,
+            True,
+            'RENDER',
+            calc_tessface=True,
+            calc_undeformed=True)
     except:
         print("Couldn't export %s as mesh" % obj.name)
         return
-    
+
     name = exporter.register_unique_name('MESH', obj.data.name)
     name = export_trimesh(exporter, obj.matrix_world, name, mesh)
     bpy.data.meshes.remove(mesh)
@@ -216,14 +210,14 @@ def export_mesh(exporter, obj):
     if len(obj.data.materials) == 1:
         w.write(":materials '%s'" % obj.data.materials[0].name)
     elif len(obj.data.materials) > 1:
-        w.write(":materials [%s]" % ', '.join(['"%s"' % m.name for m in obj.data.materials]))
+        w.write(":materials [%s]" % ', '.join(
+            ['"%s"' % m.name for m in obj.data.materials]))
     else:
         w.write(":material '%s'" % exporter.MISSING_MAT)
         print("Mesh %s has no material!" % obj.name)
-        
+
     w.write(":mesh '%s'" % name)
-    if not exporter.scene.pearray.apply_transform:
-        inline_entity_matrix(exporter, obj)
+    inline_entity_matrix(exporter, obj)
 
     w.goOut()
     w.write(")")

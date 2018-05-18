@@ -2,7 +2,7 @@ import math
 import mathutils
 
 
-from .entity import inline_entity_matrix, inline_entity_matrix_pos
+from .entity import inline_entity_matrix
 from .material import export_color
 
 
@@ -38,7 +38,7 @@ def export_pointlight(exporter, light):
     w.write(":type 'sphere'")
     w.write(":radius %f" % light_data.pearray.point_radius)# Really?
     w.write(":material '%s'" % light_mat_n)
-    inline_entity_matrix_pos(exporter, light)
+    inline_entity_matrix(exporter, light)
 
     w.goOut()
     w.write(")")

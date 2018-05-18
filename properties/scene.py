@@ -30,11 +30,6 @@ class PearRaySceneProperties(PropertyGroup):
         description="Keep generated prc file after rendering",
         default=False
     )
-    apply_transform = BoolProperty(
-        name="Apply Transform",
-        description="Apply transform prior export for meshes",
-        default=False
-    )
     linear_rgb = BoolProperty(
         name="Use linear sRGB",
         description="Return output in linear sRGB",
@@ -44,7 +39,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Debug Mode",
         description="Render in debug mode",
         items=enums.enum_debug_mode,
-        default='NONE'
+        default='NORMAL_BOTH'
         )
     max_ray_depth = IntProperty(
         name="Max Ray Depth",
@@ -70,7 +65,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="AA Sampler Mode",
         description="AA sampling technique",
         items=enums.enum_sampler_mode,
-        default='MULTIJITTER'
+        default='MULTI_JITTER'
         )
     sampler_max_aa_samples = IntProperty(
         name="Max AA Samples",
@@ -84,7 +79,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Lens Sampler Mode",
         description="Lens sampling technique",
         items=enums.enum_sampler_mode,
-        default='MULTIJITTER'
+        default='MULTI_JITTER'
         )
     sampler_max_lens_samples = IntProperty(
         name="Max Lens Samples",
@@ -98,7 +93,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Time Sampler Mode",
         description="Time sampling technique",
         items=enums.enum_sampler_mode,
-        default='MULTIJITTER'
+        default='MULTI_JITTER'
         )
     sampler_max_time_samples = IntProperty(
         name="Max Time Samples",
@@ -126,7 +121,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Spectral Sampler Mode",
         description="Spectral sampling technique",
         items=enums.enum_sampler_mode,
-        default='MULTIJITTER'
+        default='MULTI_JITTER'
         )
     sampler_max_spectral_samples = IntProperty(
         name="Max Spectral Samples",
@@ -201,21 +196,8 @@ class PearRaySceneProperties(PropertyGroup):
         min=1, max=100, default=20,
         subtype="PERCENTAGE"
         )
-    photon_proj_weight = FloatProperty(
-        name="Projection Map Weight",
-        description="Projection Map Weight. 0 disables it",
-        min=0.0, max=100, default=0,
-        subtype="PERCENTAGE"
-        )
-    photon_proj_qual = FloatProperty(
-        name="Projection Map Quality",
-        description="Quality of projection map",
-        min=1, max=100, default=80,
-        subtype="PERCENTAGE"
-        )
-    photon_proj_caustic = FloatProperty(
-        name="Projection Map Caustic Favor",
-        description="Ratio of how much to prefer caustic paths. 0 disables it",
-        min=0, soft_max=100, default=20,
-        subtype="PERCENTAGE"
-        )
+    ao_use_materials = BoolProperty(
+        name="Use BxDF",
+        description="Use BxDF sampling in AO",
+        default=False
+    )

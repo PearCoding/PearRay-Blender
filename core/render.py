@@ -65,7 +65,7 @@ class PearRayRender(bpy.types.RenderEngine):
     def render(self, scene):
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
         pr = PearRayRender._setup_package()
-        pr.Logger.instance.verbose = addon_prefs.verbose
+        pr.Logger.instance.verbosity = pr.LogLevel.DEBUG if addon_prefs.verbose else pr.LogLevel.INFO
 
         specDesc = pr.SpectrumDescriptor.createStandardSpectral()
 
@@ -99,7 +99,7 @@ class PearRayRender(bpy.types.RenderEngine):
         
         self.update_stats("", "PearRay: Exporting data")
         scene_exporter = export.Exporter(sceneFile, scene)
-        scene_exporter.write_scene()
+        scene_exporter.write_scene(pr)
 
         self.update_stats("", "PearRay: Starting render")
         environment = pr.SceneLoader.loadFromFile(sceneFile)
@@ -111,17 +111,22 @@ class PearRayRender(bpy.types.RenderEngine):
 
         colorBuffer = pr.ColorBuffer(x,y,pr.ColorBufferMode.RGBA)
 
+        environment.registry.set('/renderer/film/width', x)
+        environment.registry.set('/renderer/film/height', y)
+
+        if addon_prefs.verbose:
+            print("Registry:")
+            print(environment.registry.dump())
+        
         pr_scene = environment.sceneFactory.create()
         if not pr_scene:
             self.report({'ERROR'}, "PearRay: could not create pearray scene instance")
             print("<<< PEARRAY FAILED >>>")
             return
 
-        factory = pr.RenderFactory(specDesc, x, y, pr_scene, renderPath)
+        factory = pr.RenderFactory(specDesc, pr_scene, environment.registry, renderPath)
 
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
-        export.setup_settings(pr, factory.settings, scene)
-
         renderer = factory.create()
 
         if not renderer:

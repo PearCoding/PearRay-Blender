@@ -50,7 +50,6 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
         layout.separator()
 
         layout.prop(scene.pearray, "integrator")
-        layout.prop(scene.pearray, "debug_mode")
         layout.prop(scene.pearray, "max_ray_depth")
 
 
@@ -126,29 +125,30 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
 
-        layout.prop(scene.pearray, "max_diffuse_bounces")
+        if scene.pearray.integrator == 'VISUALIZER':
+            layout.prop(scene.pearray, "debug_mode")
+        else:
+            if scene.pearray.integrator != 'AO':
+                layout.prop(scene.pearray, "max_diffuse_bounces")
 
-        if scene.pearray.integrator == 'DIRECT' or scene.pearray.integrator == 'BIDIRECT':
-            layout.prop(scene.pearray, "max_light_samples")
+            if scene.pearray.integrator == 'DIRECT' or scene.pearray.integrator == 'BIDIRECT' or scene.pearray.integrator == 'AO':
+                layout.prop(scene.pearray, "max_light_samples")
 
-        if scene.pearray.integrator == 'PPM':
-            layout.separator()
-            layout.prop(scene.pearray, "photon_count")
-            layout.prop(scene.pearray, "photon_passes")
-            col = layout.column(align=True)
-            col.label("Gathering:")
-            col.prop(scene.pearray, "photon_gather_radius")
-            col.prop(scene.pearray, "photon_max_gather_count")
-            col.prop(scene.pearray, "photon_gathering_mode", text="")
-            col.prop(scene.pearray, "photon_squeeze")
-            col.prop(scene.pearray, "photon_ratio")
-            col = layout.column(align=True)
-            col.label("Projection Map:")
-            col.prop(scene.pearray, "photon_proj_weight", text="Weight")
-            col = col.column(align=True)
-            col.enabled = scene.pearray.photon_proj_weight > 0
-            col.prop(scene.pearray, "photon_proj_qual", text="Quality")
-            col.prop(scene.pearray, "photon_proj_caustic", text="Caustic")
+            if scene.pearray.integrator == 'AO':
+                layout.prop(scene.pearray, "ao_use_materials")
+
+            if scene.pearray.integrator == 'PPM':
+                layout.separator()
+                layout.prop(scene.pearray, "photon_count")
+                layout.prop(scene.pearray, "photon_passes")
+                col = layout.column(align=True)
+                col.label("Gathering:")
+                col.prop(scene.pearray, "photon_gather_radius")
+                col.prop(scene.pearray, "photon_max_gather_count")
+                col.prop(scene.pearray, "photon_gathering_mode", text="")
+                col.prop(scene.pearray, "photon_squeeze")
+                col.prop(scene.pearray, "photon_ratio")
+                col = layout.column(align=True)
 
 
 class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
@@ -165,6 +165,5 @@ class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
         
         layout.prop(scene.pearray, "keep_prc")
         layout.prop(scene.pearray, "beautiful_prc")
-        layout.prop(scene.pearray, "apply_transform")
         layout.prop(scene.pearray, "linear_rgb")
     

@@ -5,6 +5,7 @@ from .material import export_default_materials as export_default_materials
 from .material import export_material as export_material 
 from .mesh import export_mesh as export_mesh
 from .spectral import write_spectral_color
+from .settings import export_settings
 
 
 def is_renderable(scene, ob):
@@ -19,7 +20,7 @@ def is_allowed_mesh(ob):
     return (not ob.type in {'META', 'FONT', 'ARMATURE', 'LATTICE', 'EMPTY', 'CAMERA', 'LAMP', 'SPEAKER'})
 
 
-def write_scene(exporter):
+def write_scene(exporter, pr):
     w = exporter.w
     scene = exporter.scene
 
@@ -141,6 +142,8 @@ def write_scene(exporter):
     w.goIn()
 
     export_scene()
+    w.write("; Settings")
+    export_settings(exporter, pr,scene)
     w.write("; Outputs")
     export_outputs()
     w.write("; Default Materials")
