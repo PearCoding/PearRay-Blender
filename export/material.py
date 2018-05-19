@@ -89,8 +89,9 @@ def export_material_cook_torrance(exporter, material):
     diff_name = export_color(exporter, material, 'diffuse_color', True)
     spec_name = export_color(exporter, material, 'specular_color', True)
     em_name = export_color(exporter, material, 'emission_color', False)
-    ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
-                                    material.pearray.specular_ior)
+    if material.pearray.specular_ior_type == 'COLOR':
+        ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
+                                    material.pearray.specular_ior_color)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -114,7 +115,10 @@ def export_material_cook_torrance(exporter, material):
 
     exporter.w.write(":specularity %s" % spec_name)
 
-    exporter.w.write(":index '%s'" % ior_name)
+    if material.pearray.specular_ior_type == 'COLOR':
+        exporter.w.write(":index '%s'" % ior_name)
+    else:
+        exporter.w.write(":index %f" % material.pearray.specular_ior_value)
     exporter.w.write(":conductor_absorption %s" % diff_name)
 
     exporter.w.write(":reflectivity %f" % material.pearray.reflectivity)
@@ -137,7 +141,7 @@ def export_material_glass(exporter, material):
     em_name = export_color(exporter, material, 'emission_color', False)
     if material.pearray.specular_ior_type == 'COLOR':
         ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
-                                        material.pearray.specular_ior)
+                                        material.pearray.specular_ior_color)
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -167,7 +171,7 @@ def export_material_mirror(exporter, material):
     em_name = export_color(exporter, material, 'emission_color', False)
     if material.pearray.specular_ior_type == 'COLOR':
         ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
-                                        material.pearray.specular_ior)
+                                        material.pearray.specular_ior_color)
 
     exporter.w.write("(material")
     exporter.w.goIn()
