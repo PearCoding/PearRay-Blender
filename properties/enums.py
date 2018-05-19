@@ -73,6 +73,11 @@ enum_flat_color_type = (
     ("TEMP", "Temperature", "Blackbody Temperature in Kelvin"),
 )
 
+enum_ior_type = (
+    ("VALUE", "Value", "Floating point value"),
+    ("COLOR", "Color", "Standard RGB value"),
+)
+
 enum_temp_type = (
     ("LUM", "Luminance", "Blackbody curve output in luminance"),
     ("RAD", "Radiance", "Blackbody curve output in radiance"),

@@ -177,7 +177,7 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
         col = split.column()
         color_template(mat, col, "specular_color")
         if type == 'MIRROR' or type == 'GLASS' or type == 'COOK_TORRANCE':
-            col.prop(mat.pearray, 'specular_ior', text='IOR')
+            ior_template(mat, col, "specular_ior")
         if type == 'WARD' or type == 'COOK_TORRANCE':
             col2 = col.column(align=True)
             col2.prop(mat.pearray, 'spec_roughness_x')
@@ -226,3 +226,18 @@ def color_template(obj, layout, name):
         col.prop(obj.pearray, '%s_tex_slot' % name)
     else:
         col.prop(sub_obj, name, text="")
+
+
+def ior_template(obj, layout, name):
+    sub_obj = obj
+    if not hasattr(obj, name):
+        sub_obj = obj.pearray
+    
+    type = getattr(obj.pearray, '%s_type' % name)
+
+    col = layout.column(align=True)
+    col.row(align=True).prop(obj.pearray, '%s_type' % name, expand=True)
+    if type == 'VALUE':
+        col.prop(obj.pearray, '%s_value' % name, text="Ior")
+    else:
+        col.prop(obj.pearray, '%s_color' % name, text="Ior")

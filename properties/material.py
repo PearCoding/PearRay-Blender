@@ -143,13 +143,26 @@ class PearRayMaterialProperties(PropertyGroup):
         description="Used Texture Slot",
         min=0, soft_max=100000, default=0
     )
-    specular_ior = FloatVectorProperty(
+    specular_ior_color = FloatVectorProperty(
         name="Specular Index of Refraction",
         description="Specular Index of Refraction",
         default=(1.55,1.55,1.55),
         subtype="COLOR",
         soft_min=1,
         soft_max=3,
+    )
+    specular_ior_value = FloatProperty(
+        name="Specular Index of Refraction",
+        description="Specular Index of Refraction",
+        default=1.55,
+        soft_min=1,
+        soft_max=3,
+    )
+    specular_ior_type = EnumProperty(
+        name="Specular Index of Refraction Type",
+        description="Specular Index of Refraction Type",
+        items=enums.enum_ior_type,
+        default='VALUE'
     )
 
     # Ward
