@@ -147,6 +147,14 @@ class PearRaySceneProperties(PropertyGroup):
         subtype="UNSIGNED",
         default=2
         )
+    max_light_depth = IntProperty(
+        name="Max Light Depth",
+        description="Maximum light depth",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=2
+        )
     photon_count = IntProperty(
         name="Photons",
         description="Amount of photons emitted per pass into scene",

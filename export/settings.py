@@ -28,6 +28,7 @@ def export_settings(exporter, pr, scene):
     elif s.integrator == 'BIDIRECT':
         add_entry(exporter, '/renderer/integrator/bidirect/diffuse/max_depth', s.max_diffuse_bounces)
         add_entry(exporter, '/renderer/integrator/bidirect/light/sample_count', s.max_light_samples)
+        add_entry(exporter, '/renderer/integrator/bidirect/light/max_depth', s.max_light_depth)
     elif s.integrator == 'PPM':
         add_entry(exporter, '/renderer/integrator/ppm/diffuse/max_depth', s.max_diffuse_bounces)
         add_entry(exporter, '/renderer/integrator/ppm/pass/count', s.photon_passes)

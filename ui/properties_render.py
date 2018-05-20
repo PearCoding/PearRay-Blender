@@ -134,6 +134,9 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
             if scene.pearray.integrator == 'DIRECT' or scene.pearray.integrator == 'BIDIRECT' or scene.pearray.integrator == 'AO':
                 layout.prop(scene.pearray, "max_light_samples")
 
+            if scene.pearray.integrator == 'BIDIRECT':
+                layout.prop(scene.pearray, "max_light_depth")
+
             if scene.pearray.integrator == 'AO':
                 layout.prop(scene.pearray, "ao_use_materials")
 
