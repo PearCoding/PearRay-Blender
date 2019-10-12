@@ -42,22 +42,22 @@ class PearRayRender(bpy.types.RenderEngine):
             except OSError:
                 pass
             return False
-        
+
         if renderer.finished:
             return False
-        
+
         return True
 
-    
+
     def _handle_render_stat(self, renderer):
         stat = renderer.status
-        
+
         line = "Pass %s S %i R %i EH %i BH %i" % (renderer.currentPass+1,
              stat['global.pixel_sample_count'],
              stat['global.ray_count'],
              stat['global.entity_hit_count'],
              stat['global.background_hit_count'])
-        
+
         self.update_stats("", "PearRay: Rendering [%s]..." % (line))
         self.update_progress(stat.percentage)
 
@@ -66,8 +66,6 @@ class PearRayRender(bpy.types.RenderEngine):
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
         pr = PearRayRender._setup_package()
         pr.Logger.instance.verbosity = pr.LogLevel.DEBUG if addon_prefs.verbose else pr.LogLevel.INFO
-
-        specDesc = pr.SpectrumDescriptor.createStandardSpectral()
 
         import tempfile
         render = scene.render
@@ -87,24 +85,27 @@ class PearRayRender(bpy.types.RenderEngine):
         scene.frame_set(scene.frame_current)
 
         renderPath = bpy.path.resolve_ncase(bpy.path.abspath(render.filepath))
-        
+
         if not render.filepath:
             renderPath = tempfile.gettempdir()
-        
+
+        if not os.path.exists(renderPath):
+            os.makedirs(renderPath)
+
         if scene.pearray.keep_prc:
             sceneFile = os.path.normpath(renderPath + "/scene.prc")
         else:
             sceneFile = tempfile.NamedTemporaryFile(suffix=".prc").name
 
-        
+
         self.update_stats("", "PearRay: Exporting data")
         scene_exporter = export.Exporter(sceneFile, scene)
         scene_exporter.write_scene(pr)
 
         self.update_stats("", "PearRay: Starting render")
-        environment = pr.SceneLoader.loadFromFile(sceneFile)
+        environment = pr.SceneLoader.loadFromFile(renderPath, sceneFile, addon_prefs.package_dir)
 
-        toneMapper = pr.ToneMapper(x, y)
+        toneMapper = pr.ToneMapper()
         toneMapper.colorMode = pr.ToneColorMode.SRGB
         toneMapper.gammaMode = pr.ToneGammaMode.NONE
         toneMapper.mapperMode = pr.ToneMapperMode.NONE
@@ -117,17 +118,20 @@ class PearRayRender(bpy.types.RenderEngine):
         if addon_prefs.verbose:
             print("Registry:")
             print(environment.registry.dump())
-        
-        pr_scene = environment.sceneFactory.create()
-        if not pr_scene:
-            self.report({'ERROR'}, "PearRay: could not create pearray scene instance")
+
+        integrator = environment.createSelectedIntegrator()
+        if not integrator:
+            self.report({'ERROR'}, "PearRay: could not create pearray integrator instance")
             print("<<< PEARRAY FAILED >>>")
             return
 
-        factory = pr.RenderFactory(specDesc, pr_scene, environment.registry, renderPath)
+        factory = environment.createRenderFactory()
+        if not factory:
+            self.report({'ERROR'}, "PearRay: could not create pearray render factory instance")
+            print("<<< PEARRAY FAILED >>>")
+            return
 
-        addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
-        renderer = factory.create()
+        renderer = factory.create(integrator)
 
         if not renderer:
             self.report({'ERROR'}, "PearRay: could not create pearray render instance")
@@ -136,14 +140,15 @@ class PearRayRender(bpy.types.RenderEngine):
 
         environment.setup(renderer)
 
-        if not os.path.exists(renderPath):
-            os.makedirs(renderPath)
-
         threads = 0
         if scene.render.threads_mode == 'FIXED':
             threads = scene.render.threads
 
+        print("<<< PEARRAY CONFIGURED >>>")
+
         renderer.start(scene.render.tile_x, scene.render.tile_y, threads)
+
+        print("<<< PEARRAY STARTED >>>")
 
         # Update image
         result = self.begin_result(0, 0, x, y)
@@ -161,13 +166,13 @@ class PearRayRender(bpy.types.RenderEngine):
         prog_start = time.time()
         img_start = time.time()
         while self._proc_wait(renderer):
-            prog_end = time.time() 
+            prog_end = time.time()
             if addon_prefs.show_progress_interval < (prog_end - prog_start):
                 self._handle_render_stat(renderer)
                 prog_start = prog_end
 
             if addon_prefs.show_image_interval > 0:
-                img_end = time.time() 
+                img_end = time.time()
                 if addon_prefs.show_image_interval < (img_end - img_start):
                     update_image()
                     img_start = img_end
@@ -175,10 +180,18 @@ class PearRayRender(bpy.types.RenderEngine):
         update_image()
         self.end_result(result)
 
+        renderer.notifyEnd()
         environment.save(renderer, toneMapper, True)
+
+        # The order here is important!
+        # FIXME: This should be handled internally!!!
+        del integrator
+        del renderer
+        del factory
+        del environment
 
         if not scene.pearray.keep_prc:
             os.remove(sceneFile)
-        
+
         self.update_stats("", "")
         print("<<< PEARRAY FINISHED >>>")

@@ -2,7 +2,7 @@ bl_info = {
     "name": "PearRay",
     "description": "Basic PearRay integration for blender.",
     "author": "Ömercan Yazici",
-    "version": (0, 4),
+    "version": (0, 5),
     "blender": (2, 70, 0),
     "location": "Render > Engine > PearRay",
     "warning": "experimental",

@@ -8,11 +8,11 @@ def export_camera(exporter, camera):
     w = exporter.w
     scene = exporter.scene
 
-    w.write("(entity")
+    w.write("(camera")
     w.goIn()
 
     w.write(":name '%s'" % camera.name)
-    w.write(":type 'camera'")
+    w.write(":type 'standard'")
 
     if camera.data.type == 'ORTHO':
         w.write(":projection 'ortho'")

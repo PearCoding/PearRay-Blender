@@ -32,8 +32,10 @@ enum_sampler_mode = (
     ("UNIFORM", "Uniform", "Uniform sampling technique"),
     ("JITTER", "Jitter", "Jitter sampling technique"),
     ("MULTI_JITTER", "Multi-Jitter", "Multi-Jitter sampling technique"),
-    ("HALTON_QMC", "Halton QMC",
+    ("HALTON", "Halton",
      "Quasi-Monte Carlo sampling method based on the Halton sequence"),
+    ("SOBOL", "Sobol",
+     "Quasi-Monte Carlo sampling method based on the Sobol sequence"),
 )
 
 enum_time_mapping_mode = (

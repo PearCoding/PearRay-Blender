@@ -183,9 +183,7 @@ def export_trimesh(exporter, mw, name, mesh):
     return name
 
 
-def export_mesh(exporter, obj):
-    w = exporter.w
-
+def export_mesh_only(exporter, obj):
     try:
         mesh = obj.to_mesh(
             exporter.scene,
@@ -195,18 +193,16 @@ def export_mesh(exporter, obj):
             calc_undeformed=True)
     except:
         print("Couldn't export %s as mesh" % obj.name)
-        return
+        return None
 
     name = exporter.register_unique_name('MESH', obj.data.name)
     name = export_trimesh(exporter, obj.matrix_world, name, mesh)
     bpy.data.meshes.remove(mesh)
 
-    w.write("(entity")
-    w.goIn()
+    return name
 
-    w.write(":name '%s'" % obj.name)
-    w.write(":type 'mesh'")
-
+def export_mesh_material_part(exporter, obj):
+    w = exporter.w
     if len(obj.data.materials) == 1:
         w.write(":materials '%s'" % obj.data.materials[0].name)
     elif len(obj.data.materials) > 1:
@@ -215,6 +211,22 @@ def export_mesh(exporter, obj):
     else:
         w.write(":material '%s'" % exporter.MISSING_MAT)
         print("Mesh %s has no material!" % obj.name)
+
+
+def export_mesh(exporter, obj):
+    w = exporter.w
+
+    name = export_mesh_only(exporter, obj)
+    if not name:
+        return
+
+    w.write("(entity")
+    w.goIn()
+
+    w.write(":name '%s'" % obj.name)
+    w.write(":type 'mesh'")
+
+    export_mesh_material_part(exporter, obj)
 
     w.write(":mesh '%s'" % name)
     inline_entity_matrix(exporter, obj)

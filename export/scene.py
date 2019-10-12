@@ -1,9 +1,9 @@
 import bpy
-from .camera import export_camera as export_camera
-from .light import export_light as export_light
-from .material import export_default_materials as export_default_materials
-from .material import export_material as export_material 
-from .mesh import export_mesh as export_mesh
+from .camera import export_camera
+from .light import export_light
+from .material import export_default_materials, export_material
+from .mesh import export_mesh
+from .particlesystem import export_particlesystem
 from .spectral import write_spectral_color
 from .settings import export_settings
 
@@ -17,7 +17,7 @@ def renderable_objects(scene):
 
 
 def is_allowed_mesh(ob):
-    return (not ob.type in {'META', 'FONT', 'ARMATURE', 'LATTICE', 'EMPTY', 'CAMERA', 'LAMP', 'SPEAKER'})
+    return (ob.type in {'MESH', 'SURFACE'})
 
 
 def write_scene(exporter, pr):
@@ -53,15 +53,15 @@ def write_scene(exporter, pr):
             start_output(str)
             w.write(":type '%s'" % str)
             end_output()
-            
+
         rl = scene.render.layers.active
         if rl.use_pass_combined:
             start_output('image')
             w.write(":type 'rgb'")
-            w.write(":gamma '%s'" % (scene.pearray.linear_rgb if 'none' else 'srgb'))
+            w.write(":gamma '%s'" % ('none' if scene.pearray.linear_rgb else 'srgb'))
             w.write(":mapper 'none'")
             end_output()
-        
+
         if rl.use_pass_z:
             raw_output('depth')
         if rl.use_pass_normal:
@@ -110,7 +110,7 @@ def write_scene(exporter, pr):
             w.goOut()
             w.write(")")
 
-    
+
     def export_background():# TODO: Add texture support
         background_mat_n = exporter.register_unique_name('MATERIAL', '_blender_world_background')
 
@@ -160,8 +160,22 @@ def write_scene(exporter, pr):
     for obj in objs:
         if is_allowed_mesh(obj):
             export_mesh(exporter, obj)
-    w.write("; Materials")
+    w.write("; Particle Systems")
     for obj in objs:
+        for ps in obj.particle_systems:
+            if ps == obj.particle_systems.active:
+                allowed = True
+                for mod in obj.modifiers:
+                    if mod.type == 'PARTICLE_SYSTEM' and mod.show_render is False:
+                        allowed = False
+
+                if allowed:
+                    ps.set_resolution(scene, obj, 'RENDER')
+                    export_particlesystem(exporter, obj, ps)
+                    ps.set_resolution(scene, obj, 'PREVIEW')
+    w.write("; Materials")
+    # Ignore hide_render
+    for obj in bpy.data.objects:
         if is_allowed_mesh(obj):
             for m in obj.data.materials:
                 export_material(exporter, m)

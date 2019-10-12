@@ -31,7 +31,6 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
         row = layout.row(align=True)
         row.operator("render.render", text="Render", icon='RENDER_STILL')
         row.operator("render.render", text="Animation", icon='RENDER_ANIMATION').animation = True
-        row.operator("pearray.run_rayview", text="RayView", icon='EXPORT')
 
         split = layout.split(percentage=0.33)
 
@@ -95,7 +94,7 @@ class RENDER_PT_pr_sampler(RenderButtonsPanel, bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        
+
         layout.prop(scene.pearray, "sampler_aa_mode", text="AA")
         layout.prop(scene.pearray, "sampler_max_aa_samples")
         layout.separator()
@@ -110,7 +109,7 @@ class RENDER_PT_pr_sampler(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "sampler_spectral_mode", text="Spectral")
         layout.prop(scene.pearray, "sampler_max_spectral_samples")
         layout.separator()
-        layout.label(text="Max Samples: %i" % 
+        layout.label(text="Max Samples: %i" %
             (scene.pearray.sampler_max_aa_samples *
              scene.pearray.sampler_max_lens_samples *
              scene.pearray.sampler_max_time_samples *
@@ -165,8 +164,8 @@ class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        
+
         layout.prop(scene.pearray, "keep_prc")
         layout.prop(scene.pearray, "beautiful_prc")
         layout.prop(scene.pearray, "linear_rgb")
-    
+
