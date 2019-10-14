@@ -15,13 +15,13 @@ def export_pointlight(exporter, light):
     factor = 4*math.pi*light_data.pearray.point_radius*light_data.pearray.point_radius
     color_name = export_color(exporter, light_data, 'color', True, factor)
 
-    light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
+    light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
 
-    w.write("(material")
+    w.write("(emission")
     w.goIn()
 
     w.write(":name '%s'" % light_mat_n)
-    w.write(":type 'light'")
+    w.write(":type 'standard'")
     w.write(":emission %s" % color_name)
     if not light_data.pearray.camera_visible:
         w.write(":camera_visible false")
@@ -37,7 +37,7 @@ def export_pointlight(exporter, light):
     w.write(":name '%s'" % light.name)
     w.write(":type 'sphere'")
     w.write(":radius %f" % light_data.pearray.point_radius)# Really?
-    w.write(":material '%s'" % light_mat_n)
+    w.write(":emission '%s'" % light_mat_n)
     inline_entity_matrix(exporter, light)
 
     w.goOut()

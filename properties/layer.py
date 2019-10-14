@@ -97,3 +97,9 @@ class PearRaySceneRenderLayerProperties(PropertyGroup):
         description="Deliver raw spectral values",
         default=False
     )
+
+    separate_files = BoolProperty(
+        name="Separate Files",
+        description="Output each AOV into his each own file",
+        default=False
+    )

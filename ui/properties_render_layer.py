@@ -82,4 +82,7 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         split = layout.split()
         split.prop(rl2, "raw_spectral")
 
-    
+        layout.separator()
+        split = layout.split()
+        split.prop(rl2, "separate_files")
+

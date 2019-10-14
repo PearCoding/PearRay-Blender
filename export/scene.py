@@ -36,25 +36,34 @@ def write_scene(exporter, pr):
 
 
     def export_outputs():
+        rl = scene.render.layers.active
+        rl2 = scene.pearray_layer
+
         def start_output(str):
-            w.write("(output")
-            w.goIn()
-            w.write(":name '%s'" % str)
+            if rl2.separate_files:
+                w.write("(output")
+                w.goIn()
+                w.write(":name '%s'" % str)
             w.write("(channel")
             w.goIn()
 
         def end_output():
             w.goOut()
             w.write(")")
-            w.goOut()
-            w.write(")")
+            if rl2.separate_files:
+                w.goOut()
+                w.write(")")
 
         def raw_output(str):
             start_output(str)
             w.write(":type '%s'" % str)
             end_output()
 
-        rl = scene.render.layers.active
+        if not rl2.separate_files:
+            w.write("(output")
+            w.goIn()
+            w.write(":name 'image'")
+
         if rl.use_pass_combined:
             start_output('image')
             w.write(":type 'rgb'")
@@ -75,7 +84,6 @@ def write_scene(exporter, pr):
         if rl.use_pass_material_index:
             raw_output('mat')
 
-        rl2 = scene.pearray_layer
         if rl2.aov_ng:
             raw_output('ng')
         if rl2.aov_nx:
@@ -102,6 +110,10 @@ def write_scene(exporter, pr):
             raw_output('q')
         if rl2.aov_samples:
             raw_output('samples')
+
+        if not rl2.separate_files:
+            w.goOut()
+            w.write(")")
 
         if rl2.raw_spectral:
             w.write("(output_spectral")
