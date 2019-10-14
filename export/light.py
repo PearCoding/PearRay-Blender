@@ -5,16 +5,9 @@ import mathutils
 from .entity import inline_entity_matrix
 from .material import export_color
 
-
-def export_pointlight(exporter, light):
+def write_emission(exporter, light):
     w = exporter.w
-
-    light_data = light.data
-    w.write("; Light %s" % light.name)
-
-    factor = 4*math.pi*light_data.pearray.point_radius*light_data.pearray.point_radius
-    color_name = export_color(exporter, light_data, 'color', True, factor)
-
+    color_name = export_color(exporter, light.data, 'color', True)
     light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
 
     w.write("(emission")
@@ -23,13 +16,23 @@ def export_pointlight(exporter, light):
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'standard'")
     w.write(":emission %s" % color_name)
-    if not light_data.pearray.camera_visible:
+    if not light.data.pearray.camera_visible:
         w.write(":camera_visible false")
     else:
         w.write(":albedo %s" % color_name)
 
     w.goOut()
     w.write(")")
+    return light_mat_n
+
+
+def export_pointlight(exporter, light):
+    w = exporter.w
+
+    light_data = light.data
+    w.write("; Light %s" % light.name)
+
+    light_mat_n = write_emission(exporter, light)
 
     w.write("(entity")
     w.goIn()
@@ -54,23 +57,7 @@ def export_arealight(exporter, light):
     else:
         ysize = light_data.size_y
 
-    color_name = export_color(exporter, light_data, 'color', True, light_data.size * ysize)
-
-    light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
-
-    w.write("(material")
-    w.goIn()
-
-    w.write(":name '%s'" % light_mat_n)
-    w.write(":type 'light'")
-    w.write(":emission %s" % color_name)
-    if not light_data.pearray.camera_visible:
-        w.write(":camera_visible false")
-    else:
-        w.write(":albedo %s" % color_name)
-
-    w.goOut()
-    w.write(")")
+    light_mat_n = write_emission(exporter, light)
 
     w.write("(entity")
     w.goIn()
@@ -80,7 +67,7 @@ def export_arealight(exporter, light):
     w.write(":centering true")
     w.write(":xAxis %f" % light_data.size)
     w.write(":yAxis %f" % (-ysize))
-    w.write(":material '%s'" % light_mat_n)
+    w.write(":emission '%s'" % light_mat_n)
     inline_entity_matrix(exporter, light)
 
     w.goOut()
@@ -92,18 +79,7 @@ def export_sunlight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
 
-    color_name = export_color(exporter, light_data, 'color', True)
-    light_mat_n = exporter.register_unique_name('MATERIAL', light.name + "_mat")
-
-    w.write("(material")
-    w.goIn()
-
-    w.write(":name '%s'" % light_mat_n)
-    w.write(":type 'light'")
-    w.write(":emission %s" % color_name)
-
-    w.goOut()
-    w.write(")")
+    light_mat_n = write_emission(exporter, light)
 
     matrix = exporter.M_WORLD * light.matrix_world
     trans, rot, scale = matrix.decompose()
@@ -113,7 +89,7 @@ def export_sunlight(exporter, light):
 
     w.write(":type 'distant'")
     w.write(":direction [%f, %f, %f]" % direction[:])
-    w.write(":material '%s'" % light_mat_n)
+    w.write(":emission '%s'" % light_mat_n)
 
     w.goOut()
     w.write(")")
