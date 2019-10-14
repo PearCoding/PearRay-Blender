@@ -209,7 +209,7 @@ def export_mesh_material_part(exporter, obj):
         w.write(":materials [%s]" % ', '.join(
             ['"%s"' % m.name for m in obj.data.materials]))
     else:
-        w.write(":material '%s'" % exporter.MISSING_MAT)
+        w.write(":materials '%s'" % exporter.MISSING_MAT)
         print("Mesh %s has no material!" % obj.name)
 
 
