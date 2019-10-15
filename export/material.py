@@ -20,15 +20,11 @@ def inline_material_defaults(exporter, material):
 
 def export_material_diffuse(exporter, material):
     diff_name = export_color(exporter, material, 'diffuse_color', True)
-    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
 
     inline_material_defaults(exporter, material)
-
-    if em_name:
-        exporter.w.write(":emission %s" % em_name)
 
     exporter.w.write(":type 'diffuse'")
     exporter.w.write(":albedo %s" % diff_name)
@@ -39,15 +35,11 @@ def export_material_diffuse(exporter, material):
 
 def export_material_orennayar(exporter, material):
     diff_name = export_color(exporter, material, 'diffuse_color', True)
-    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
 
     inline_material_defaults(exporter, material)
-
-    if em_name:
-        exporter.w.write(":emission %s" % em_name)
 
     exporter.w.write(":type 'orennayar'")
     exporter.w.write(":albedo %s" % diff_name)
@@ -60,15 +52,11 @@ def export_material_orennayar(exporter, material):
 def export_material_ward(exporter, material):
     diff_name = export_color(exporter, material, 'diffuse_color', True)
     spec_name = export_color(exporter, material, 'specular_color', True)
-    em_name = export_color(exporter, material, 'emission_color', False)
 
     exporter.w.write("(material")
     exporter.w.goIn()
 
     inline_material_defaults(exporter, material)
-
-    if em_name:
-        exporter.w.write(":emission %s" % em_name)
 
     exporter.w.write(":type 'ward'")
     exporter.w.write(":albedo %s" % diff_name)
@@ -88,7 +76,6 @@ def export_material_ward(exporter, material):
 def export_material_cook_torrance(exporter, material):
     diff_name = export_color(exporter, material, 'diffuse_color', True)
     spec_name = export_color(exporter, material, 'specular_color', True)
-    em_name = export_color(exporter, material, 'emission_color', False)
     if material.pearray.specular_ior_type == 'COLOR':
         ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
                                     material.pearray.specular_ior_color)
@@ -97,9 +84,6 @@ def export_material_cook_torrance(exporter, material):
     exporter.w.goIn()
 
     inline_material_defaults(exporter, material)
-
-    if em_name:
-        exporter.w.write(":emission %s" % em_name)
 
     exporter.w.write(":type 'cook_torrance'")
 
@@ -138,7 +122,6 @@ def export_material_cook_torrance(exporter, material):
 
 def export_material_glass(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
-    em_name = export_color(exporter, material, 'emission_color', False)
     if material.pearray.specular_ior_type == 'COLOR':
         ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
                                         material.pearray.specular_ior_color)
@@ -147,9 +130,6 @@ def export_material_glass(exporter, material):
     exporter.w.goIn()
 
     inline_material_defaults(exporter, material)
-
-    if em_name:
-        exporter.w.write(":emission %s" % em_name)
 
     exporter.w.write(":type 'glass'")
     exporter.w.write(":specularity %s" % spec_name)
@@ -168,7 +148,6 @@ def export_material_glass(exporter, material):
 
 def export_material_mirror(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
-    em_name = export_color(exporter, material, 'emission_color', False)
     if material.pearray.specular_ior_type == 'COLOR':
         ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
                                         material.pearray.specular_ior_color)
@@ -178,12 +157,9 @@ def export_material_mirror(exporter, material):
 
     inline_material_defaults(exporter, material)
 
-    if em_name:
-        exporter.w.write(":emission %s" % em_name)
-
     exporter.w.write(":type 'mirror'")
     exporter.w.write(":specularity %s" % spec_name)
-    
+
     if material.pearray.specular_ior_type == 'COLOR':
         exporter.w.write(":index '%s'" % ior_name)
     else:
@@ -295,7 +271,7 @@ def export_default_materials(exporter):
 
     exporter.w.write(":name '%s'" % exporter.MISSING_MAT)
     exporter.w.write(":type 'diffuse'")
-    exporter.w.write(":emission '%s'" % missing_spec_n)
+    exporter.w.write(":albedo '%s'" % missing_spec_n)
 
     exporter.w.goOut()
     exporter.w.write(")")

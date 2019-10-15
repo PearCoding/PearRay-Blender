@@ -5,9 +5,9 @@ import mathutils
 from .entity import inline_entity_matrix
 from .material import export_color
 
-def write_emission(exporter, light):
+def write_emission(exporter, light, factor=1):
     w = exporter.w
-    color_name = export_color(exporter, light.data, 'color', True)
+    color_name = export_color(exporter, light.data, 'color', True, factor)
     light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
 
     w.write("(emission")
@@ -15,11 +15,7 @@ def write_emission(exporter, light):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'standard'")
-    w.write(":emission %s" % color_name)
-    if not light.data.pearray.camera_visible:
-        w.write(":camera_visible false")
-    else:
-        w.write(":albedo %s" % color_name)
+    w.write(":radiance %s" % color_name)
 
     w.goOut()
     w.write(")")
@@ -32,7 +28,8 @@ def export_pointlight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
 
-    light_mat_n = write_emission(exporter, light)
+    surf = 4*math.pi*math.pow(light_data.pearray.point_radius, 2)
+    light_mat_n = write_emission(exporter, light, 1/surf)
 
     w.write("(entity")
     w.goIn()
@@ -57,7 +54,8 @@ def export_arealight(exporter, light):
     else:
         ysize = light_data.size_y
 
-    light_mat_n = write_emission(exporter, light)
+    surf = abs(light_data.size * ysize)
+    light_mat_n = write_emission(exporter, light, 1/surf)
 
     w.write("(entity")
     w.goIn()
