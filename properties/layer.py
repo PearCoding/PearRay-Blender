@@ -91,6 +91,11 @@ class PearRaySceneRenderLayerProperties(PropertyGroup):
         description="Deliver dPdZ values as an extra file",
         default=False
     )
+    aov_feedback = BoolProperty(
+        name="Feedback",
+        description="Output feedback and error bit mask image",
+        default=True
+    )
 
     raw_spectral = BoolProperty(
         name="Raw Spectral",

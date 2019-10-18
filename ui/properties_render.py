@@ -167,5 +167,5 @@ class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
 
         layout.prop(scene.pearray, "keep_prc")
         layout.prop(scene.pearray, "beautiful_prc")
-        layout.prop(scene.pearray, "linear_rgb")
+        layout.prop(scene.pearray, "color_format")
 

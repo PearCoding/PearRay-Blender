@@ -66,8 +66,16 @@ def write_scene(exporter, pr):
 
         if rl.use_pass_combined:
             start_output('image')
-            w.write(":type 'rgb'")
-            w.write(":gamma '%s'" % ('none' if scene.pearray.linear_rgb else 'srgb'))
+            w.write(":type 'color'")
+            if scene.pearray.color_format == 'XYZ':
+                w.write(":color 'xyz'")
+                w.write(":gamma 'none'")
+            elif scene.pearray.color_format == 'SRGB':
+                w.write(":color 'rgb'")
+                w.write(":gamma 'srgb'")
+            else:
+                w.write(":color 'rgb'")
+                w.write(":gamma 'none'")
             w.write(":mapper 'none'")
             end_output()
 
@@ -110,6 +118,8 @@ def write_scene(exporter, pr):
             raw_output('q')
         if rl2.aov_samples:
             raw_output('samples')
+        if rl2.aov_feedback:
+            raw_output('feedback')
 
         if not rl2.separate_files:
             w.goOut()

@@ -30,10 +30,11 @@ class PearRaySceneProperties(PropertyGroup):
         description="Keep generated prc file after rendering",
         default=False
     )
-    linear_rgb = BoolProperty(
-        name="Use linear sRGB",
-        description="Return output in linear sRGB",
-        default=False
+    color_format = EnumProperty(
+        name="Color output format",
+        description="Output format of color channel in file",
+        items=enums.enum_color_format,
+        default='SRGB'
     )
     debug_mode = EnumProperty(
         name="Debug Mode",

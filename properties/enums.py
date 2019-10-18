@@ -1,3 +1,9 @@
+enum_color_format = (
+    ("XYZ", "CIE XYZ", "CIE XYZ format"),
+    ("RGB", "Linear sRGB", "Linear sRGB"),
+    ("SRGB", "sRGB", "sRGB with 2.2 gamma"),
+)
+
 enum_debug_mode = (
     ('DEPTH', "Depth", "Show depth information"),
     ('NORMAL_BOTH', "Normal", "Show normals"),

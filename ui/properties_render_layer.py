@@ -77,6 +77,7 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         col.prop(rl2, "aov_t")
         col.prop(rl2, "aov_q")
         col.prop(rl2, "aov_samples")
+        col.prop(rl2, "aov_feedback")
 
         layout.separator()
         split = layout.split()
