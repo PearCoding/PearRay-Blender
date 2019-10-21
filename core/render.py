@@ -116,6 +116,7 @@ class PearRayRender(bpy.types.RenderEngine):
         environment.registry.set('/renderer/film/height', y)
 
         if addon_prefs.verbose:
+            environment.dumpInformation()
             print("Registry:")
             print(environment.registry.dump())
 

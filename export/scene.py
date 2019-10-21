@@ -91,6 +91,10 @@ def write_scene(exporter, pr):
             raw_output('id')
         if rl.use_pass_material_index:
             raw_output('mat')
+        if rl2.aov_emission_index:
+            raw_output('emission')
+        if rl2.aov_displace_index:
+            raw_output('displace')
 
         if rl2.aov_ng:
             raw_output('ng')

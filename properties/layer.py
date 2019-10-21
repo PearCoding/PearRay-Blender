@@ -96,6 +96,16 @@ class PearRaySceneRenderLayerProperties(PropertyGroup):
         description="Output feedback and error bit mask image",
         default=True
     )
+    aov_emission_index = BoolProperty(
+        name="Emission Index",
+        description="Index of the internal emission descriptor",
+        default=False
+    )
+    aov_displace_index = BoolProperty(
+        name="Displace Index",
+        description="Index of the internal displace descriptor",
+        default=False
+    )
 
     raw_spectral = BoolProperty(
         name="Raw Spectral",

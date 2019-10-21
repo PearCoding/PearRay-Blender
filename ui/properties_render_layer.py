@@ -65,6 +65,8 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         col.prop(rl, "use_pass_uv")
         col.prop(rl, "use_pass_object_index")
         col.prop(rl, "use_pass_material_index")
+        col.prop(rl2, "aov_emission_index")
+        col.prop(rl2, "aov_displace_index")
 
         col = split.column()
         col.prop(rl2, "aov_p")

@@ -7,7 +7,7 @@ from .material import export_color
 
 def write_emission(exporter, light, factor=1):
     w = exporter.w
-    color_name = export_color(exporter, light.data, 'color', True, factor)
+    color_name = export_color(exporter, light.data, 'color', True, 1)
     light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
 
     w.write("(emission")
