@@ -116,7 +116,6 @@ class PearRayRender(bpy.types.RenderEngine):
         environment.registry.set('/renderer/film/height', y)
 
         if addon_prefs.verbose:
-            environment.dumpInformation()
             print("Registry:")
             print(environment.registry.dump())
 
@@ -140,6 +139,9 @@ class PearRayRender(bpy.types.RenderEngine):
             return
 
         environment.setup(renderer)
+
+        if addon_prefs.verbose:
+            environment.dumpInformation()
 
         threads = 0
         if scene.render.threads_mode == 'FIXED':

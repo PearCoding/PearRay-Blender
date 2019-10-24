@@ -77,17 +77,15 @@ def export_sunlight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
 
-    light_mat_n = write_emission(exporter, light)
-
-    matrix = exporter.M_WORLD * light.matrix_world
-    trans, rot, scale = matrix.decompose()
-    direction = rot * mathutils.Vector((0, 0, -1))
     w.write("(light")
     w.goIn()
 
     w.write(":type 'distant'")
-    w.write(":direction [%f, %f, %f]" % direction[:])
-    w.write(":emission '%s'" % light_mat_n)
+    w.write(":direction [0, 0, -1]")
+
+    color_name = export_color(exporter, light.data, 'color', True, 1)
+    w.write(":radiance %s" % color_name)
+    inline_entity_matrix(exporter, light)
 
     w.goOut()
     w.write(")")

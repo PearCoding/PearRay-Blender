@@ -138,26 +138,16 @@ def write_scene(exporter, pr):
 
 
     def export_background():# TODO: Add texture support
-        background_mat_n = exporter.register_unique_name('MATERIAL', '_blender_world_background')
-
         if exporter.world:
             color = exporter.world.horizon_color
             if color.r > 0 or color.g > 0 or color.b > 0:
-                background_spec_n = write_spectral_color(exporter, "%s_spec" % background_mat_n, color)
-                w.write("(material")
-                w.goIn()
-
-                w.write(":name '%s'" % background_mat_n)
-                w.write(":type 'light'")
-                w.write(":emission '%s'" % background_spec_n)
-
-                w.goOut()
-                w.write(")")
+                background_spec_n = write_spectral_color(exporter, '_blender_world_background_spec', color)
 
                 w.write("(light")
                 w.goIn()
+                w.write(":name '_blender_world_background_env'")
                 w.write(":type 'env'")
-                w.write(":material '%s'" % background_mat_n)
+                w.write(":radiance '%s'" % background_spec_n)
                 w.goOut()
                 w.write(")")
 
