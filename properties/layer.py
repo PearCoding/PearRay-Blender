@@ -18,16 +18,23 @@ from bpy.props import (
 
 from . import enums
 
+class PearRayLPEProperty(PropertyGroup):
+    channel = EnumProperty(
+        name="Channel",
+        description="Channel Type",
+        items=enums.enum_aov_type,
+        default='SPECTRAL'
+    )
+    expression = StringProperty(
+        name="Expression",
+        description="Light Path Expression. See documentation for syntax",
+        default="C.*"
+    )
 
 class PearRaySceneRenderLayerProperties(PropertyGroup):
     aov_t = BoolProperty(
         name="Time",
         description="Deliver T (time) values as an extra file",
-        default=False
-    )
-    aov_q = BoolProperty(
-        name="Quality",
-        description="Deliver quality (error) values as an extra file",
         default=False
     )
     aov_samples = BoolProperty(
@@ -56,41 +63,6 @@ class PearRaySceneRenderLayerProperties(PropertyGroup):
         description="Deliver Ny (bitangent/binormal) values as an extra file",
         default=False
     )
-    aov_v = BoolProperty(
-        name="V",
-        description="Deliver V (view) values as an extra file",
-        default=False
-    )
-    aov_dpdu = BoolProperty(
-        name="dPdU",
-        description="Deliver dPdU values as an extra file",
-        default=False
-    )
-    aov_dpdv = BoolProperty(
-        name="dPdV",
-        description="Deliver dPdV values as an extra file",
-        default=False
-    )
-    aov_dpdw = BoolProperty(
-        name="dPdW",
-        description="Deliver dPdW values as an extra file",
-        default=False
-    )
-    aov_dpdx = BoolProperty(
-        name="dPdX",
-        description="Deliver dPdY values as an extra file",
-        default=False
-    )
-    aov_dpdy = BoolProperty(
-        name="dPdY",
-        description="Deliver dPdY values as an extra file",
-        default=False
-    )
-    aov_dpdz = BoolProperty(
-        name="dPdZ",
-        description="Deliver dPdZ values as an extra file",
-        default=False
-    )
     aov_feedback = BoolProperty(
         name="Feedback",
         description="Output feedback and error bit mask image",
@@ -117,4 +89,16 @@ class PearRaySceneRenderLayerProperties(PropertyGroup):
         name="Separate Files",
         description="Output each AOV into his each own file",
         default=False
+    )
+
+    lpes = CollectionProperty(
+        type=PearRayLPEProperty,
+        name="Light Path Expressions"
+    )
+    active_lpe_index = IntProperty(
+        # This property is redundant, but needed by blender
+        # We do not use it for rendering!
+        name="Active LPE",
+        description="Currently active LPE",
+        default=0
     )

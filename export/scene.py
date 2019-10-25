@@ -54,76 +54,105 @@ def write_scene(exporter, pr):
                 w.goOut()
                 w.write(")")
 
-        def raw_output(str):
+        def raw_output(str, lpe):
             start_output(str)
             w.write(":type '%s'" % str)
+            if lpe:
+                w.write(":lpe '%s'" % lpe)
             end_output()
 
+        def export_channel(type, lpe=None):
+            if type == 'SPECTRAL':
+                start_output('image')
+                w.write(":type 'color'")
+                if scene.pearray.color_format == 'XYZ':
+                    w.write(":color 'xyz'")
+                    w.write(":gamma 'none'")
+                elif scene.pearray.color_format == 'SRGB':
+                    w.write(":color 'rgb'")
+                    w.write(":gamma 'srgb'")
+                else:
+                    w.write(":color 'rgb'")
+                    w.write(":gamma 'none'")
+                w.write(":mapper 'none'")
+                if lpe:
+                    w.write(":lpe '%s'" % lpe)
+                end_output()
+            elif type == 'POSITION':
+                raw_output('p', lpe)
+            elif type == 'NORMAL':
+                raw_output('n', lpe)
+            elif type == 'NORMALG':
+                raw_output('ng', lpe)
+            elif type == 'TANGENT':
+                raw_output('nx', lpe)
+            elif type == 'BITANGENT':
+                raw_output('ny', lpe)
+            elif type == 'VIEW':
+                raw_output('view', lpe)
+            elif type == 'UVW':
+                raw_output('uvw', lpe)
+            elif type == 'DPDT':
+                raw_output('dpdt', lpe)
+            elif type == 'ENTITY_ID':
+                raw_output('entity_id', lpe)
+            elif type == 'MATERIAL_ID':
+                raw_output('material_id', lpe)
+            elif type == 'EMISSION_ID':
+                raw_output('emission_id', lpe)
+            elif type == 'DISPLACE_ID':
+                raw_output('displace_id', lpe)
+            elif type == 'DEPTH':
+                raw_output('depth', lpe)
+            elif type == 'TIME':
+                raw_output('t', lpe)
+            elif type == 'SAMPLES':
+                raw_output('s', lpe)
+            elif type == 'FEEDBACK':
+                raw_output('feedback', lpe)
+
+        # Actual function body
         if not rl2.separate_files:
             w.write("(output")
             w.goIn()
             w.write(":name 'image'")
 
         if rl.use_pass_combined:
-            start_output('image')
-            w.write(":type 'color'")
-            if scene.pearray.color_format == 'XYZ':
-                w.write(":color 'xyz'")
-                w.write(":gamma 'none'")
-            elif scene.pearray.color_format == 'SRGB':
-                w.write(":color 'rgb'")
-                w.write(":gamma 'srgb'")
-            else:
-                w.write(":color 'rgb'")
-                w.write(":gamma 'none'")
-            w.write(":mapper 'none'")
-            end_output()
+            export_channel('SPECTRAL')
 
         if rl.use_pass_z:
-            raw_output('depth')
+            export_channel('DEPTH')
         if rl.use_pass_normal:
-            raw_output('norm')
+            export_channel('NORMAL')
         if rl.use_pass_vector:
-            raw_output('dpdt')
+            export_channel('DPDT')
         if rl.use_pass_uv:
-            raw_output('uv')
+            export_channel('UVW')
         if rl.use_pass_object_index:
-            raw_output('id')
+            export_channel('ENTITY_INDEX')
         if rl.use_pass_material_index:
-            raw_output('mat')
+            export_channel('MATERIAL_INDEX')
         if rl2.aov_emission_index:
-            raw_output('emission')
+            export_channel('EMISSION_INDEX')
         if rl2.aov_displace_index:
-            raw_output('displace')
-
+            export_channel('DISPLACE_INDEX')
         if rl2.aov_ng:
-            raw_output('ng')
+            export_channel('NORMALG')
         if rl2.aov_nx:
-            raw_output('nx')
+            export_channel('TANGENT')
         if rl2.aov_ny:
-            raw_output('ny')
+            export_channel('BITANGENT')
         if rl2.aov_p:
-            raw_output('p')
-        if rl2.aov_dpdu:
-            raw_output('dpdu')
-        if rl2.aov_dpdv:
-            raw_output('dpdv')
-        if rl2.aov_dpdw:
-            raw_output('dpdw')
-        if rl2.aov_dpdx:
-            raw_output('dpdx')
-        if rl2.aov_dpdy:
-            raw_output('dpdy')
-        if rl2.aov_dpdz:
-            raw_output('dpdz')
+            export_channel('POSITION')
         if rl2.aov_t:
-            raw_output('t')
-        if rl2.aov_q:
-            raw_output('q')
+            export_channel('TIME')
         if rl2.aov_samples:
-            raw_output('samples')
+            export_channel('SAMPLES')
         if rl2.aov_feedback:
-            raw_output('feedback')
+            export_channel('FEEDBACK')
+
+        for lpe in rl2.lpes:
+            export_channel(lpe.channel, lpe.expression)
 
         if not rl2.separate_files:
             w.goOut()

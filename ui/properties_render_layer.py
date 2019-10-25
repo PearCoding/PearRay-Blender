@@ -38,19 +38,77 @@ class RENDERLAYER_PT_pr_layer_options(RenderLayerButtonsPanel, bpy.types.Panel):
         col.prop(rl, "material_override", text="")
 
 
+class RENDERLAYER_OP_pr_layer_lpe_actions(bpy.types.Operator):
+    bl_idname = "pr.lpe_actions"
+    bl_label = "Adds or removes lpes"
+
+    action = bpy.props.EnumProperty(
+        items=(('REMOVE', 'Remove', ''),('ADD', 'Add', ''))
+    )
+
+    def invoke(self, context, event):
+        scene = context.scene
+        rl2 = scene.pearray_layer
+        idx = rl2.active_lpe_index
+
+        try:
+            item = rl2.lpes[idx]
+        except IndexError:
+            pass
+        else:
+            if self.action == 'REMOVE':
+                rl2.active_lpe_index -= 1
+                rl2.lpes.remove(idx)
+
+        if self.action == 'ADD':
+            rl2.lpes.add()
+            rl2.active_lpe_index = len(rl2.lpes)-1
+
+        return {'FINISHED'}
+
+
+class RENDERLAYER_PT_pr_layer_lpe_entry(bpy.types.UIList):
+    use_filter_show = False
+    layout_type = 'COMPACT'
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
+        el = layout.split().row(align=True)
+
+        el.label('', icon='RENDER_RESULT')
+        el.prop(item, "channel", text="")
+        el.prop(item, "expression", text="")
+
+
+class RENDERLAYER_PT_pr_layer_lpe(RenderLayerButtonsPanel, bpy.types.Panel):
+    bl_label = "LPEs"
+    bl_options = {'DEFAULT_CLOSED'}
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+
+        scene = context.scene
+        rl2 = scene.pearray_layer
+
+        row = layout.row()
+        row.template_list("RENDERLAYER_PT_pr_layer_lpe_entry", "", rl2, "lpes", rl2, "active_lpe_index")
+        col = row.column(align=True)
+        col.operator("pr.lpe_actions", icon='ZOOMIN', text="").action = 'ADD'
+        col.operator("pr.lpe_actions", icon='ZOOMOUT', text="").action = 'REMOVE'
+
+
 class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
     bl_label = "AOVs"
     bl_options = {'DEFAULT_CLOSED'}
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
-    # Custom passes do not work well with animation and other render layers. :/
     def draw(self, context):
         layout = self.layout
 
         scene = context.scene
         rd = scene.render
         rl = rd.layers.active
-        rl2 = scene.pearray_layer# Not satisfiying
+        rl2 = scene.pearray_layer
 
         split = layout.split()
 
@@ -63,23 +121,16 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         col.prop(rl2, "aov_ny")
         col.prop(rl, "use_pass_vector")
         col.prop(rl, "use_pass_uv")
+
+        col = split.column()
+        col.prop(rl2, "aov_p")
+        col.prop(rl2, "aov_t")
+        col.prop(rl2, "aov_samples")
+        col.prop(rl2, "aov_feedback")
         col.prop(rl, "use_pass_object_index")
         col.prop(rl, "use_pass_material_index")
         col.prop(rl2, "aov_emission_index")
         col.prop(rl2, "aov_displace_index")
-
-        col = split.column()
-        col.prop(rl2, "aov_p")
-        col.prop(rl2, "aov_dpdu")
-        col.prop(rl2, "aov_dpdv")
-        col.prop(rl2, "aov_dpdw")
-        col.prop(rl2, "aov_dpdx")
-        col.prop(rl2, "aov_dpdy")
-        col.prop(rl2, "aov_dpdz")
-        col.prop(rl2, "aov_t")
-        col.prop(rl2, "aov_q")
-        col.prop(rl2, "aov_samples")
-        col.prop(rl2, "aov_feedback")
 
         layout.separator()
         split = layout.split()
@@ -88,4 +139,3 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         layout.separator()
         split = layout.split()
         split.prop(rl2, "separate_files")
-

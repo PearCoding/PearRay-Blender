@@ -123,3 +123,21 @@ enum_material_ct_geometry_mode = (
     ("COOK_TORRANCE", "Cook-Torrance", "Cook-Torrance based geometry term"),
     ("KELEMEN", "Kelemen", "Kelemen based geometry term"),
 )
+
+enum_aov_type = (
+    ("SPECTRAL", "Spectral", "Spectral output"),
+    ("POSITION", "Position", "Position output"),
+    ("NORMAL", "Normal", "Normal output"),
+    ("NORMALG", "Geometric Normal", "Geometric Normal output"),
+    ("TANGENT", "Tangent", "Tangent output"),
+    ("BITANGENT", "Bitangent", "Bitangent output"),
+    ("VIEW", "View", "View output"),
+    ("UVW", "Texture", "Texture (UV) output"),
+    ("DPDT", "Velocity", "Velocity dp/dt output"),
+    ("ENTITY_ID", "Entity ID", "Entity ID output"),
+    ("MATERIAL_ID", "Material ID", "Material ID output"),
+    ("EMISSION_ID", "Emission ID", "Emission ID output"),
+    ("DISPLACE_ID", "Displace ID", "Displace ID output"),
+    ("DEPTH", "Depth", "(Ray) Depth output"),
+    ("TIME", "Time", "Time output"),
+)
