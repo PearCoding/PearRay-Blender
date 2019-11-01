@@ -6,7 +6,7 @@ def export_image(exporter, image):
     path = ''
     if image.source in {'GENERATED', 'FILE'}:
         if image.source == 'GENERATED':
-            path = exporter.create_file(name_hint=image.name)
+            path = exporter.create_file(name_hint=image.name + ".png")
             image.save_render(path, exporter.scene)
         elif image.source == 'FILE':
             if image.packed_file:
@@ -21,7 +21,7 @@ def export_image(exporter, image):
 def export_texture(exporter, texture):
     if not texture:
         return ''
-    
+
     if texture.name in exporter.instances['TEXTURE']:
         return ''
 
@@ -32,7 +32,7 @@ def export_texture(exporter, texture):
         img_name = export_image(exporter, texture.image)
     else:
         return ''
-    
+
     exporter.w.write("(texture")
     exporter.w.goIn()
 
@@ -44,4 +44,3 @@ def export_texture(exporter, texture):
     exporter.w.write(")")
 
     return name
-    

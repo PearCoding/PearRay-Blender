@@ -7,7 +7,7 @@ from .material import export_color
 
 def write_emission(exporter, light, factor=1):
     w = exporter.w
-    color_name = export_color(exporter, light.data, 'color', True, 1)
+    color_name = export_color(exporter, light.data, 'color', True, factor)
     light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
 
     w.write("(emission")
@@ -29,7 +29,7 @@ def export_pointlight(exporter, light):
     w.write("; Light %s" % light.name)
 
     surf = 4*math.pi*math.pow(light_data.pearray.point_radius, 2)
-    light_mat_n = write_emission(exporter, light, 1/surf)
+    light_mat_n = write_emission(exporter, light, surf)
 
     w.write("(entity")
     w.goIn()
@@ -54,8 +54,7 @@ def export_arealight(exporter, light):
     else:
         ysize = light_data.size_y
 
-    surf = abs(light_data.size * ysize)
-    light_mat_n = write_emission(exporter, light, 1/surf)
+    light_mat_n = write_emission(exporter, light)
 
     w.write("(entity")
     w.goIn()
@@ -83,7 +82,7 @@ def export_sunlight(exporter, light):
     w.write(":type 'distant'")
     w.write(":direction [0, 0, -1]")
 
-    color_name = export_color(exporter, light.data, 'color', True, 1)
+    color_name = export_color(exporter, light.data, 'color', True)
     w.write(":radiance %s" % color_name)
     inline_entity_matrix(exporter, light)
 

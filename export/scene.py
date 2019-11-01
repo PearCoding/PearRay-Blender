@@ -9,7 +9,7 @@ from .settings import export_settings
 
 
 def is_renderable(scene, ob):
-    return (not ob.hide_render)
+    return (not ob.hide_render) and (ob.layers[scene.active_layer])
 
 
 def renderable_objects(scene):
