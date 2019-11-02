@@ -105,7 +105,7 @@ class MATERIAL_PT_pr_bsdf(MaterialButtonsPanel, bpy.types.Panel):
         col.prop(mat.pearray, "is_camera_visible")
         col.prop(mat.pearray, "is_shadeable")
 
-        if type == 'COOK_TORRANCE':
+        if type == 'MICROFACET':
             layout.separator()
             split = layout.split()
             col = split.column(align=True)
@@ -121,7 +121,7 @@ class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (context.material.pearray.bsdf in {'DIFFUSE', 'ORENNAYAR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
+        return context.material and (context.material.pearray.bsdf in {'DIFFUSE', 'ORENNAYAR', 'WARD', 'MICROFACET'}) and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
@@ -133,8 +133,8 @@ class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
 
         col = split.column()
         color_template(mat, col, "diffuse_color")
-        if type == 'ORENNAYAR' or type == 'COOK_TORRANCE':
-            col.prop(mat, 'roughness')         
+        if type == 'ORENNAYAR':
+            col.prop(mat, 'roughness')
 
 
 class MATERIAL_PT_pr_grid(MaterialButtonsPanel, bpy.types.Panel):
@@ -164,7 +164,7 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         engine = context.scene.render.engine
-        return context.material and (context.material.pearray.bsdf in {'GLASS', 'MIRROR', 'WARD', 'COOK_TORRANCE'}) and (engine in cls.COMPAT_ENGINES)
+        return context.material and (context.material.pearray.bsdf in {'GLASS', 'MIRROR', 'WARD', 'MICROFACET'}) and (engine in cls.COMPAT_ENGINES)
 
     def draw(self, context):
         layout = self.layout
@@ -176,12 +176,13 @@ class MATERIAL_PT_pr_specular(MaterialButtonsPanel, bpy.types.Panel):
 
         col = split.column()
         color_template(mat, col, "specular_color")
-        if type == 'MIRROR' or type == 'GLASS' or type == 'COOK_TORRANCE':
+        if type == 'MIRROR' or type == 'GLASS' or type == 'MICROFACET':
             ior_template(mat, col, "specular_ior")
-        if type == 'WARD' or type == 'COOK_TORRANCE':
+        if type == 'WARD' or type == 'MICROFACET':
             col2 = col.column(align=True)
             col2.prop(mat.pearray, 'spec_roughness_x')
             col2.prop(mat.pearray, 'spec_roughness_y')
+        if type == 'WARD':
             col.prop(mat.pearray, 'reflectivity')
         if type == 'GLASS':
             col.prop(mat.pearray, 'glass_is_thin')
@@ -212,7 +213,7 @@ def color_template(obj, layout, name):
     sub_obj = obj
     if not hasattr(obj, name):
         sub_obj = obj.pearray
-    
+
     type = getattr(obj.pearray, '%s_type' % name)
 
     col = layout.column(align=True)
@@ -232,7 +233,7 @@ def ior_template(obj, layout, name):
     sub_obj = obj
     if not hasattr(obj, name):
         sub_obj = obj.pearray
-    
+
     type = getattr(obj.pearray, '%s_type' % name)
 
     col = layout.column(align=True)

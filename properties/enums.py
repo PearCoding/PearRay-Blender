@@ -98,7 +98,7 @@ enum_temp_type = (
 enum_material_bsdf = (
     ("DIFFUSE", "Diffuse", "Simple lambertian material"),
     ("ORENNAYAR", "Oren-Nayar", "Oren-Nayar BRDF"),
-    ("COOK_TORRANCE", "Cook-Torrance", "Cook-Torrance BRDF"),
+    ("MICROFACET", "Microfacet", "Generic microfacet BRDF"),
     ("WARD", "Ward", "Ward BRDF"),
     ("GRID", "Grid", "Special material grid"),
     ("GLASS", "Glass", "Specialized glass material"),
@@ -122,6 +122,8 @@ enum_material_ct_geometry_mode = (
     ("NEUMANN", "Neumann", "Neumann based geometry term"),
     ("COOK_TORRANCE", "Cook-Torrance", "Cook-Torrance based geometry term"),
     ("KELEMEN", "Kelemen", "Kelemen based geometry term"),
+    ("SCHLICK", "Schlick", "Schlick based geometry term"),
+    ("WALTER", "Walter", "Walter based geometry term"),
 )
 
 enum_aov_type = (

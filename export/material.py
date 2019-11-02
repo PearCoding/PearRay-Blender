@@ -73,7 +73,7 @@ def export_material_ward(exporter, material):
     exporter.w.write(")")
 
 
-def export_material_cook_torrance(exporter, material):
+def export_material_microfacet(exporter, material):
     diff_name = export_color(exporter, material, 'diffuse_color', True)
     spec_name = export_color(exporter, material, 'specular_color', True)
     if material.pearray.specular_ior_type == 'COLOR':
@@ -85,7 +85,7 @@ def export_material_cook_torrance(exporter, material):
 
     inline_material_defaults(exporter, material)
 
-    exporter.w.write(":type 'cook_torrance'")
+    exporter.w.write(":type 'microfacet'")
 
     exporter.w.write(
         ":fresnel_mode '%s'" % material.pearray.ct_fresnel_mode.lower())
@@ -95,7 +95,6 @@ def export_material_cook_torrance(exporter, material):
         ":geometry_mode '%s'" % material.pearray.ct_geometry_mode.lower())
 
     exporter.w.write(":albedo %s" % diff_name)
-    exporter.w.write(":diffuse_roughness %f" % material.roughness)
 
     exporter.w.write(":specularity %s" % spec_name)
 
@@ -105,16 +104,14 @@ def export_material_cook_torrance(exporter, material):
         exporter.w.write(":index %f" % material.pearray.specular_ior_value)
     exporter.w.write(":conductor_absorption %s" % diff_name)
 
-    exporter.w.write(":reflectivity %f" % material.pearray.reflectivity)
-
     if material.pearray.spec_roughness_x == material.pearray.spec_roughness_y:
         exporter.w.write(
-            ":specular_roughness %f" % material.pearray.spec_roughness_x)
+            ":roughness %f" % material.pearray.spec_roughness_x)
     else:
         exporter.w.write(
-            ":specular_roughness_x %f" % material.pearray.spec_roughness_x)
+            ":roughness_x %f" % material.pearray.spec_roughness_x)
         exporter.w.write(
-            ":specular_roughness_y %f" % material.pearray.spec_roughness_y)
+            ":roughness_y %f" % material.pearray.spec_roughness_y)
 
     exporter.w.goOut()
     exporter.w.write(")")
@@ -247,8 +244,8 @@ def export_material(exporter, material):
         export_material_orennayar(exporter, material)
     elif bsdf == 'WARD':
         export_material_ward(exporter, material)
-    elif bsdf == 'COOK_TORRANCE':
-        export_material_cook_torrance(exporter, material)
+    elif bsdf == 'MICROFACET':
+        export_material_microfacet(exporter, material)
     elif bsdf == 'GLASS':
         export_material_glass(exporter, material)
     elif bsdf == 'MIRROR':

@@ -23,7 +23,7 @@ class PearRayMaterialProperties(PropertyGroup):
         name="BSDF",
         description="BSDF type",
         items=enums.enum_material_bsdf,
-        default='COOK_TORRANCE'
+        default='MICROFACET'
     )
 
     cast_shadows = BoolProperty(
@@ -201,7 +201,7 @@ class PearRayMaterialProperties(PropertyGroup):
         name="Geometry Mode",
         description="Geometry Mode",
         items=enums.enum_material_ct_geometry_mode,
-        default='COOK_TORRANCE'
+        default='IMPLICIT'
     )
 
     # Grid
