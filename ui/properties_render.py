@@ -120,9 +120,6 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
 
-        if scene.pearray.integrator != 'AO':
-            layout.prop(scene.pearray, "max_diffuse_bounces")
-
         if scene.pearray.integrator == 'DIRECT':
             layout.prop(scene.pearray, "max_light_samples")
 
