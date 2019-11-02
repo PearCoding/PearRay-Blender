@@ -106,14 +106,10 @@ class RENDER_PT_pr_sampler(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "sampler_time_mapping_mode", expand=True)
         layout.prop(scene.pearray, "sampler_time_scale")
         layout.separator()
-        layout.prop(scene.pearray, "sampler_spectral_mode", text="Spectral")
-        layout.prop(scene.pearray, "sampler_max_spectral_samples")
-        layout.separator()
         layout.label(text="Max Samples: %i" %
             (scene.pearray.sampler_max_aa_samples *
              scene.pearray.sampler_max_lens_samples *
-             scene.pearray.sampler_max_time_samples *
-             scene.pearray.sampler_max_spectral_samples))
+             scene.pearray.sampler_max_time_samples))
 
 
 class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
@@ -124,33 +120,11 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
 
-        if scene.pearray.integrator == 'VISUALIZER':
-            layout.prop(scene.pearray, "debug_mode")
-        else:
-            if scene.pearray.integrator != 'AO':
-                layout.prop(scene.pearray, "max_diffuse_bounces")
+        if scene.pearray.integrator != 'AO':
+            layout.prop(scene.pearray, "max_diffuse_bounces")
 
-            if scene.pearray.integrator == 'DIRECT' or scene.pearray.integrator == 'BIDIRECT' or scene.pearray.integrator == 'AO':
-                layout.prop(scene.pearray, "max_light_samples")
-
-            if scene.pearray.integrator == 'BIDIRECT':
-                layout.prop(scene.pearray, "max_light_depth")
-
-            if scene.pearray.integrator == 'AO':
-                layout.prop(scene.pearray, "ao_use_materials")
-
-            if scene.pearray.integrator == 'PPM':
-                layout.separator()
-                layout.prop(scene.pearray, "photon_count")
-                layout.prop(scene.pearray, "photon_passes")
-                col = layout.column(align=True)
-                col.label("Gathering:")
-                col.prop(scene.pearray, "photon_gather_radius")
-                col.prop(scene.pearray, "photon_max_gather_count")
-                col.prop(scene.pearray, "photon_gathering_mode", text="")
-                col.prop(scene.pearray, "photon_squeeze")
-                col.prop(scene.pearray, "photon_ratio")
-                col = layout.column(align=True)
+        if scene.pearray.integrator == 'DIRECT':
+            layout.prop(scene.pearray, "max_light_samples")
 
 
 class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):

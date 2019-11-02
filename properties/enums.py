@@ -4,35 +4,6 @@ enum_color_format = (
     ("SRGB", "sRGB", "sRGB with 2.2 gamma"),
 )
 
-enum_debug_mode = (
-    ('DEPTH', "Depth", "Show depth information"),
-    ('NORMAL_BOTH', "Normal", "Show normals"),
-    ('NORMAL_POSITIVE', "Normal Positive", "Show positive normals"),
-    ('NORMAL_NEGATIVE', "Normal Negative", "Show negative normals"),
-    ('NORMAL_SPHERICAL', "Normal Spherical",
-     "Show normals in spherical coordinates"),
-    ('TANGENT_BOTH', "Tangent", "Show tangents"),
-    ('TANGENT_POSITIVE', "Tangent Positive", "Show positive tangents"),
-    ('TANGENT_NEGATIVE', "Tangent Negative", "Show negative tangents"),
-    ('TANGENT_SPHERICAL', "Tangent Spherical",
-     "Show tangents in spherical coordinates"),
-    ('BINORMAL_BOTH', "Binormal", "Show binormals"),
-    ('BINORMAL_POSITIVE', "Binormal Positive", "Show positive binormals"),
-    ('BINORMAL_NEGATIVE', "Binormal Negative", "Show negative binormals"),
-    ('BINORMAL_SPHERICAL', "Binormal Spherical",
-     "Show binormals in spherical coordinates"),
-    ('UVW', "UVW", "Show UV/texture coordinates"),
-    ('PDF', "PDF", "Show probability distribution function values"),
-    ('EMISSION', "Emission", "Show emission part of the rendering equation"),
-    ('VALIDITY', "Validity", "Show if material is valid"),
-    ('FLAG_INSIDE', "Flag Inside",
-     "Show if surface is inside or outside. Green inside, Red outside."),
-    ('CONTAINER_ID', "Container ID",
-     "Show id of the container which the primitive belongs to"),
-    ('BOUNDING_BOX', "Bounding Box",
-     "Visualize the bounding box"),
-)
-
 enum_sampler_mode = (
     ("RANDOM", "Random", "Random sampling technique"),
     ("UNIFORM", "Uniform", "Uniform sampling technique"),
@@ -52,10 +23,7 @@ enum_time_mapping_mode = (
 
 enum_integrator_mode = (
     ('DIRECT', "Direct", "Direct Rendering"),
-    ('BIDIRECT', "Bi-Direct", "Bidirect Rendering"),
-    ('PPM', "Progressive Photon Mapping", "Progressive Photon Mapping"),
     ('AO', "Ambient Occulusion", "Ambient Occulusion"),
-    ('VISUALIZER', "Debug Visualizer", "Debug Visualizer"),
 )
 
 enum_tile_mode = (
