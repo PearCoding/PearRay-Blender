@@ -104,6 +104,10 @@ class PearRayRender(bpy.types.RenderEngine):
 
         self.update_stats("", "PearRay: Starting render")
         environment = pr.SceneLoader.loadFromFile(renderPath, sceneFile, addon_prefs.package_dir)
+        if not environment:
+            self.report({'ERROR'}, "PearRay: could not load environment from file")
+            print("<<< PEARRAY FAILED >>>")
+            return
 
         toneMapper = pr.ToneMapper()
         toneMapper.colorMode = pr.ToneColorMode.SRGB
