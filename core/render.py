@@ -6,7 +6,6 @@ import subprocess
 import threading
 import re
 import importlib
-import numpy as np
 from collections import deque
 
 from .. import export
@@ -163,9 +162,8 @@ class PearRayRender(bpy.types.RenderEngine):
 
         def update_image():
             colorBuffer.map(toneMapper, renderer.output.spectral)
-            arr = np.array(colorBuffer, copy=False)
-            arr = np.reshape(np.flip(arr,0), (x*y,4), 'C')
-            layer.passes["Combined"].rect = arr
+            colorBuffer.flipY()
+            layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)
 
         update_image()
