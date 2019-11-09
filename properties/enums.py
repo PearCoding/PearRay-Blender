@@ -67,6 +67,7 @@ enum_material_bsdf = (
     ("DIFFUSE", "Diffuse", "Simple lambertian material"),
     ("ORENNAYAR", "Oren-Nayar", "Oren-Nayar BRDF"),
     ("MICROFACET", "Microfacet", "Generic microfacet BRDF"),
+    ("PRINCIPLED", "Principled", "Generic principled BRDF"),
     ("WARD", "Ward", "Ward BRDF"),
     ("GRID", "Grid", "Special material grid"),
     ("GLASS", "Glass", "Specialized glass material"),

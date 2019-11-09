@@ -204,6 +204,48 @@ class PearRayMaterialProperties(PropertyGroup):
         default='IMPLICIT'
     )
 
+    # Principled
+    p_subsurface = FloatProperty(
+        name="Subsurface",
+        description="Subsurface approximation factor of material",
+        min=0, soft_max=1.00, default=0.0
+    )
+    p_metallic = FloatProperty(
+        name="Metallic",
+        description="Metallic factor of material",
+        min=0, soft_max=1.00, default=0.0
+    )
+    p_specular = FloatProperty(
+        name="Specular",
+        description="Specular factor of material",
+        min=0, soft_max=1.00, default=0.5
+    )
+    p_specular_tint = FloatProperty(
+        name="Specular Tint",
+        description="Specular tint towards base color of material",
+        min=0, soft_max=1.00, default=0.0
+    )
+    p_sheen = FloatProperty(
+        name="Sheen",
+        description="Sheen factor of material",
+        min=0, soft_max=1.00, default=0.0
+    )
+    p_sheen_tint = FloatProperty(
+        name="Sheen Tint",
+        description="Sheen tint towards base color of material",
+        min=0, soft_max=1.00, default=0.0
+    )
+    p_clearcoat = FloatProperty(
+        name="Clearcoat",
+        description="Clearcoat factor of material",
+        min=0, soft_max=1.00, default=0.0
+    )
+    p_clearcoat_gloss = FloatProperty(
+        name="Clearcoat Gloss",
+        description="Clearcoat gloss factor of material",
+        min=0, soft_max=1.00, default=0.0
+    )
+
     # Grid
     grid_first_material = None
     grid_second_material = None

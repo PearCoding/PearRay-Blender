@@ -117,6 +117,30 @@ def export_material_microfacet(exporter, material):
     exporter.w.write(")")
 
 
+def export_material_principled(exporter, material):
+    diff_name = export_color(exporter, material, 'diffuse_color', True)
+    exporter.w.write("(material")
+    exporter.w.goIn()
+
+    inline_material_defaults(exporter, material)
+
+    exporter.w.write(":type 'principled'")
+
+    exporter.w.write(":base_color %s" % diff_name)
+    exporter.w.write(":roughness %f" % material.roughness)
+    exporter.w.write(":subsurface %f" % material.pearray.p_subsurface)
+    exporter.w.write(":metallic %f" % material.pearray.p_metallic)
+    exporter.w.write(":specular %f" % material.pearray.p_specular)
+    exporter.w.write(":specular_tint %f" % material.pearray.p_specular_tint)
+    exporter.w.write(":sheen %f" % material.pearray.p_sheen)
+    exporter.w.write(":sheen_tint %f" % material.pearray.p_sheen_tint)
+    exporter.w.write(":clearcoat %f" % material.pearray.p_clearcoat)
+    exporter.w.write(":clearcoat_gloss %f" % material.pearray.p_clearcoat_gloss)
+
+    exporter.w.goOut()
+    exporter.w.write(")")
+
+
 def export_material_glass(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
     if material.pearray.specular_ior_type == 'COLOR':
@@ -252,6 +276,8 @@ def export_material(exporter, material):
         export_material_mirror(exporter, material)
     elif bsdf == 'GRID':
         export_material_grid(exporter, material)
+    elif bsdf == 'PRINCIPLED':
+        export_material_principled(exporter, material)
     else:
         print("UNKNOWN BSDF %s\n" % bsdf)
 

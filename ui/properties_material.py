@@ -137,6 +137,36 @@ class MATERIAL_PT_pr_diffuse(MaterialButtonsPanel, bpy.types.Panel):
             col.prop(mat, 'roughness')
 
 
+class MATERIAL_PT_pr_principled(MaterialButtonsPanel, bpy.types.Panel):
+    bl_label = "Principled"
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    @classmethod
+    def poll(cls, context):
+        engine = context.scene.render.engine
+        return context.material and (context.material.pearray.bsdf in {'PRINCIPLED'}) and (engine in cls.COMPAT_ENGINES)
+
+    def draw(self, context):
+        layout = self.layout
+
+        mat = context.material
+        type = mat.pearray.bsdf
+
+        split = layout.split()
+
+        col = split.column()
+        color_template(mat, col, "diffuse_color")
+        col.prop(mat, 'roughness')
+        col.prop(mat.pearray, 'p_subsurface')
+        col.prop(mat.pearray, 'p_metallic')
+        col.prop(mat.pearray, 'p_specular')
+        col.prop(mat.pearray, 'p_specular_tint')
+        col.prop(mat.pearray, 'p_sheen')
+        col.prop(mat.pearray, 'p_sheen_tint')
+        col.prop(mat.pearray, 'p_clearcoat')
+        col.prop(mat.pearray, 'p_clearcoat_gloss')
+
+
 class MATERIAL_PT_pr_grid(MaterialButtonsPanel, bpy.types.Panel):
     bl_label = "Grid"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
