@@ -6,6 +6,7 @@ from .mesh import export_mesh
 from .particlesystem import export_particlesystem
 from .spectral import write_spectral_color
 from .settings import export_settings
+from .world import export_world
 
 
 def is_renderable(scene, ob):
@@ -165,21 +166,6 @@ def write_scene(exporter, pr):
             w.goOut()
             w.write(")")
 
-
-    def export_background():# TODO: Add texture support
-        if exporter.world:
-            color = exporter.world.horizon_color
-            if color.r > 0 or color.g > 0 or color.b > 0:
-                background_spec_n = write_spectral_color(exporter, '_blender_world_background_spec', color)
-
-                w.write("(light")
-                w.goIn()
-                w.write(":name '_blender_world_background_env'")
-                w.write(":type 'env'")
-                w.write(":radiance '%s'" % background_spec_n)
-                w.goOut()
-                w.write(")")
-
     # Block
     objs = renderable_objects(scene)
 
@@ -195,8 +181,9 @@ def write_scene(exporter, pr):
     export_default_materials(exporter)
     w.write("; Camera")
     export_camera(exporter, scene.camera)
-    w.write("; Background")
-    export_background()
+    if(exporter.world):
+        w.write("; Background")
+        export_world(exporter, exporter.world)
     w.write("; Lights")
     for light in objs:
         if light.type == 'LAMP':

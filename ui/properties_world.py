@@ -34,5 +34,12 @@ class WORLD_PT_pr_background(WorldButtonsPanel, bpy.types.Panel):
         layout = self.layout
 
         world = context.world
-        
-        layout.prop(world, "horizon_color", text="Color")
+
+        type = getattr(world.pearray, 'background_type')
+
+        col = layout.column(align=True)
+        col.row(align=True).prop(world.pearray, 'background_type', expand=True)
+        if type == 'COLOR':
+            col.prop(world, "horizon_color", text="")
+        else:
+            col.prop(world.pearray, 'background_tex_slot')

@@ -44,6 +44,12 @@ enum_color_type = (
     #("NODE", "Node", "Node"),
 )
 
+enum_fake_color_type = (
+    ("COLOR", "Color", "Standard RGB value"),
+    ("TEX", "Texture", "Texture"),
+    #("NODE", "Node", "Node"),
+)
+
 enum_flat_color_type = (
     ("COLOR", "Color", "Standard RGB value"),
     ("TEMP", "Temperature", "Blackbody Temperature in Kelvin"),

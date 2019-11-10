@@ -33,14 +33,13 @@ def export_particlesystem(exporter, parent, ps):
     elif not ps.is_global_hair:
         parent_m = parent.matrix_world
 
-    print(parent_m)
     ident = mathutils.Matrix.Identity(4)
 
     sf = ps.settings.hair_length
     oaf = mathutils.Vector(ps.settings.object_align_factor)
     if not oaf.length_squared == 0:
         sf *= oaf.length
-    
+
     counter = 0
     for particle in ps.particles:
         co = parent_m*particle.hair_keys[0].co

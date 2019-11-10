@@ -5,6 +5,7 @@ from .scene import PearRaySceneProperties
 from .layer import PearRaySceneRenderLayerProperties
 from .material import PearRayMaterialProperties
 from .light import PearRayLightProperties
+from .world import PearRayWorldProperties
 
 from bpy.types import AddonPreferences
 
@@ -20,7 +21,7 @@ from bpy.props import (
 pearray_package = __import__(__name__.split('.')[0])
 class PearRayPreferences(AddonPreferences):
     bl_idname = pearray_package.__package__
-    
+
     package_dir = StringProperty(
                 name="Custom Package Directory",
                 description="Path to pypearray package library. Can be empty to search in system paths",
@@ -60,6 +61,7 @@ def register():
     bpy.types.Camera.pearray = PointerProperty(type=PearRayCameraProperties)
     bpy.types.Material.pearray = PointerProperty(type=PearRayMaterialProperties)
     bpy.types.Lamp.pearray = PointerProperty(type=PearRayLightProperties)
+    bpy.types.World.pearray = PointerProperty(type=PearRayWorldProperties)
 
 
 def unregister():
@@ -68,3 +70,4 @@ def unregister():
     del bpy.types.Camera.pearray
     del bpy.types.Material.pearray
     del bpy.types.Lamp.pearray
+    del bpy.types.World.pearray

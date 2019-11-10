@@ -51,7 +51,6 @@ class Exporter:
         self.MISSING_MAT = ''
 
         self.M_WORLD = mathutils.Matrix.Identity(4)
-        #print(self.M_WORLD)
         self.LIGHT_POW_F = 1
 
         self.render = scene.render
