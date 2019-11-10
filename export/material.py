@@ -220,12 +220,13 @@ def export_color(exporter, material, type, required, factor=1):
     if not hasattr(material, attr_col):
         sub_mat = material.pearray
 
-    if getattr(material.pearray, attr_type) == 'COLOR':
+    color_type = getattr(material.pearray, attr_type)
+    if color_type == 'COLOR' or not hasattr(material.pearray, attr_type):
         color = getattr(sub_mat, attr_col)
         if required or color.r > 0 or color.g > 0 or color.b > 0:
             return "'%s'" % write_spectral_color(exporter, name,
                                                  factor * color)
-    elif getattr(material.pearray, attr_type) == 'TEX':
+    elif color_type == 'TEX' and hasattr(material.pearray, attr_tex_slot):
         if len(material.texture_slots) <= 0:
             if required:
                 return "''"
@@ -233,11 +234,11 @@ def export_color(exporter, material, type, required, factor=1):
                 return ""
 
         tex_slot = getattr(material.pearray, attr_tex_slot)
-        if not tex_slot or tex_slot >= len(material.texture_slots):
+        if tex_slot >= len(material.texture_slots):
             tex_slot = 0
         return "(texture '%s')" % export_texture(
             exporter, material.texture_slots[tex_slot].texture)
-    else:
+    elif hasattr(material.pearray, attr_temp):
         temp = getattr(material.pearray, attr_temp)
         if required or temp > 0:
             return "'%s'" % write_spectral_temp(
