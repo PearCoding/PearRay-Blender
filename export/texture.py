@@ -22,16 +22,14 @@ def export_texture(exporter, texture):
     if not texture:
         return ''
 
-    if texture.name in exporter.instances['TEXTURE']:
+    if texture.type != 'IMAGE':
         return ''
+
+    if texture.name in exporter.instances['TEXTURE']:
+        return texture.name
 
     name = exporter.register_unique_name('TEXTURE', texture.name)
-
-    img_name = ''
-    if texture.type == 'IMAGE':
-        img_name = export_image(exporter, texture.image)
-    else:
-        return ''
+    img_name = export_image(exporter, texture.image)
 
     exporter.w.write("(texture")
     exporter.w.goIn()
