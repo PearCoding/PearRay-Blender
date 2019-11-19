@@ -15,7 +15,7 @@ def export_image(exporter, image):
             else:
                 path = image.filepath
 
-    return bpy.path.resolve_ncase(bpy.path.abspath(path))
+    return bpy.path.resolve_ncase(bpy.path.abspath(path)).replace("\\", "\\\\")
 
 
 def export_texture(exporter, texture):
