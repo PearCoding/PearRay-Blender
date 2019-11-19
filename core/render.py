@@ -66,6 +66,9 @@ class PearRayRender(bpy.types.RenderEngine):
         pr = PearRayRender._setup_package()
         pr.Logger.instance.verbosity = pr.LogLevel.DEBUG if addon_prefs.verbose else pr.LogLevel.INFO
 
+        if addon_prefs.profile:
+            pr.Profiler.start()
+
         import tempfile
         render = scene.render
 
@@ -197,6 +200,10 @@ class PearRayRender(bpy.types.RenderEngine):
 
         if not scene.pearray.keep_prc:
             os.remove(sceneFile)
+
+        if addon_prefs.profile:
+            pr.Profiler.stop()
+            pr.Profiler.dumpToFile(renderPath + "/pr_profile.prof")
 
         self.update_stats("", "")
         print("<<< PEARRAY FINISHED >>>")

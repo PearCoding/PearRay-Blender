@@ -46,10 +46,17 @@ class PearRayPreferences(AddonPreferences):
                 description="Display verbose information in the produced log files",
                 default=True
                 )
+    profile = BoolProperty(
+                name="Profile",
+                description="Profile execution if available and dump results to pr_profile.prof at the end",
+                default=False
+                )
     def draw(self, context):
         layout = self.layout
         layout.prop(self, "package_dir")
-        layout.prop(self, "verbose")
+        row = layout.row(align=True)
+        row.prop(self, "verbose")
+        row.prop(self, "profile")
         col = layout.column(align=True)
         col.prop(self, "show_progress_interval")
         col.prop(self, "show_image_interval")
