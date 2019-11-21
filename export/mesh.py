@@ -166,7 +166,7 @@ def export_trimesh(exporter, mw, name, mesh):
 
     w.write("(faces")
     w.goIn()
-    w.write(",".join(",".join(map(str, f)) for f in face_indices))
+    w.write(",".join("[" + ",".join(map(str, f)) + "]" for f in face_indices))
     w.goOut()
     w.write(")")
 
