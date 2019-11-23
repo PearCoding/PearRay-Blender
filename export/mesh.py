@@ -4,7 +4,7 @@ import mathutils
 from .entity import inline_entity_matrix
 
 
-def export_trimesh(exporter, mw, name, mesh):
+def export_mesh_data(exporter, mw, name, mesh):
     w = exporter.w
 
     # First collect vertex data
@@ -98,11 +98,10 @@ def export_trimesh(exporter, mw, name, mesh):
 
                 vert_index += 1
 
-        face_indices.append(face_data[0:3])
+        if not len(face_data) in (3, 4):
+            print("Mesh %s contains non triangle or quad face" % obj.name)
+        face_indices.append(face_data[0:max(4, len(face_data))])
         material_indices.append(face.material_index)
-        if len(face_data) == 4:  # Triangulate
-            face_indices.append((face_data[0], face_data[2], face_data[3]))
-            material_indices.append(face.material_index)
 
     del vert_indices
     del vert_cache
@@ -116,7 +115,6 @@ def export_trimesh(exporter, mw, name, mesh):
     w.goIn()
 
     w.write(":name '%s'" % name)
-    w.write(":type 'triangles'")
 
     w.write("(attribute")
     w.goIn()
@@ -183,11 +181,11 @@ def export_trimesh(exporter, mw, name, mesh):
     return name
 
 
-def export_mesh_only(exporter, obj):
+def export_mesh_only(exporter, obj, has_subsurf):
     try:
         mesh = obj.to_mesh(
             exporter.scene,
-            True,
+            not has_subsurf,
             'RENDER',
             calc_tessface=True,
             calc_undeformed=True)
@@ -196,7 +194,7 @@ def export_mesh_only(exporter, obj):
         return None
 
     name = exporter.register_unique_name('MESH', obj.data.name)
-    name = export_trimesh(exporter, obj.matrix_world, name, mesh)
+    name = export_mesh_data(exporter, obj.matrix_world, name, mesh)
     bpy.data.meshes.remove(mesh)
 
     return name
@@ -216,7 +214,16 @@ def export_mesh_material_part(exporter, obj):
 def export_mesh(exporter, obj):
     w = exporter.w
 
-    name = export_mesh_only(exporter, obj)
+    subsurf_modifiers = [m for m in obj.modifiers if m.type == 'SUBSURF']
+    has_subsurf = len(subsurf_modifiers) > 0
+
+    if len(subsurf_modifiers) > 1:
+        print("Object %s has more then one subsurf modifiers. Ignoring others except first one" % obj.name)
+
+    if has_subsurf and len(obj.modifiers) != 1:
+        print("Object %s has other modifiers. Can not apply them when subsurf modifier is present" % obj.name)
+
+    name = export_mesh_only(exporter, obj, has_subsurf)
     if not name:
         return
 
@@ -224,7 +231,12 @@ def export_mesh(exporter, obj):
     w.goIn()
 
     w.write(":name '%s'" % obj.name)
-    w.write(":type 'mesh'")
+
+    if not has_subsurf:
+        w.write(":type 'mesh'")
+    else:
+        w.write(":type 'subdiv'")
+        w.write(":max_subdivision %i" % min(1, subsurf_modifiers[0].render_levels))
 
     export_mesh_material_part(exporter, obj)
 
