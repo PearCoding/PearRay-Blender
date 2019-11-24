@@ -54,28 +54,29 @@ def export_mesh_data(exporter, mw, name, mesh):
                     color = color_layer[face.index].color4
 
             if face.use_smooth:
-                if uv_layer:
-                    if color_layer:
-                        vert_data = (v.co[:], v.normal[:], uv[:], color[:])
-                    else:
-                        vert_data = (v.co[:], v.normal[:], uv[:])
-                else:
-                    if color_layer:
-                        vert_data = (v.co[:], v.normal[:], color[:])
-                    else:
-                        vert_data = (v.co[:], v.normal[:])
+                #if uv_layer:
+                #    if color_layer:
+                #        vert_data = (v.co[:], v.normal[:], uv[:], color[:])
+                #    else:
+                #        vert_data = (v.co[:], v.normal[:], uv[:])
+                #else:
+                #    if color_layer:
+                #        vert_data = (v.co[:], v.normal[:], color[:])
+                #    else:
+                #        vert_data = (v.co[:], v.normal[:])
 
+                vert_data = (v.co[:], v.normal[:])
                 if vert_data not in vert_cache:
                     vert_cache.add(vert_data)
 
-                    points.append(vert_data[0])
-                    normals.append(vert_data[1])
+                    points.append(v.co[:])
+                    normals.append(v.normal[:])
 
                     if uv_layer:
-                        uvs.append(vert_data[2])
+                        uvs.append(uv[:])
 
                     if color_layer:
-                        colors.append(vert_data[-1])
+                        colors.append(color[:])
 
                     vert_indices[vert_data] = vert_index
                     face_data.append(vert_index)
@@ -236,7 +237,7 @@ def export_mesh(exporter, obj):
         w.write(":type 'mesh'")
     else:
         w.write(":type 'subdiv'")
-        w.write(":max_subdivision %i" % min(1, subsurf_modifiers[0].render_levels))
+        w.write(":max_subdivision %i" % subsurf_modifiers[0].render_levels)
         #w.write(":use_creases %s" % ("true" if subsurf_modifiers[0].use_creases else "false"))
 
     export_mesh_material_part(exporter, obj)
