@@ -214,7 +214,7 @@ def export_mesh_material_part(exporter, obj):
 def export_mesh(exporter, obj):
     w = exporter.w
 
-    subsurf_modifiers = [m for m in obj.modifiers if m.type == 'SUBSURF']
+    subsurf_modifiers = [m for m in obj.modifiers if m.type == 'SUBSURF' and m.show_render]
     has_subsurf = len(subsurf_modifiers) > 0
 
     if len(subsurf_modifiers) > 1:
@@ -237,6 +237,7 @@ def export_mesh(exporter, obj):
     else:
         w.write(":type 'subdiv'")
         w.write(":max_subdivision %i" % min(1, subsurf_modifiers[0].render_levels))
+        #w.write(":use_creases %s" % ("true" if subsurf_modifiers[0].use_creases else "false"))
 
     export_mesh_material_part(exporter, obj)
 
