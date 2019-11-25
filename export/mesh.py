@@ -22,6 +22,7 @@ def export_mesh_data(exporter, mw, name, mesh):
     else:
         color_layer = None
 
+    needs_matinds = (len(mesh.materials) > 1)
     face_indices = []
     material_indices = []
     points = []
@@ -102,7 +103,8 @@ def export_mesh_data(exporter, mw, name, mesh):
         if not len(face_data) in (3, 4):
             print("Mesh %s contains non triangle or quad face" % obj.name)
         face_indices.append(face_data[0:max(4, len(face_data))])
-        material_indices.append(face.material_index)
+        if needs_matinds:
+            material_indices.append(face.material_index)
 
     del vert_indices
     del vert_cache
@@ -157,11 +159,12 @@ def export_mesh_data(exporter, mw, name, mesh):
         w.goOut()
         w.write(")")
 
-    w.write("(materials")
-    w.goIn()
-    w.write(",".join(map(str, material_indices)))
-    w.goOut()
-    w.write(")")
+    if len(material_indices) > 0:
+        w.write("(materials")
+        w.goIn()
+        w.write(",".join(map(str, material_indices)))
+        w.goOut()
+        w.write(")")
 
     w.write("(faces")
     w.goIn()
