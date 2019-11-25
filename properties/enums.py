@@ -118,3 +118,29 @@ enum_aov_type = (
     ("DEPTH", "Depth", "(Ray) Depth output"),
     ("TIME", "Time", "Time output"),
 )
+
+enum_subdivision_scheme = (
+    ("BILINEAR", "Bilinear", "Bilinear scheme"),
+    ("CATMARK", "Catmark", "Catmark scheme"),
+    ("LOOP", "Loop", "Loop scheme"),
+)
+
+enum_subdivision_boundary_interp = (
+    ("NONE", "None", "Do not interpolate boundaries"),
+    ("EDGE_ONLY", "Edge", "Sharp edges"),
+    ("EDGE_AND_CORNER", "Edge and Corner", "Sharp edges and corners"),
+)
+
+enum_subdivision_fvar_interp = (
+    ("NONE", "None", "Smooth everywhere"),
+    ("CORNERS_ONLY", "Corner", "Sharp corners only"),
+    ("CORNERS_PLUS1", "Edge Corner", "Sharp edge corners only"),
+    ("CORNERS_PLUS2", "Edge and Corner", "Sharp edges, corners and propagate corners"),
+    ("BOUNDARIES", "Boundary", "Sharp all boundaries"),
+    ("ALL", "All", "Bilinear everywhere"),
+)
+
+enum_subdivision_uv_interp = (
+    ("VERTEX", "Vertex", "Smooth based on vertices"),
+    ("VARYING", "Varying", "Smooth based on varyings"),
+)

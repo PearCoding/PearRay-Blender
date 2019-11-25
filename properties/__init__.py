@@ -4,6 +4,7 @@ from .camera import PearRayCameraProperties
 from .scene import PearRaySceneProperties
 from .layer import PearRaySceneRenderLayerProperties
 from .material import PearRayMaterialProperties
+from .mesh import PearRayMeshProperties
 from .light import PearRayLightProperties
 from .world import PearRayWorldProperties
 
@@ -67,6 +68,7 @@ def register():
     bpy.types.Scene.pearray_layer = PointerProperty(type=PearRaySceneRenderLayerProperties)
     bpy.types.Camera.pearray = PointerProperty(type=PearRayCameraProperties)
     bpy.types.Material.pearray = PointerProperty(type=PearRayMaterialProperties)
+    bpy.types.Mesh.pearray = PointerProperty(type=PearRayMeshProperties)
     bpy.types.Lamp.pearray = PointerProperty(type=PearRayLightProperties)
     bpy.types.World.pearray = PointerProperty(type=PearRayWorldProperties)
 
@@ -76,5 +78,6 @@ def unregister():
     del bpy.types.Scene.pearray_layer
     del bpy.types.Camera.pearray
     del bpy.types.Material.pearray
+    del bpy.types.Mesh.pearray
     del bpy.types.Lamp.pearray
     del bpy.types.World.pearray

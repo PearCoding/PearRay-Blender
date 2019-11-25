@@ -22,7 +22,7 @@ def export_particlesystem(exporter, parent, ps):
         print("Particle system %s not supported! Invalid display object %s given!" % (ps.name, disp_obj.name))
         return
 
-    mesh_name = export_mesh_only(exporter, disp_obj, False)
+    mesh_name = export_mesh_only(exporter, disp_obj)
 
     if not mesh_name:
         return

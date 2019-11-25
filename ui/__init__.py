@@ -5,6 +5,7 @@ from . import (
             properties_camera,
             properties_light,
             properties_material,
+            properties_mesh,
             properties_render,
             properties_render_layer,
             properties_world,

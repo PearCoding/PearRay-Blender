@@ -182,11 +182,11 @@ def export_mesh_data(exporter, mw, name, mesh):
     return name
 
 
-def export_mesh_only(exporter, obj, has_subsurf):
+def export_mesh_only(exporter, obj):
     try:
         mesh = obj.to_mesh(
             exporter.scene,
-            not has_subsurf,
+            True,
             'RENDER',
             calc_tessface=True,
             calc_undeformed=True)
@@ -215,16 +215,7 @@ def export_mesh_material_part(exporter, obj):
 def export_mesh(exporter, obj):
     w = exporter.w
 
-    subsurf_modifiers = [m for m in obj.modifiers if m.type == 'SUBSURF' and m.show_render]
-    has_subsurf = len(subsurf_modifiers) > 0
-
-    if len(subsurf_modifiers) > 1:
-        print("Object %s has more then one subsurf modifiers. Ignoring others except first one" % obj.name)
-
-    if has_subsurf and len(obj.modifiers) != 1:
-        print("Object %s has other modifiers. Can not apply them when subsurf modifier is present" % obj.name)
-
-    name = export_mesh_only(exporter, obj, has_subsurf)
+    name = export_mesh_only(exporter, obj)
     if not name:
         return
 
@@ -233,12 +224,16 @@ def export_mesh(exporter, obj):
 
     w.write(":name '%s'" % obj.name)
 
-    if not has_subsurf:
+    if not obj.data.pearray.subdivision:
         w.write(":type 'mesh'")
     else:
         w.write(":type 'subdiv'")
-        w.write(":max_subdivision %i" % subsurf_modifiers[0].render_levels)
-        #w.write(":use_creases %s" % ("true" if subsurf_modifiers[0].use_creases else "false"))
+        w.write(":max_level %i" % obj.data.pearray.subdivision_max_level)
+        w.write(":adaptive %s" % ("true" if obj.data.pearray.subdivision_adaptive else "false"))
+        w.write(":scheme '%s'" % obj.data.pearray.subdivision_scheme.lower())
+        w.write(":boundary_interpolation '%s'" % obj.data.pearray.subdivision_boundary_interp.lower())
+        w.write(":uv_interpolation '%s'" % obj.data.pearray.subdivision_uv_interp.lower())
+        w.write(":fvar_interpolation '%s'" % obj.data.pearray.subdivision_fvar_interp.lower())
 
     export_mesh_material_part(exporter, obj)
 
