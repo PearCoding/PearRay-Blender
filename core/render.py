@@ -99,6 +99,9 @@ class PearRayRender(bpy.types.RenderEngine):
         else:
             sceneFile = tempfile.NamedTemporaryFile(suffix=".prc").name
 
+        fileLog = pr.FileLogListener()
+        fileLog.open(os.path.normpath(renderPath + "/%s.log" % time.time()))
+        pr.Logger.instance.addListener(fileLog)
 
         self.update_stats("", "PearRay: Exporting data")
         scene_exporter = export.Exporter(sceneFile, scene)
