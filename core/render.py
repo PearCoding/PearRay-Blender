@@ -132,12 +132,16 @@ class PearRayRender(bpy.types.RenderEngine):
         if not integrator:
             self.report({'ERROR'}, "PearRay: could not create pearray integrator instance")
             print("<<< PEARRAY FAILED >>>")
+            pr.Logger.instance.removeListener(fileLog)
+            del fileLog
             return
 
         factory = environment.createRenderFactory()
         if not factory:
             self.report({'ERROR'}, "PearRay: could not create pearray render factory instance")
             print("<<< PEARRAY FAILED >>>")
+            pr.Logger.instance.removeListener(fileLog)
+            del fileLog
             return
 
         renderer = factory.create(integrator)
@@ -145,6 +149,8 @@ class PearRayRender(bpy.types.RenderEngine):
         if not renderer:
             self.report({'ERROR'}, "PearRay: could not create pearray render instance")
             print("<<< PEARRAY FAILED >>>")
+            pr.Logger.instance.removeListener(fileLog)
+            del fileLog
             return
 
         environment.setup(renderer)
@@ -207,6 +213,9 @@ class PearRayRender(bpy.types.RenderEngine):
         if addon_prefs.profile:
             pr.Profiler.stop()
             pr.Profiler.dumpToFile(renderPath + "/pr_profile.prof")
+
+        pr.Logger.instance.removeListener(fileLog)
+        del fileLog
 
         self.update_stats("", "")
         print("<<< PEARRAY FINISHED >>>")
