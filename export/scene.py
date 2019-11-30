@@ -1,5 +1,6 @@
 import bpy
 from .camera import export_camera
+from .curve import export_curve
 from .light import export_light
 from .material import export_default_materials, export_material
 from .mesh import export_mesh
@@ -192,6 +193,10 @@ def write_scene(exporter, pr):
     for obj in objs:
         if is_allowed_mesh(obj):
             export_mesh(exporter, obj)
+    w.write("; Curves")
+    for obj in objs:
+        if obj.type == 'CURVE':
+            export_curve(exporter, obj)
     w.write("; Particle Systems")
     for obj in objs:
         for ps in obj.particle_systems:
@@ -208,7 +213,7 @@ def write_scene(exporter, pr):
     w.write("; Materials")
     # Ignore hide_render
     for obj in bpy.data.objects:
-        if is_allowed_mesh(obj):
+        if is_allowed_mesh(obj) or obj.type == 'CURVE':
             for m in obj.data.materials:
                 export_material(exporter, m)
 
