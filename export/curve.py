@@ -9,6 +9,10 @@ def export_curve_spline(exporter, obj, index, start):
 
     spline = obj.data.splines[index]
 
+    wfactor = 2*(obj.data.bevel_depth + obj.data.extrude)
+    if wfactor <= 0:
+        return
+
     w.write("(entity")
     w.goIn()
 
@@ -19,7 +23,7 @@ def export_curve_spline(exporter, obj, index, start):
     points = [spline.bezier_points[start].co, spline.bezier_points[start].handle_right, spline.bezier_points[start+1].handle_left, spline.bezier_points[start+1].co]
     w.write(":degree %i" % (len(points)-1))
     w.write(":points [%s]" % ",".join(",".join(str(f) for f in p) for p in points))
-    w.write(":width [%f, %f]" % (spline.bezier_points[0].radius, spline.bezier_points[-1].radius))
+    w.write(":width [%f, %f]" % (wfactor*spline.bezier_points[0].radius, wfactor*spline.bezier_points[-1].radius))
 
     w.goOut()
     w.write(")")
