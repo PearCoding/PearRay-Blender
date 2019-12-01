@@ -69,7 +69,7 @@ def export_particlesystem_path(exporter, parent, ps):
         return
 
     # TODO: Get the real material
-    mat_name = parent.data.materials[0]
+    mat_name = parent.data.materials[0].name
 
     parent_m = mathutils.Matrix.Identity(4)
     if ps.parent:
@@ -79,32 +79,28 @@ def export_particlesystem_path(exporter, parent, ps):
 
     ident = mathutils.Matrix.Identity(4)
 
-    sf = ps.settings.hair_length
+    # TODO Set size reasonable...
+    sf = ps.settings.particle_size*ps.settings.hair_length
     oaf = mathutils.Vector(ps.settings.object_align_factor)
     if not oaf.length_squared == 0:
         sf *= oaf.length
 
-    counter = 0
-    for particle in ps.particles:
-        s = sf * particle.size
-        if s <= 0:
-            continue
-
+    particle_count = len(ps.particles)*ps.settings.child_nbr
+    degree = ps.settings.hair_step
+    for i in range(particle_count):
         w.write("(entity")
         w.goIn()
 
-        w.write(":name '%s_hair_%d'" % (ps.name, counter))
+        w.write(":name '%s_hair_%d'" % (ps.name, i))
         w.write(":type 'curve'")
         w.write(":material '%s'" % mat_name)
-        w.write(":degree %i" % (len(particle.hair_keys)-1))
+        w.write(":degree %i" % degree)
 
-        w.write(":points [%s]" % ",".join(",".join(str(f) for f in parent_m*p.co) for p in particle.hair_keys))
-        w.write(":width [%f, %f]" % (s,s))
-        inline_entity_uniform(exporter, [0,0,0], particle.rotation, 1, ident)
+        w.write(":points [%s]" % ",".join(",".join(str(f) for f in parent_m*ps.co_hair(parent, i, k)) for k in range(degree+1)))
+        w.write(":width [%f, %f]" % (sf,sf))
 
         w.goOut()
         w.write(")")
-        counter += 1
 
 
 def export_particlesystem(exporter, parent, ps):
