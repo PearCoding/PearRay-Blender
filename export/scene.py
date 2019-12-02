@@ -20,6 +20,10 @@ def renderable_objects(scene):
 
 def is_allowed_mesh(ob):
     return (ob.type in {'MESH', 'SURFACE'})
+    
+    
+def is_allowed_curve(ob):
+    return (ob.type in {'CURVE', 'FONT'})
 
 
 def write_scene(exporter, pr):
@@ -195,7 +199,7 @@ def write_scene(exporter, pr):
             export_mesh(exporter, obj)
     w.write("; Curves")
     for obj in objs:
-        if obj.type == 'CURVE':
+        if is_allowed_curve(obj):
             export_curve(exporter, obj)
     w.write("; Particle Systems")
     for obj in objs:
@@ -213,7 +217,7 @@ def write_scene(exporter, pr):
     w.write("; Materials")
     # Ignore hide_render
     for obj in bpy.data.objects:
-        if is_allowed_mesh(obj) or obj.type == 'CURVE':
+        if is_allowed_mesh(obj) or is_allowed_curve(obj):
             for m in obj.data.materials:
                 export_material(exporter, m)
 
