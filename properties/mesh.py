@@ -16,6 +16,7 @@ from bpy.props import (
 
 
 from . import enums
+from . import primitive
 
 
 class PearRayMeshProperties(PropertyGroup):
@@ -25,7 +26,7 @@ class PearRayMeshProperties(PropertyGroup):
         items=enums.enum_subdivision_scheme,
         default='CATMARK'
     )
-    
+
     subdivision_max_level = IntProperty(
         name="Max Level",
         description="Max subdivision level",
@@ -37,21 +38,21 @@ class PearRayMeshProperties(PropertyGroup):
         description="Use adaptive subdivision",
         default=False
     )
-    
+
     subdivision_boundary_interp = EnumProperty(
         name="Boundary Interpolation",
         description="Subdivision boundary interpolation type",
         items=enums.enum_subdivision_boundary_interp,
         default='EDGE_ONLY'
     )
-    
+
     subdivision_fvar_interp = EnumProperty(
         name="Face Varying Interpolation",
         description="Subdivision face varying interpolation type",
         items=enums.enum_subdivision_fvar_interp,
         default='ALL'
     )
-    
+
     subdivision_uv_interp = EnumProperty(
         name="UV Interpolation",
         description="Subdivision uv interpolation type",
@@ -64,3 +65,12 @@ class PearRayMeshProperties(PropertyGroup):
         description="Use OpenSubdiv",
         default=False
     )
+
+    # Not added to ui!
+    is_primitive = BoolProperty(
+        name="Primitive",
+        description="Is Primitive",
+        default=False
+    )
+
+    primitive = PointerProperty(type=primitive.PearRayPrimitiveProperties)

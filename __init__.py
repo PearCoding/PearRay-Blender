@@ -15,6 +15,7 @@ if "bpy" in locals():
     import importlib
     importlib.reload(core)
     importlib.reload(export)
+    importlib.reload(operators)
     importlib.reload(properties)
     importlib.reload(ui)
 else:
@@ -22,6 +23,7 @@ else:
     from . import (
             core,
             export,
+            operators,
             properties,
             ui,
             )
@@ -31,11 +33,13 @@ else:
 def register():
     bpy.utils.register_module(__name__)
     properties.register()
+    operators.register()
     ui.register()
 
 
 def unregister():
     ui.unregister()
+    operators.unregister()
     properties.unregister()
     bpy.utils.unregister_module(__name__)
 

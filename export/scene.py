@@ -5,6 +5,7 @@ from .light import export_light
 from .material import export_default_materials, export_material
 from .mesh import export_mesh
 from .particlesystem import export_particlesystem
+from .primitive import export_primitive
 from .spectral import write_spectral_color
 from .settings import export_settings
 from .world import export_world
@@ -19,7 +20,10 @@ def renderable_objects(scene):
 
 
 def is_allowed_mesh(ob):
-    return (ob.type in {'MESH', 'SURFACE'})
+    if ob.type == 'MESH':
+        return not ob.data.pearray.is_primitive
+    else:
+        return (ob.type in {'MESH', 'SURFACE'})
 
 
 def write_scene(exporter, pr):
@@ -189,6 +193,10 @@ def write_scene(exporter, pr):
     for light in objs:
         if light.type == 'LAMP':
             export_light(exporter, light)
+    w.write("; Primitives")
+    for obj in objs:
+        if obj.type == 'MESH' and obj.data.pearray.is_primitive:
+            export_primitive(exporter, obj)
     w.write("; Meshes")
     for obj in objs:
         if is_allowed_mesh(obj):
@@ -211,11 +219,8 @@ def write_scene(exporter, pr):
                     export_particlesystem(exporter, obj, ps)
                     ps.set_resolution(scene, obj, 'PREVIEW')
     w.write("; Materials")
-    # Ignore hide_render
-    for obj in bpy.data.objects:
-        if is_allowed_mesh(obj) or obj.type == 'CURVE':
-            for m in obj.data.materials:
-                export_material(exporter, m)
+    for m in bpy.data.materials:
+        export_material(exporter, m)
 
     w.goOut()
     w.write(")")

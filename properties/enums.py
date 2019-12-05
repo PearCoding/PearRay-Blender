@@ -144,3 +144,13 @@ enum_subdivision_uv_interp = (
     ("VERTEX", "Vertex", "Smooth based on vertices"),
     ("VARYING", "Varying", "Smooth based on varyings"),
 )
+
+enum_primitive_type = (
+    ("SPHERE", "Sphere", "Sphere"),
+    ("BOX", "Box", "Box"),
+    ("PLANE", "Plane", "Plane"),
+    ("DISK", "Disk", "Disk"),
+    ("CYLINDER", "Cylinder", "Cylinder"),
+    ("CONE", "Cone", "Cone"),
+    ("QUADRIC", "Quadric", "Quadric"),
+)
