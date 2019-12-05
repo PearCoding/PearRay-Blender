@@ -26,6 +26,10 @@ def is_allowed_mesh(ob):
         return (ob.type in {'MESH', 'SURFACE'})
 
 
+def is_allowed_curve(ob):
+    return (ob.type in {'CURVE', 'FONT'})
+
+
 def write_scene(exporter, pr):
     w = exporter.w
     scene = exporter.scene
@@ -203,7 +207,7 @@ def write_scene(exporter, pr):
             export_mesh(exporter, obj)
     w.write("; Curves")
     for obj in objs:
-        if obj.type == 'CURVE':
+        if is_allowed_curve(obj):
             export_curve(exporter, obj)
     w.write("; Particle Systems")
     for obj in objs:
