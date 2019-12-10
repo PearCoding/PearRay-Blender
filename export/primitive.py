@@ -93,6 +93,7 @@ def export_plane(exporter, prim):
     w.goIn()
     w.write(":name '%s'" % prim.name)
     w.write(":type 'plane'")
+    w.write(":centering true")
     w.write(":width %f" % prim_data.pearray.primitive.width)
     w.write(":height %f" % prim_data.pearray.primitive.height)
     export_prim_material_part(exporter, prim)
