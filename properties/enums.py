@@ -119,6 +119,14 @@ enum_aov_type = (
     ("TIME", "Time", "Time output"),
 )
 
+enum_pixel_filter_type = (
+    ("BLOCK", "Block", "Block"),
+    ("TRIANGLE", "Triangle", "Triangle filter"),
+    ("GAUSSIAN", "Gaussian", "Gaussian filter"),
+    ("LANCZOS", "Lanczos", "Lanczos (sinc-sinc) filter"),
+    ("MITCHELL", "Mitchell-Netravali", "Mitchell-Netravali filter"),
+)
+
 enum_subdivision_scheme = (
     ("BILINEAR", "Bilinear", "Bilinear scheme"),
     ("CATMARK", "Catmark", "Catmark scheme"),

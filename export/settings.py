@@ -10,26 +10,31 @@ def export_settings(exporter, pr, scene):
     add_entry(exporter, '/renderer/common/type', s.integrator)
     add_entry(exporter, "/renderer/common/max_ray_depth", s.max_ray_depth)
     add_entry(exporter, '/renderer/common/tile/mode',
-              int(pr.TileMode.__members__[s.render_tile_mode]))
+              s.render_tile_mode)
 
     add_entry(exporter, '/renderer/common/sampler/aa/count',
               s.sampler_max_aa_samples)
     add_entry(exporter, '/renderer/common/sampler/aa/type',
-              int(pr.SamplerMode.__members__[s.sampler_aa_mode]))
+              s.sampler_aa_mode)
 
     add_entry(exporter, '/renderer/common/sampler/lens/count',
               s.sampler_max_lens_samples)
     add_entry(exporter, '/renderer/common/sampler/lens/type',
-              int(pr.SamplerMode.__members__[s.sampler_lens_mode]))
+              s.sampler_lens_mode)
 
     add_entry(exporter, '/renderer/common/sampler/time/count',
               s.sampler_max_time_samples)
     add_entry(exporter, '/renderer/common/sampler/time/type',
-              int(pr.SamplerMode.__members__[s.sampler_time_mode]))
+              s.sampler_time_mode)
     add_entry(exporter, '/renderer/common/sampler/time/mapping',
-              int(pr.TimeMappingMode.__members__[s.sampler_time_mapping_mode]))
+              s.sampler_time_mapping_mode)
     add_entry(exporter, '/renderer/common/sampler/time/scale',
               s.sampler_time_scale)
+
+    add_entry(exporter, '/renderer/common/pixel/filter',
+              s.pixel_filter_mode)
+    add_entry(exporter, '/renderer/common/pixel/radius',
+              s.pixel_filter_radius)
 
     if s.integrator == 'DIRECT':
         add_entry(

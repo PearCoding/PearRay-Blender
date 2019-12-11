@@ -56,6 +56,20 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_tile_mode,
         default='LINEAR'
         )
+    pixel_filter_mode = EnumProperty(
+        name="Pixel Filter",
+        description="Pixel filter to be used while rendering",
+        items=enums.enum_pixel_filter_type,
+        default='MITCHELL'
+        )
+    pixel_filter_radius = IntProperty(
+        name="Pixel Filter Radius",
+        description="Radius of the pixel filter",
+        min=0,
+        soft_max=4,
+        subtype="UNSIGNED",
+        default=1
+        )
     sampler_aa_mode = EnumProperty(
         name="AA Sampler Mode",
         description="AA sampling technique",
