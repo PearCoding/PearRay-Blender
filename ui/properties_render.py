@@ -52,11 +52,7 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "max_ray_depth")
 
         layout.separator()
-
-        split = layout.split(percentage=0.33)
-        split.label(text="Pixel Filter:")
-        row = split.row(align=True)
-        row.prop(context.scene.pearray, "pixel_filter_mode", expand=True)
+        layout.prop(context.scene.pearray, "pixel_filter_mode")
         layout.prop(context.scene.pearray, "pixel_filter_radius")
 
 
