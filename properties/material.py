@@ -210,6 +210,11 @@ class PearRayMaterialProperties(PropertyGroup):
         description="Subsurface approximation factor of material",
         min=0, soft_max=1.00, default=0.0
     )
+    p_anisotropic = FloatProperty(
+        name="Anisotropic",
+        description="Anisotropy of material",
+        min=0, soft_max=1.00, default=0.0
+    )
     p_metallic = FloatProperty(
         name="Metallic",
         description="Metallic factor of material",

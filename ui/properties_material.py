@@ -159,6 +159,7 @@ class MATERIAL_PT_pr_principled(MaterialButtonsPanel, bpy.types.Panel):
         col.prop(mat, 'roughness')
         col.prop(mat.pearray, 'p_subsurface')
         col.prop(mat.pearray, 'p_metallic')
+        col.prop(mat.pearray, 'p_anisotropic')
         col.prop(mat.pearray, 'p_specular')
         col.prop(mat.pearray, 'p_specular_tint')
         col.prop(mat.pearray, 'p_sheen')

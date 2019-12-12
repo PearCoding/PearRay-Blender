@@ -130,6 +130,7 @@ def export_material_principled(exporter, material):
     exporter.w.write(":roughness %f" % material.roughness)
     exporter.w.write(":subsurface %f" % material.pearray.p_subsurface)
     exporter.w.write(":metallic %f" % material.pearray.p_metallic)
+    exporter.w.write(":anisotropic %f" % material.pearray.p_anisotropic)
     exporter.w.write(":specular %f" % material.pearray.p_specular)
     exporter.w.write(":specular_tint %f" % material.pearray.p_specular_tint)
     exporter.w.write(":sheen %f" % material.pearray.p_sheen)
