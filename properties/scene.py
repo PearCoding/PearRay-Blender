@@ -50,6 +50,11 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_integrator_mode,
         default='DIRECT'
         )
+    msi = BoolProperty(
+        name="Use MSI",
+        description="Use Multiple Importance Sampling",
+        default=True
+    )
     render_tile_mode = EnumProperty(
         name="Tile Mode",
         description="Tiling Mode to be used while rendering",

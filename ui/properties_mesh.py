@@ -60,11 +60,14 @@ class DATA_PT_pr_mesh_primitive(MeshButtonsPanel, bpy.types.Panel):
             col.prop(prim, 'width')
             col.prop(prim, 'height')
             col.prop(prim, 'depth')
-        elif prim.primitive_type == 'CYLINDER' or prim.primitive_type == 'CONE':
+        elif prim.primitive_type == 'CYLINDER':
             col = layout.column(align=True)
             col.prop(prim, 'radius', text='Base Radius')
             col.prop(prim, 'top_radius', text='Top Radius')
-            col.prop(prim, 'height', text='Height')
+            col.prop(prim, 'height')
+        elif prim.primitive_type == 'CONE':
+            col.prop(prim, 'radius')
+            col.prop(prim, 'height')
         elif prim.primitive_type == 'PLANE':
             layout.prop(prim, 'width')
             layout.prop(prim, 'height')

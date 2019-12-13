@@ -27,7 +27,7 @@ class OBJECT_OT_AddCylinderOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_cylinder_add(radius=1.0)
+        bpy.ops.mesh.primitive_cylinder_add(radius=1.0, depth=1.0)
         obj = bpy.context.object
 
         obj.draw_type = 'WIRE'
@@ -48,7 +48,7 @@ class OBJECT_OT_AddConeOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_cone_add(radius1=1.0)
+        bpy.ops.mesh.primitive_cone_add(radius1=1.0, depth=1.0)
         obj = bpy.context.object
 
         obj.draw_type = 'WIRE'
@@ -56,7 +56,6 @@ class OBJECT_OT_AddConeOperator(bpy.types.Operator):
         obj.data.pearray.is_primitive = True
         obj.data.pearray.primitive.primitive_type = 'CONE'
         obj.data.pearray.primitive.radius = 1.0
-        obj.data.pearray.primitive.top_radius = 1.0
         obj.data.pearray.primitive.height = 1.0
 
         return {'FINISHED'}
@@ -69,7 +68,7 @@ class OBJECT_OT_AddBoxOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_cube_add(radius=1.0)
+        bpy.ops.mesh.primitive_cube_add(radius=0.5)
         obj = bpy.context.object
 
         obj.draw_type = 'WIRE'
@@ -87,7 +86,7 @@ class OBJECT_OT_AddPlaneOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_plane_add(radius=1.0)
+        bpy.ops.mesh.primitive_plane_add(radius=0.5)
         obj = bpy.context.object
 
         obj.draw_type = 'WIRE'
@@ -123,7 +122,7 @@ class OBJECT_OT_AddQuadricOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_cube_add(radius=1.0)
+        bpy.ops.mesh.primitive_cube_add(radius=0.5)
         obj = bpy.context.object
 
         obj.draw_type = 'WIRE'

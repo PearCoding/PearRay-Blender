@@ -126,6 +126,7 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
 
         if scene.pearray.integrator == 'DIRECT':
             layout.prop(scene.pearray, "max_light_samples")
+            layout.prop(scene.pearray, "msi")
 
 
 class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):

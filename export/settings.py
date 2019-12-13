@@ -39,6 +39,8 @@ def export_settings(exporter, pr, scene):
     if s.integrator == 'DIRECT':
         add_entry(
             exporter, '/renderer/integrator/direct/light/sample_count', s.max_light_samples)
+        add_entry(
+            exporter, '/renderer/integrator/direct/msi/enabled', s.msi)
     elif s.integrator == 'AO':
         add_entry(exporter, '/renderer/integrator/ao/sample_count',
                   s.max_light_samples)
