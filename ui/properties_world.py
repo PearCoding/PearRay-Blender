@@ -35,11 +35,23 @@ class WORLD_PT_pr_background(WorldButtonsPanel, bpy.types.Panel):
 
         world = context.world
 
-        type = getattr(world.pearray, 'background_type')
+        layout.prop(world.pearray, 'split_background')
 
         col = layout.column(align=True)
+        col.label(text="Background:")
         col.row(align=True).prop(world.pearray, 'background_type', expand=True)
-        if type == 'COLOR':
+        if world.pearray.background_type == 'COLOR':
             col.prop(world, "horizon_color", text="")
         else:
-            col.prop(world.pearray, 'background_tex_slot')
+            col.prop(world.pearray, 'background_tex_slot', text="Texture Slot")
+
+        col = layout.column(align=True)
+        col.label(text="Radiance:")
+        col.enabled = world.pearray.split_background
+        col.row(align=True).prop(world.pearray, 'radiance_type', expand=True)
+        if world.pearray.radiance_type == 'COLOR':
+            col.prop(world.pearray, "radiance_color", text="")
+        else:
+            col.prop(world.pearray, 'radiance_tex_slot', text="Texture Slot")
+
+        layout.prop(world.pearray, 'radiance_factor')
