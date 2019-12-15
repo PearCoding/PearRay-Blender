@@ -3,11 +3,11 @@ import mathutils
 
 
 from .entity import inline_entity_matrix
-from .material import export_color
+from .color import export_color
 
 def write_emission(exporter, light, factor=1):
     w = exporter.w
-    color_name = export_color(exporter, light.data, 'color', True, factor)
+    color_name = export_color(exporter, light.data, 'color', True, factor, asLight=True)
     light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
 
     w.write("(emission")
@@ -75,14 +75,14 @@ def export_sunlight(exporter, light):
     w = exporter.w
     light_data = light.data
     w.write("; Light %s" % light.name)
+    color_name = export_color(exporter, light.data, 'color',
+    True, asLight=True)
 
     w.write("(light")
     w.goIn()
 
     w.write(":type 'distant'")
     w.write(":direction [0, 0, -1]")
-
-    color_name = export_color(exporter, light.data, 'color', True)
     w.write(":radiance %s" % color_name)
     inline_entity_matrix(exporter, light)
 
