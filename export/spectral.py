@@ -9,7 +9,7 @@ def write_spectral_color(exporter, spec_name, color,
     if asLight:
         exporter.w.write(":data (illum %f %f %f)" % color[:])
     else:
-        exporter.w.write(":data (rgb %f %f %f)" % color[:])
+        exporter.w.write(":data (refl %f %f %f)" % color[:])
 
     exporter.w.goOut()
     exporter.w.write(")")
