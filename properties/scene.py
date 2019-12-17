@@ -34,7 +34,7 @@ class PearRaySceneProperties(PropertyGroup):
         name="Color output format",
         description="Output format of color channel in file",
         items=enums.enum_color_format,
-        default='SRGB'
+        default='XYZ'
     )
     max_ray_depth = IntProperty(
         name="Max Ray Depth",
