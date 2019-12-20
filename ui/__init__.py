@@ -2,14 +2,14 @@ import bpy
 
 
 from . import (
-            properties_camera,
-            properties_light,
-            properties_material,
-            properties_mesh,
-            properties_render,
-            properties_render_layer,
-            properties_world,
-            )
+    properties_camera,
+    properties_light,
+    properties_material,
+    properties_mesh,
+    properties_render,
+    properties_render_layer,
+    properties_world,
+)
 
 
 from bl_ui import properties_scene

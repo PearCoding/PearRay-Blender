@@ -28,5 +28,5 @@ def inline_entity_uniform(exporter,
     mat_rot = mathutils.Quaternion(rot).to_matrix().to_4x4()
 
     mat_out = mat_loc * mat_rot * mat_sca
-    
+
     _inline_entity_matrix(exporter, exporter.M_WORLD * parent_m * mat_out)

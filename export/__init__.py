@@ -13,7 +13,6 @@ class Writer:
         self.useTabs = useTabs
         self.currentLevel = 0
 
-
     def write(self, str):
         prefix = ""
         if self.useTabs:
@@ -22,10 +21,8 @@ class Writer:
 
         self.file.write(prefix + str + "\n")
 
-
     def goIn(self):
         self.currentLevel = self.currentLevel + 1
-
 
     def goOut(self):
         self.currentLevel = self.currentLevel - 1
@@ -56,10 +53,9 @@ class Exporter:
         self.render = scene.render
         self.world = scene.world
 
-
     def create_file(self, name_hint=""):
         if self.scene.pearray.keep_prc:
-            dir = os.path.join(os.path.dirname(self.filename), "generated");
+            dir = os.path.join(os.path.dirname(self.filename), "generated")
             if not os.path.exists(dir):
                 os.mkdir(dir)
 
@@ -70,7 +66,6 @@ class Exporter:
         else:
             return tempfile.NamedTemporaryFile(delete=False).name
 
-
     def register_unique_name(self, type, name):
         test_name = name
         i = 1
@@ -80,7 +75,6 @@ class Exporter:
         self.instances[type].append(test_name)
 
         return test_name
-
 
     def register_mesh_data(self, name, data):
         for n, d in self.mesh_cache.items():
@@ -106,7 +100,6 @@ class Exporter:
 
         scene.write_scene(self, pr)
         self.close()
-
 
     def close(self):
         self.file.close()

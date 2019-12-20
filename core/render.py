@@ -19,7 +19,6 @@ class PearRayRender(bpy.types.RenderEngine):
     #bl_use_preview = True
     bl_use_exclude_layers = True
 
-
     @staticmethod
     def _setup_package():
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
@@ -28,7 +27,6 @@ class PearRayRender(bpy.types.RenderEngine):
             sys.path.append(bpy.path.resolve_ncase(bpy.path.abspath(addon_prefs.package_dir)))
 
         return importlib.import_module("pypearray")
-
 
     def _proc_wait(self, renderer):
         time.sleep(0.25)
@@ -47,19 +45,17 @@ class PearRayRender(bpy.types.RenderEngine):
 
         return True
 
-
     def _handle_render_stat(self, renderer):
         stat = renderer.status
 
         line = "Pass %s S %i R %i EH %i BH %i" % (renderer.currentPass+1,
-             stat['global.pixel_sample_count'],
-             stat['global.ray_count'],
-             stat['global.entity_hit_count'],
-             stat['global.background_hit_count'])
+                                                  stat['global.pixel_sample_count'],
+                                                  stat['global.ray_count'],
+                                                  stat['global.entity_hit_count'],
+                                                  stat['global.background_hit_count'])
 
         self.update_stats("", "PearRay: Rendering [%s]..." % (line))
         self.update_progress(stat.percentage)
-
 
     def render(self, scene):
         addon_prefs = bpy.context.user_preferences.addons[pearray_package.__package__].preferences
@@ -119,7 +115,7 @@ class PearRayRender(bpy.types.RenderEngine):
         toneMapper.gammaMode = pr.ToneGammaMode.NONE
         toneMapper.mapperMode = pr.ToneMapperMode.NONE
 
-        colorBuffer = pr.ColorBuffer(x,y,pr.ColorBufferMode.RGBA)
+        colorBuffer = pr.ColorBuffer(x, y, pr.ColorBufferMode.RGBA)
 
         environment.registry.set('/renderer/film/width', x)
         environment.registry.set('/renderer/film/height', y)
@@ -173,7 +169,7 @@ class PearRayRender(bpy.types.RenderEngine):
         layer = result.layers[0]
 
         def update_image():
-            colorBuffer.map(toneMapper, renderer.output.spectral)
+            colorBuffer.map(toneMapper, environment.spectrumDescriptor, renderer.output.spectral)
             colorBuffer.flipY()
             layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)

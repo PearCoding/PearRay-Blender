@@ -1,18 +1,18 @@
 from bpy.types import (
-        PropertyGroup,
-        )
+    PropertyGroup,
+)
 
 from bpy.props import (
-        StringProperty,
-        BoolProperty,
-        IntProperty,
-        IntVectorProperty,
-        FloatProperty,
-        FloatVectorProperty,
-        EnumProperty,
-        PointerProperty,
-        CollectionProperty,
-        )
+    StringProperty,
+    BoolProperty,
+    IntProperty,
+    IntVectorProperty,
+    FloatProperty,
+    FloatVectorProperty,
+    EnumProperty,
+    PointerProperty,
+    CollectionProperty,
+)
 
 
 from . import enums
@@ -45,7 +45,7 @@ class PearRayWorldProperties(PropertyGroup):
     radiance_color = FloatVectorProperty(
         name="Radiance Color",
         description="Radiance Color",
-        default=(1,1,1),
+        default=(1, 1, 1),
         subtype="COLOR",
         soft_max=1
     )

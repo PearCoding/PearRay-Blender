@@ -8,7 +8,7 @@ bl_info = {
     "warning": "experimental",
     "tracker_url": "https://github.com/PearCoding/PearRay/issues/new",
     "category": "Render"
-    }
+}
 
 
 if "bpy" in locals():
@@ -21,15 +21,15 @@ if "bpy" in locals():
 else:
     import bpy
     from . import (
-            core,
-            export,
-            operators,
-            properties,
-            ui,
-            )
+        core,
+        export,
+        operators,
+        properties,
+        ui,
+    )
 
 
-## Initialization
+# Initialization
 def register():
     bpy.utils.register_module(__name__)
     properties.register()

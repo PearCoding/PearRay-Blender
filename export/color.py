@@ -3,7 +3,7 @@ from .texture import export_texture
 
 
 def export_color(exporter, material, type, required,
-    factor=1, asLight=False):
+                 factor=1, asLight=False):
     name = "%s_%s" % (material.name, type)
 
     attr_col = type

@@ -1,5 +1,5 @@
 def write_spectral_color(exporter, spec_name, color,
-    asLight=False):
+                         asLight=False):
     new_name = exporter.register_unique_name('SPEC', spec_name)
 
     exporter.w.write("(spectrum")

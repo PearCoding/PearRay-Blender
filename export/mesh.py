@@ -55,12 +55,12 @@ def export_mesh_data(exporter, mw, name, mesh):
                     color = color_layer[face.index].color4
 
             if face.use_smooth:
-                #if uv_layer:
+                # if uv_layer:
                 #    if color_layer:
                 #        vert_data = (v.co[:], v.normal[:], uv[:], color[:])
                 #    else:
                 #        vert_data = (v.co[:], v.normal[:], uv[:])
-                #else:
+                # else:
                 #    if color_layer:
                 #        vert_data = (v.co[:], v.normal[:], color[:])
                 #    else:
@@ -202,6 +202,7 @@ def export_mesh_only(exporter, obj):
     bpy.data.meshes.remove(mesh)
 
     return name
+
 
 def export_mesh_material_part(exporter, obj):
     w = exporter.w

@@ -11,47 +11,50 @@ from .world import PearRayWorldProperties
 from bpy.types import AddonPreferences
 
 from bpy.props import (
-        StringProperty,
-        BoolProperty,
-        IntProperty,
-        PointerProperty
-        )
+    StringProperty,
+    BoolProperty,
+    IntProperty,
+    PointerProperty
+)
 
 
-### Global Settings
+# Global Settings
 pearray_package = __import__(__name__.split('.')[0])
+
+
 class PearRayPreferences(AddonPreferences):
     bl_idname = pearray_package.__package__
 
     package_dir = StringProperty(
-                name="Custom Package Directory",
-                description="Path to pypearray package library. Can be empty to search in system paths",
-                subtype='DIR_PATH',
-                )
+        name="Custom Package Directory",
+        description="Path to pypearray package library. Can be empty to search in system paths",
+        subtype='DIR_PATH',
+    )
     show_progress_interval = IntProperty(
-                name="Show Progress",
-                description="Update interval for progress status. Zero disables it",
-                default=2,
-                min=0,
-                soft_max=10
-                )
+        name="Show Progress",
+        description="Update interval for progress status. Zero disables it",
+        default=2,
+        min=0,
+        soft_max=10
+    )
     show_image_interval = IntProperty(
-                name="Show Image",
-                description="Update interval for image updates. Zero disables it",
-                default=5,
-                min=0,
-                soft_max=10
-                )
+        name="Show Image",
+        description="Update interval for image updates. Zero disables it",
+        default=5,
+        min=0,
+        soft_max=10
+    )
     verbose = BoolProperty(
-                name="Verbose",
-                description="Display verbose information in the produced log files",
-                default=True
-                )
+        name="Verbose",
+        description="Display verbose information in the produced log files",
+        default=True
+    )
     profile = BoolProperty(
-                name="Profile",
-                description="Profile execution if available and dump results to pr_profile.prof at the end",
-                default=False
-                )
+        name="Profile",
+        description="Profile execution if available and dump results to pr_profile.prof at the end",
+        default=False
+    )
+
     def draw(self, context):
         layout = self.layout
         layout.prop(self, "package_dir")

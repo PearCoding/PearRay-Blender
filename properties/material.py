@@ -1,18 +1,18 @@
 from bpy.types import (
-        PropertyGroup,
-        )
+    PropertyGroup,
+)
 
 from bpy.props import (
-        StringProperty,
-        BoolProperty,
-        IntProperty,
-        IntVectorProperty,
-        FloatProperty,
-        FloatVectorProperty,
-        EnumProperty,
-        PointerProperty,
-        CollectionProperty,
-        )
+    StringProperty,
+    BoolProperty,
+    IntProperty,
+    IntVectorProperty,
+    FloatProperty,
+    FloatVectorProperty,
+    EnumProperty,
+    PointerProperty,
+    CollectionProperty,
+)
 
 
 from . import enums
@@ -60,7 +60,7 @@ class PearRayMaterialProperties(PropertyGroup):
     emission_color = FloatVectorProperty(
         name="Emission Color",
         description="Emission Color",
-        default=(0,0,0),
+        default=(0, 0, 0),
         subtype="COLOR",
         soft_max=1,
     )
@@ -146,7 +146,7 @@ class PearRayMaterialProperties(PropertyGroup):
     specular_ior_color = FloatVectorProperty(
         name="Specular Index of Refraction",
         description="Specular Index of Refraction",
-        default=(1.55,1.55,1.55),
+        default=(1.55, 1.55, 1.55),
         subtype="COLOR",
         soft_min=1,
         soft_max=3,

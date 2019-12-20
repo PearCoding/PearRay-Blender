@@ -21,7 +21,7 @@ def export_curve_spline(exporter, obj, index, start):
     w.write(":material '%s'" % obj.data.materials[spline.material_index].name)
 
     next = spline.bezier_points[start+1] if start + 1 < len(spline.bezier_points) else spline.bezier_points[0]
-    
+
     points = [spline.bezier_points[start].co, spline.bezier_points[start].handle_right, next.handle_left, next.co]
     w.write(":degree %i" % (len(points)-1))
     w.write(":points [%s]" % ",".join(",".join(str(f) for f in p) for p in points))
@@ -54,10 +54,11 @@ def export_curve(exporter, obj):
         if obj.data.splines[i].type != 'BEZIER':
             print("PearRay can only export bezier splines!")
             continue
-        max = len(obj.data.splines[i].bezier_points) if obj.data.splines[i].use_cyclic_u else len(obj.data.splines[i].bezier_points)-1
+        max = len(obj.data.splines[i].bezier_points) if obj.data.splines[i].use_cyclic_u else len(
+            obj.data.splines[i].bezier_points)-1
         for j in range(max):
             export_curve_spline(exporter, obj, i, j)
-    
+
     # Uncomment this when we are sure conv_to_curve works
-    #if obj.type == 'FONT':
+    # if obj.type == 'FONT':
     #    bpy.data.objects.remove(obj)

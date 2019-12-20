@@ -79,7 +79,7 @@ def export_material_microfacet(exporter, material):
     spec_name = export_color(exporter, material, 'specular_color', True)
     if material.pearray.specular_ior_type == 'COLOR':
         ior_name = write_spectral_color(exporter, "%s_ior" % material.name,
-                                    material.pearray.specular_ior_color)
+                                        material.pearray.specular_ior_color)
 
     exporter.w.write("(material")
     exporter.w.goIn()

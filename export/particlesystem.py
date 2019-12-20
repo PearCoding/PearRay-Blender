@@ -96,8 +96,9 @@ def export_particlesystem_path(exporter, parent, ps):
         w.write(":material '%s'" % mat_name)
         w.write(":degree %i" % degree)
 
-        w.write(":points [%s]" % ",".join(",".join(str(f) for f in parent_m*ps.co_hair(parent, i, k)) for k in range(degree+1)))
-        w.write(":width [%f, %f]" % (sf,sf))
+        w.write(":points [%s]" % ",".join(",".join(str(f)
+                                                   for f in parent_m*ps.co_hair(parent, i, k)) for k in range(degree+1)))
+        w.write(":width [%f, %f]" % (sf, sf))
 
         w.goOut()
         w.write(")")

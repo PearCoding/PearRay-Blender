@@ -9,7 +9,6 @@ properties_render_layer.RENDERLAYER_PT_layers.COMPAT_ENGINES.add('PEARRAY_RENDER
 del properties_render_layer
 
 
-
 class RENDERLAYER_PT_pr_layer_options(RenderLayerButtonsPanel, bpy.types.Panel):
     bl_label = "Layer"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
@@ -43,7 +42,7 @@ class RENDERLAYER_OP_pr_layer_lpe_actions(bpy.types.Operator):
     bl_label = "Adds or removes lpes"
 
     action = bpy.props.EnumProperty(
-        items=(('REMOVE', 'Remove', ''),('ADD', 'Add', ''))
+        items=(('REMOVE', 'Remove', ''), ('ADD', 'Add', ''))
     )
 
     def invoke(self, context, event):

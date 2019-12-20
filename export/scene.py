@@ -43,7 +43,7 @@ def write_scene(exporter, pr):
         w.write(":renderWidth %i" % res_x)
         w.write(":renderHeight %i" % res_y)
         w.write(":camera '%s'" % scene.camera.name)
-
+        w.write(":spectrum 'srgb'")
 
     def export_outputs():
         rl = scene.render.layers.active
@@ -183,7 +183,7 @@ def write_scene(exporter, pr):
 
     export_scene()
     w.write("; Settings")
-    export_settings(exporter, pr,scene)
+    export_settings(exporter, pr, scene)
     w.write("; Outputs")
     export_outputs()
     w.write("; Default Materials")

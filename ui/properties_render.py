@@ -111,9 +111,9 @@ class RENDER_PT_pr_sampler(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "sampler_time_scale")
         layout.separator()
         layout.label(text="Max Samples: %i" %
-            (scene.pearray.sampler_max_aa_samples *
-             scene.pearray.sampler_max_lens_samples *
-             scene.pearray.sampler_max_time_samples))
+                     (scene.pearray.sampler_max_aa_samples *
+                      scene.pearray.sampler_max_lens_samples *
+                      scene.pearray.sampler_max_time_samples))
 
 
 class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
@@ -144,4 +144,3 @@ class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
         layout.prop(scene.pearray, "keep_prc")
         layout.prop(scene.pearray, "beautiful_prc")
         layout.prop(scene.pearray, "color_format")
-

@@ -1,18 +1,18 @@
 from bpy.types import (
-        PropertyGroup,
-        )
+    PropertyGroup,
+)
 
 from bpy.props import (
-        StringProperty,
-        BoolProperty,
-        IntProperty,
-        IntVectorProperty,
-        FloatProperty,
-        FloatVectorProperty,
-        EnumProperty,
-        PointerProperty,
-        CollectionProperty,
-        )
+    StringProperty,
+    BoolProperty,
+    IntProperty,
+    IntVectorProperty,
+    FloatProperty,
+    FloatVectorProperty,
+    EnumProperty,
+    PointerProperty,
+    CollectionProperty,
+)
 
 
 from . import enums

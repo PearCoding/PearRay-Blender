@@ -12,7 +12,7 @@ def export_camera(exporter, camera):
     w.goIn()
 
     aspectW = (camera.data.sensor_width/camera.data.lens)
-    aspectH = aspectW#(camera.data.sensor_height/camera.data.lens)
+    aspectH = aspectW  # (camera.data.sensor_height/camera.data.lens)
 
     if scene.render.resolution_x > scene.render.resolution_y:
         aspectH = aspectH * scene.render.resolution_y / scene.render.resolution_x

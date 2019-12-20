@@ -1,22 +1,23 @@
 import bpy
 
 from bpy.types import (
-        PropertyGroup,
-        )
+    PropertyGroup,
+)
 
 from bpy.props import (
-        StringProperty,
-        BoolProperty,
-        IntProperty,
-        IntVectorProperty,
-        FloatProperty,
-        FloatVectorProperty,
-        EnumProperty,
-        PointerProperty,
-        CollectionProperty,
-        )
+    StringProperty,
+    BoolProperty,
+    IntProperty,
+    IntVectorProperty,
+    FloatProperty,
+    FloatVectorProperty,
+    EnumProperty,
+    PointerProperty,
+    CollectionProperty,
+)
 
 from . import enums
+
 
 class PearRayLPEProperty(PropertyGroup):
     channel = EnumProperty(
@@ -30,6 +31,7 @@ class PearRayLPEProperty(PropertyGroup):
         description="Light Path Expression. See documentation for syntax",
         default="C.*"
     )
+
 
 class PearRaySceneRenderLayerProperties(PropertyGroup):
     aov_t = BoolProperty(

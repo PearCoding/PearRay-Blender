@@ -1,21 +1,22 @@
 from bpy.types import (
-        PropertyGroup,
-        )
+    PropertyGroup,
+)
 
 from bpy.props import (
-        StringProperty,
-        BoolProperty,
-        IntProperty,
-        IntVectorProperty,
-        FloatProperty,
-        FloatVectorProperty,
-        EnumProperty,
-        PointerProperty,
-        CollectionProperty,
-        )
+    StringProperty,
+    BoolProperty,
+    IntProperty,
+    IntVectorProperty,
+    FloatProperty,
+    FloatVectorProperty,
+    EnumProperty,
+    PointerProperty,
+    CollectionProperty,
+)
 
 
 from . import enums
+
 
 class PearRayPrimitiveProperties(PropertyGroup):
     primitive_type = EnumProperty(
@@ -58,7 +59,7 @@ class PearRayPrimitiveProperties(PropertyGroup):
     normal = FloatVectorProperty(
         name="Normal",
         description="Local Normal",
-        default=(0,0,1),
+        default=(0, 0, 1),
         subtype='DIRECTION',
         min=0, soft_max=10
     )
@@ -66,7 +67,7 @@ class PearRayPrimitiveProperties(PropertyGroup):
     parameters = FloatVectorProperty(
         name="Parameters",
         description="Quadric Parameter",
-        default=(1,1,1,0,0,0,0,0,0,-1),
+        default=(1, 1, 1, 0, 0, 0, 0, 0, 0, -1),
         size=10,
         min=0, soft_max=10
     )

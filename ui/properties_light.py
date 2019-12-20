@@ -45,7 +45,7 @@ class DATA_PT_pr_lamp(DataButtonsPanel, bpy.types.Panel):
             elif lamp.shape == 'RECTANGLE':
                 sub.prop(lamp, "size", text="Size X")
                 sub.prop(lamp, "size_y", text="Size Y")
-    
+
         if lamp.type == 'POINT' or lamp.type == 'SPOT' or lamp.type == 'HEMI' or lamp.type == 'AREA':
             col.separator()
             col.prop(lamp.pearray, 'camera_visible')

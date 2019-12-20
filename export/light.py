@@ -5,6 +5,7 @@ import mathutils
 from .entity import inline_entity_matrix
 from .color import export_color
 
+
 def write_emission(exporter, light, factor=1):
     w = exporter.w
     color_name = export_color(exporter, light.data, 'color', True, factor, asLight=True)
@@ -36,7 +37,7 @@ def export_pointlight(exporter, light):
 
     w.write(":name '%s'" % light.name)
     w.write(":type 'sphere'")
-    w.write(":radius %f" % light_data.pearray.point_radius)# Really?
+    w.write(":radius %f" % light_data.pearray.point_radius)  # Really?
     w.write(":emission '%s'" % light_mat_n)
     inline_entity_matrix(exporter, light)
 
@@ -76,7 +77,7 @@ def export_sunlight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
     color_name = export_color(exporter, light.data, 'color',
-    True, asLight=True)
+                              True, asLight=True)
 
     w.write("(light")
     w.goIn()
@@ -92,7 +93,7 @@ def export_sunlight(exporter, light):
 
 def export_light(exporter, light):
     if light.data.type == 'POINT' or light.data.type == 'SPOT':
-        export_pointlight(exporter, light)# Interpret as spherical area light
+        export_pointlight(exporter, light)  # Interpret as spherical area light
     elif light.data.type == 'HEMI' or light.data.type == 'AREA':
         export_arealight(exporter, light)
     elif light.data.type == 'SUN':
