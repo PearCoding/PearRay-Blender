@@ -1,4 +1,4 @@
-# PearRay Blender Integration
+# PearRay Blender (v2.80+) Integration
 
 Basic blender addon to integrate the PearRay engine.
 
