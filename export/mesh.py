@@ -36,12 +36,12 @@ def export_mesh_data(exporter, name, mesh):
     w.write(")")
 
     # UV (TODO)
-    uv_layer = mesh.uv_layers.active.data
+    uv_layer = mesh.uv_layers.active
     if uv_layer:
         w.write("(attribute")
         w.goIn()
         w.write(":type 'uv'")
-        w.write(",".join("[%f, %f]" % v.uv[:] for v in uv_layer))
+        w.write(",".join("[%f, %f]" % v.uv[:] for v in uv_layer.data))
         w.goOut()
         w.write(")")
 
