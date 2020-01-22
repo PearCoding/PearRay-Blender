@@ -8,10 +8,10 @@ class OBJECT_OT_AddSphereOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_uv_sphere_add(size=1.0)
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1.0)
         sphere = bpy.context.object
 
-        sphere.draw_type = 'WIRE'
+        sphere.display_type = 'WIRE'
 
         sphere.data.pearray.is_primitive = True
         sphere.data.pearray.primitive.primitive_type = 'SPHERE'
@@ -30,7 +30,7 @@ class OBJECT_OT_AddCylinderOperator(bpy.types.Operator):
         bpy.ops.mesh.primitive_cylinder_add(radius=1.0, depth=1.0)
         obj = bpy.context.object
 
-        obj.draw_type = 'WIRE'
+        obj.display_type = 'WIRE'
 
         obj.data.pearray.is_primitive = True
         obj.data.pearray.primitive.primitive_type = 'CYLINDER'
@@ -51,7 +51,7 @@ class OBJECT_OT_AddConeOperator(bpy.types.Operator):
         bpy.ops.mesh.primitive_cone_add(radius1=1.0, depth=1.0)
         obj = bpy.context.object
 
-        obj.draw_type = 'WIRE'
+        obj.display_type = 'WIRE'
 
         obj.data.pearray.is_primitive = True
         obj.data.pearray.primitive.primitive_type = 'CONE'
@@ -68,10 +68,10 @@ class OBJECT_OT_AddBoxOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_cube_add(radius=0.5)
+        bpy.ops.mesh.primitive_cube_add(size=1.0)
         obj = bpy.context.object
 
-        obj.draw_type = 'WIRE'
+        obj.display_type = 'WIRE'
 
         obj.data.pearray.is_primitive = True
         obj.data.pearray.primitive.primitive_type = 'BOX'
@@ -86,10 +86,10 @@ class OBJECT_OT_AddPlaneOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_plane_add(radius=0.5)
+        bpy.ops.mesh.primitive_plane_add(size=1.0)
         obj = bpy.context.object
 
-        obj.draw_type = 'WIRE'
+        obj.display_type = 'WIRE'
 
         obj.data.pearray.is_primitive = True
         obj.data.pearray.primitive.primitive_type = 'PLANE'
@@ -107,7 +107,7 @@ class OBJECT_OT_AddDiskOperator(bpy.types.Operator):
         bpy.ops.mesh.primitive_circle_add(radius=1.0)
         obj = bpy.context.object
 
-        obj.draw_type = 'WIRE'
+        obj.display_type = 'WIRE'
 
         obj.data.pearray.is_primitive = True
         obj.data.pearray.primitive.primitive_type = 'DISK'
@@ -122,10 +122,10 @@ class OBJECT_OT_AddQuadricOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        bpy.ops.mesh.primitive_cube_add(radius=0.5)
+        bpy.ops.mesh.primitive_cube_add(size=1.0)
         obj = bpy.context.object
 
-        obj.draw_type = 'WIRE'
+        obj.display_type = 'WIRE'
 
         obj.data.pearray.is_primitive = True
         obj.data.pearray.primitive.primitive_type = 'QUADRIC'
@@ -134,8 +134,8 @@ class OBJECT_OT_AddQuadricOperator(bpy.types.Operator):
 
 
 # Menu
-class OBJECT_MT_AddPrimitives(bpy.types.Menu):
-    bl_idname = 'pr.add_primitives'
+class VIEW3D_MT_add_primitives(bpy.types.Menu):
+    bl_idname = 'VIEW3D_MT_add_primitives'
     bl_label = 'Primitives'
 
     def draw(self, context):
@@ -147,3 +147,19 @@ class OBJECT_MT_AddPrimitives(bpy.types.Menu):
         layout.operator(OBJECT_OT_AddPlaneOperator.bl_idname)
         layout.operator(OBJECT_OT_AddDiskOperator.bl_idname)
         layout.operator(OBJECT_OT_AddQuadricOperator.bl_idname)
+
+
+_classes = [OBJECT_OT_AddSphereOperator, OBJECT_OT_AddBoxOperator, OBJECT_OT_AddCylinderOperator, OBJECT_OT_AddConeOperator, OBJECT_OT_AddPlaneOperator,
+            OBJECT_OT_AddDiskOperator, OBJECT_OT_AddQuadricOperator, VIEW3D_MT_add_primitives]
+_bl_register, _bl_unregister = bpy.utils.register_classes_factory(_classes)
+
+def _sub_menu(self, context):
+    self.layout.menu("VIEW3D_MT_add_primitives")
+
+def register():
+    _bl_register()
+    bpy.types.VIEW3D_MT_add.append(_sub_menu)
+
+def unregister():
+    bpy.types.VIEW3D_MT_add.remove(_sub_menu)
+    _bl_unregister()

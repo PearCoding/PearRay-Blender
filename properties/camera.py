@@ -1,25 +1,35 @@
 import bpy
 
 from bpy.types import PropertyGroup
-from bpy.props import FloatProperty
+from bpy.props import (FloatProperty, PointerProperty)
 
 
 class PearRayCameraProperties(PropertyGroup):
-    zoom = FloatProperty(
+    zoom: FloatProperty(
         name="Zoom",
         description="Zoom factor",
         min=0.0001, max=1000.00, default=1.0
     )
-    fstop = FloatProperty(
+    fstop: FloatProperty(
         name="FStop",
         description="Focus point for Depth of Field."
                     "(zero disables DOF rendering)",
         min=0.0, max=1000.0, default=0.0
     )
-    apertureRadius = FloatProperty(
+    apertureRadius: FloatProperty(
         name="Aperture Radius",
         description="Similar to a real camera's aperture effect over focal blur (though not "
                     "in physical units and independant of focal length). "
                     "Increase to get more blur",
         min=0.01, max=1.00, default=0.50
     )
+
+
+def register():
+    bpy.utils.register_class(PearRayCameraProperties)
+    bpy.types.Camera.pearray = PointerProperty(type=PearRayCameraProperties)
+
+
+def unregister():
+    del bpy.types.Camera.pearray
+    bpy.utils.unregister_class(PearRayCameraProperties)

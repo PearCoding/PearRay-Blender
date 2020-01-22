@@ -1,11 +1,6 @@
 import bpy
 
 
-from bl_ui import properties_render
-properties_render.RENDER_PT_dimensions.COMPAT_ENGINES.add('PEARRAY_RENDER')
-del properties_render
-
-
 class RenderButtonsPanel():
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
@@ -15,7 +10,7 @@ class RenderButtonsPanel():
     @classmethod
     def poll(cls, context):
         rd = context.scene.render
-        return (rd.use_game_engine is False) and (rd.engine in cls.COMPAT_ENGINES)
+        return (rd.engine in cls.COMPAT_ENGINES)
 
 
 class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
@@ -30,9 +25,10 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
 
         row = layout.row(align=True)
         row.operator("render.render", text="Render", icon='RENDER_STILL')
-        row.operator("render.render", text="Animation", icon='RENDER_ANIMATION').animation = True
+        row.operator("render.render", text="Animation",
+                     icon='RENDER_ANIMATION').animation = True
 
-        split = layout.split(percentage=0.33)
+        split = layout.split(factor=0.33)
 
         split.label(text="Display:")
         row = split.row(align=True)
@@ -41,7 +37,7 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
 
         layout.separator()
 
-        split = layout.split(percentage=0.33)
+        split = layout.split(factor=0.33)
         split.label(text="Tile Mode:")
         row = split.row(align=True)
         row.prop(context.scene.pearray, "render_tile_mode", expand=True)
@@ -78,17 +74,6 @@ class RENDER_PT_pr_performance(RenderButtonsPanel, bpy.types.Panel):
         col.label(text="Tile Size:")
         col.prop(rd, "tile_x", text="X")
         col.prop(rd, "tile_y", text="Y")
-
-
-class RENDER_PT_pr_output(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Output"
-    COMPAT_ENGINES = {'PEARRAY_RENDER'}
-
-    def draw(self, context):
-        layout = self.layout
-
-        rd = context.scene.render
-        layout.prop(rd, "filepath", text="")
 
 
 class RENDER_PT_pr_sampler(RenderButtonsPanel, bpy.types.Panel):
@@ -129,18 +114,9 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
             layout.prop(scene.pearray, "msi")
 
 
-class RENDER_PT_pr_export_settings(RenderButtonsPanel, bpy.types.Panel):
-    bl_label = "Export Settings"
-    bl_options = {'DEFAULT_CLOSED'}
-    COMPAT_ENGINES = {'PEARRAY_RENDER'}
-
-    def draw_header(self, context):
-        pass
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-
-        layout.prop(scene.pearray, "keep_prc")
-        layout.prop(scene.pearray, "beautiful_prc")
-        layout.prop(scene.pearray, "color_format")
+register, unregister = bpy.utils.register_classes_factory([
+    RENDER_PT_pr_render,
+    RENDER_PT_pr_performance,
+    RENDER_PT_pr_sampler,
+    RENDER_PT_pr_integrator
+])

@@ -1,5 +1,6 @@
 from .spectral import write_spectral_color, write_spectral_temp
 from .texture import export_texture
+import mathutils
 
 
 def export_color(exporter, material, type, required,
@@ -22,7 +23,8 @@ def export_color(exporter, material, type, required,
         color = getattr(sub_mat, attr_col)
         if required or color.r > 0 or color.g > 0 or color.b > 0:
             return "'%s'" % write_spectral_color(exporter, name,
-                                                 factor * color,
+                                                 factor *
+                                                 mathutils.Color(color[:3]),
                                                  asLight=asLight)
     elif color_type == 'TEX' and hasattr(material.pearray, attr_tex_slot):
         if len(material.texture_slots) <= 0:

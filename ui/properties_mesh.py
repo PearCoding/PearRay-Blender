@@ -1,3 +1,4 @@
+from bl_ui import properties_data_mesh
 import bpy
 
 
@@ -75,11 +76,7 @@ class DATA_PT_pr_mesh_primitive(MeshButtonsPanel, bpy.types.Panel):
             layout.prop(prim, 'parameters')
 
 
-from bl_ui import properties_data_mesh
-for member in dir(properties_data_mesh):
-    subclass = getattr(properties_data_mesh, member)
-    try:
-        subclass.COMPAT_ENGINES.add('PEARRAY_RENDER')
-    except:
-        pass
-del properties_data_mesh
+register, unregister = bpy.utils.register_classes_factory([
+    DATA_PT_pr_mesh_subdivision,
+    DATA_PT_pr_mesh_primitive,
+])

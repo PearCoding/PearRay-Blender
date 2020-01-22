@@ -11,31 +11,31 @@ from .settings import export_settings
 from .world import export_world
 
 
-def is_renderable(scene, ob):
-    return (not ob.hide_render) and (ob.layers[scene.active_layer])
+def renderable_instances(dpsgraph):
+    for inst in dpsgraph.object_instances:
+        if inst.show_self:
+            yield inst
 
 
-def renderable_objects(scene):
-    return [ob for ob in bpy.data.objects if is_renderable(scene, ob)]
-
-
-def is_allowed_mesh(ob):
-    if ob.type == 'MESH':
-        return not ob.data.pearray.is_primitive
+def is_allowed_mesh(inst):
+    if inst.object.type == 'MESH':
+        return not inst.object.data.pearray.is_primitive
     else:
-        return (ob.type in {'MESH', 'SURFACE'})
+        return (inst.object.type in {'MESH', 'SURFACE'})
 
 
-def is_allowed_curve(ob):
-    return (ob.type in {'CURVE', 'FONT'})
+def is_allowed_curve(inst):
+    return (inst.object.type in {'CURVE', 'FONT'})
 
 
 def write_scene(exporter, pr):
     w = exporter.w
     scene = exporter.scene
 
-    res_x = exporter.render.resolution_x * exporter.render.resolution_percentage * 0.01
-    res_y = exporter.render.resolution_y * exporter.render.resolution_percentage * 0.01
+    res_x = exporter.render.resolution_x * \
+        exporter.render.resolution_percentage * 0.01
+    res_y = exporter.render.resolution_y * \
+        exporter.render.resolution_percentage * 0.01
 
     # Exporters
     def export_scene():
@@ -46,7 +46,7 @@ def write_scene(exporter, pr):
         w.write(":spectrum 'srgb'")
 
     def export_outputs():
-        rl = scene.render.layers.active
+        rl = scene.view_layers[0]
         rl2 = scene.pearray_layer
 
         def start_output(str):
@@ -175,9 +175,6 @@ def write_scene(exporter, pr):
             w.goOut()
             w.write(")")
 
-    # Block
-    objs = renderable_objects(scene)
-
     w.write("(scene")
     w.goIn()
 
@@ -194,34 +191,24 @@ def write_scene(exporter, pr):
         w.write("; Background")
         export_world(exporter, exporter.world)
     w.write("; Lights")
-    for light in objs:
-        if light.type == 'LAMP':
-            export_light(exporter, light)
+    for light in renderable_instances(exporter.depsgraph):
+        if light.object.type == 'LAMP':
+            export_light(exporter, light.instance_object if light.is_instance else light.object)
     w.write("; Primitives")
-    for obj in objs:
-        if obj.type == 'MESH' and obj.data.pearray.is_primitive:
-            export_primitive(exporter, obj)
+    for inst in renderable_instances(exporter.depsgraph):
+        if inst.object.type == 'MESH':
+            if inst.object.data.pearray.is_primitive:
+                export_primitive(exporter, inst.instance_object if inst.is_instance else inst.object)
     w.write("; Meshes")
-    for obj in objs:
-        if is_allowed_mesh(obj):
-            export_mesh(exporter, obj)
+    for inst in renderable_instances(exporter.depsgraph):
+        if is_allowed_mesh(inst):
+            export_mesh(exporter, inst)
     w.write("; Curves")
-    for obj in objs:
-        if is_allowed_curve(obj):
-            export_curve(exporter, obj)
+    for inst in renderable_instances(exporter.depsgraph):
+        if is_allowed_curve(inst):
+            export_curve(exporter, inst.instance_object if inst.is_instance else inst.object)
     w.write("; Particle Systems")
-    for obj in objs:
-        for ps in obj.particle_systems:
-            if ps == obj.particle_systems.active:
-                allowed = True
-                for mod in obj.modifiers:
-                    if mod.type == 'PARTICLE_SYSTEM' and mod.show_render is False:
-                        allowed = False
-
-                if allowed:
-                    ps.set_resolution(scene, obj, 'RENDER')
-                    export_particlesystem(exporter, obj, ps)
-                    ps.set_resolution(scene, obj, 'PREVIEW')
+    # TODO
     w.write("; Materials")
     for m in bpy.data.materials:
         export_material(exporter, m)

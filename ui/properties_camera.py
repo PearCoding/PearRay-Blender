@@ -1,16 +1,6 @@
 import bpy
 
 
-from bl_ui import properties_data_camera
-for member in dir(properties_data_camera):
-    subclass = getattr(properties_data_camera, member)
-    try:
-        subclass.COMPAT_ENGINES.add('PEARRAY_RENDER')
-    except:
-        pass
-del properties_data_camera
-
-
 class CameraDataButtonsPanel():
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
@@ -21,7 +11,7 @@ class CameraDataButtonsPanel():
     def poll(cls, context):
         cam = context.camera
         rd = context.scene.render
-        return cam and (rd.use_game_engine is False) and (rd.engine in cls.COMPAT_ENGINES)
+        return cam and (rd.engine in cls.COMPAT_ENGINES)
 
 
 class CAMERA_PT_pr_cam_settings(CameraDataButtonsPanel, bpy.types.Panel):
@@ -42,3 +32,11 @@ class CAMERA_PT_pr_cam_settings(CameraDataButtonsPanel, bpy.types.Panel):
 
         split.prop(cam.pearray, "fstop")
         split.prop(cam.pearray, "apertureRadius")
+
+
+def register():
+    bpy.utils.register_class(CAMERA_PT_pr_cam_settings)
+
+
+def unregister():
+    bpy.utils.unregister_class(CAMERA_PT_pr_cam_settings)

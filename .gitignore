@@ -1,1 +1,6 @@
 __pycache__
+
+# Directories
+build*
+res
+.vscode

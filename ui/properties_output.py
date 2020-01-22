@@ -1,47 +1,25 @@
+from bl_ui.properties_output import RenderOutputButtonsPanel
+from bl_ui.properties_view_layer import ViewLayerButtonsPanel
 import bpy
 
 
-from bl_ui.properties_render_layer import RenderLayerButtonsPanel
-
-
-from bl_ui import properties_render_layer
-properties_render_layer.RENDERLAYER_PT_layers.COMPAT_ENGINES.add('PEARRAY_RENDER')
-del properties_render_layer
-
-
-class RENDERLAYER_PT_pr_layer_options(RenderLayerButtonsPanel, bpy.types.Panel):
-    bl_label = "Layer"
+class RENDER_PT_pr_output(RenderOutputButtonsPanel, bpy.types.Panel):
+    bl_label = "Output"
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
 
     def draw(self, context):
         layout = self.layout
 
-        scene = context.scene
-        rd = scene.render
-        rl = rd.layers.active
-
-        split = layout.split()
-
-        col = split.column()
-        col.prop(scene, "layers", text="Scene")
-        col.prop(rl, "layers_exclude", text="Exclude")
-
-        col = split.column()
-        col.prop(rl, "layers", text="Layer")
-        col.prop(rl, "layers_zmask", text="Mask Layer")
-
-        split = layout.split()
-
-        col = split.column()
-        col.label(text="Material:")
-        col.prop(rl, "material_override", text="")
+        rd = context.scene.render
+        layout.prop(rd, "filepath", text="")
 
 
-class RENDERLAYER_OP_pr_layer_lpe_actions(bpy.types.Operator):
+class VIEWLAYER_OP_pr_lpe_actions(bpy.types.Operator):
     bl_idname = "pr.lpe_actions"
     bl_label = "Adds or removes lpes"
 
-    action = bpy.props.EnumProperty(
+    action: bpy.props.EnumProperty(
+        name="Action",
         items=(('REMOVE', 'Remove', ''), ('ADD', 'Add', ''))
     )
 
@@ -50,11 +28,7 @@ class RENDERLAYER_OP_pr_layer_lpe_actions(bpy.types.Operator):
         rl2 = scene.pearray_layer
         idx = rl2.active_lpe_index
 
-        try:
-            item = rl2.lpes[idx]
-        except IndexError:
-            pass
-        else:
+        if idx < len(rl2.lpes):
             if self.action == 'REMOVE':
                 rl2.active_lpe_index -= 1
                 rl2.lpes.remove(idx)
@@ -66,19 +40,19 @@ class RENDERLAYER_OP_pr_layer_lpe_actions(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class RENDERLAYER_PT_pr_layer_lpe_entry(bpy.types.UIList):
+class VIEWLAYER_UL_pr_lpe_entry(bpy.types.UIList):
     use_filter_show = False
     layout_type = 'COMPACT'
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
         el = layout.split().row(align=True)
 
-        el.label('', icon='RENDER_RESULT')
+        el.label(text='', icon='RENDER_RESULT')
         el.prop(item, "channel", text="")
         el.prop(item, "expression", text="")
 
 
-class RENDERLAYER_PT_pr_layer_lpe(RenderLayerButtonsPanel, bpy.types.Panel):
+class VIEWLAYER_PT_pr_lpe(ViewLayerButtonsPanel, bpy.types.Panel):
     bl_label = "LPEs"
     bl_options = {'DEFAULT_CLOSED'}
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
@@ -90,13 +64,15 @@ class RENDERLAYER_PT_pr_layer_lpe(RenderLayerButtonsPanel, bpy.types.Panel):
         rl2 = scene.pearray_layer
 
         row = layout.row()
-        row.template_list("RENDERLAYER_PT_pr_layer_lpe_entry", "", rl2, "lpes", rl2, "active_lpe_index")
+        row.template_list("VIEWLAYER_UL_pr_lpe_entry",
+                          "", rl2, "lpes", rl2, "active_lpe_index")
         col = row.column(align=True)
-        col.operator("pr.lpe_actions", icon='ZOOMIN', text="").action = 'ADD'
-        col.operator("pr.lpe_actions", icon='ZOOMOUT', text="").action = 'REMOVE'
+        col.operator("pr.lpe_actions", icon='ADD', text="").action = 'ADD'
+        col.operator("pr.lpe_actions", icon='REMOVE',
+                     text="").action = 'REMOVE'
 
 
-class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
+class VIEWLAYER_PT_pr_aovs(ViewLayerButtonsPanel, bpy.types.Panel):
     bl_label = "AOVs"
     bl_options = {'DEFAULT_CLOSED'}
     COMPAT_ENGINES = {'PEARRAY_RENDER'}
@@ -105,8 +81,7 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         layout = self.layout
 
         scene = context.scene
-        rd = scene.render
-        rl = rd.layers.active
+        rl = scene.view_layers[0]
         rl2 = scene.pearray_layer
 
         split = layout.split()
@@ -138,3 +113,30 @@ class RENDERLAYER_PT_pr_layer_aovs(RenderLayerButtonsPanel, bpy.types.Panel):
         layout.separator()
         split = layout.split()
         split.prop(rl2, "separate_files")
+
+
+class RENDER_PT_pr_export_settings(RenderOutputButtonsPanel, bpy.types.Panel):
+    bl_label = "Export Settings"
+    bl_options = {'DEFAULT_CLOSED'}
+    COMPAT_ENGINES = {'PEARRAY_RENDER'}
+
+    def draw_header(self, context):
+        pass
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+
+        layout.prop(scene.pearray, "keep_prc")
+        layout.prop(scene.pearray, "beautiful_prc")
+        layout.prop(scene.pearray, "color_format")
+
+
+register, unregister = bpy.utils.register_classes_factory([
+    RENDER_PT_pr_output,
+    RENDER_PT_pr_export_settings,
+    VIEWLAYER_OP_pr_lpe_actions,
+    VIEWLAYER_UL_pr_lpe_entry,
+    VIEWLAYER_PT_pr_lpe,
+    VIEWLAYER_PT_pr_aovs,
+])

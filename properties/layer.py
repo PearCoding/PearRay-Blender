@@ -20,13 +20,13 @@ from . import enums
 
 
 class PearRayLPEProperty(PropertyGroup):
-    channel = EnumProperty(
+    channel: EnumProperty(
         name="Channel",
         description="Channel Type",
         items=enums.enum_aov_type,
         default='SPECTRAL'
     )
-    expression = StringProperty(
+    expression: StringProperty(
         name="Expression",
         description="Light Path Expression. See documentation for syntax",
         default="C.*"
@@ -34,73 +34,88 @@ class PearRayLPEProperty(PropertyGroup):
 
 
 class PearRaySceneRenderLayerProperties(PropertyGroup):
-    aov_t = BoolProperty(
+    aov_t: BoolProperty(
         name="Time",
         description="Deliver T (time) values as an extra file",
         default=False
     )
-    aov_samples = BoolProperty(
+    aov_samples: BoolProperty(
         name="Samples",
         description="Deliver samples values as an extra file",
         default=False
     )
 
-    aov_p = BoolProperty(
+    aov_p: BoolProperty(
         name="Position",
         description="Deliver P (position) values as an extra file",
         default=False
     )
-    aov_ng = BoolProperty(
+    aov_ng: BoolProperty(
         name="Ng",
         description="Deliver Ng (geometric normal) values as an extra file",
         default=False
     )
-    aov_nx = BoolProperty(
+    aov_nx: BoolProperty(
         name="Nx",
         description="Deliver Nx (tangent) values as an extra file",
         default=False
     )
-    aov_ny = BoolProperty(
+    aov_ny: BoolProperty(
         name="Ny",
         description="Deliver Ny (bitangent/binormal) values as an extra file",
         default=False
     )
-    aov_feedback = BoolProperty(
+    aov_feedback: BoolProperty(
         name="Feedback",
         description="Output feedback and error bit mask image",
         default=True
     )
-    aov_emission_index = BoolProperty(
+    aov_emission_index: BoolProperty(
         name="Emission Index",
         description="Index of the internal emission descriptor",
         default=False
     )
-    aov_displace_index = BoolProperty(
+    aov_displace_index: BoolProperty(
         name="Displace Index",
         description="Index of the internal displace descriptor",
         default=False
     )
 
-    raw_spectral = BoolProperty(
+    raw_spectral: BoolProperty(
         name="Raw Spectral",
         description="Deliver raw spectral values",
         default=False
     )
 
-    separate_files = BoolProperty(
+    separate_files: BoolProperty(
         name="Separate Files",
         description="Output each AOV into his each own file",
         default=False
     )
 
-    lpes = CollectionProperty(
+    lpes: CollectionProperty(
         type=PearRayLPEProperty,
         name="Light Path Expressions"
     )
-    active_lpe_index = IntProperty(
+    active_lpe_index: IntProperty(
         # This property is redundant, but needed by blender
         # We do not use it for rendering!
         name="Active LPE",
         description="Currently active LPE",
         default=0
     )
+
+
+def register():
+    bpy.utils.register_class(PearRayLPEProperty)
+    bpy.utils.register_class(PearRaySceneRenderLayerProperties)
+
+    bpy.types.Scene.pearray_layer = PointerProperty(
+        type=PearRaySceneRenderLayerProperties)
+
+
+def unregister():
+    del bpy.types.Scene.pearray_layer
+
+    bpy.utils.unregister_class(PearRaySceneRenderLayerProperties)
+    bpy.utils.unregister_class(PearRayLPEProperty)

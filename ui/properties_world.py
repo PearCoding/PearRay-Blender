@@ -1,11 +1,6 @@
 import bpy
 
 
-from bl_ui import properties_world
-properties_world.WORLD_PT_custom_props.COMPAT_ENGINES.add('PEARRAY_RENDER')
-del properties_world
-
-
 class WorldButtonsPanel():
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
@@ -15,7 +10,7 @@ class WorldButtonsPanel():
     @classmethod
     def poll(cls, context):
         rd = context.scene.render
-        return context.world and (rd.use_game_engine is False) and (rd.engine in cls.COMPAT_ENGINES)
+        return context.world and (rd.engine in cls.COMPAT_ENGINES)
 
 
 class WORLD_PT_pr_preview(WorldButtonsPanel, bpy.types.Panel):
@@ -39,19 +34,17 @@ class WORLD_PT_pr_background(WorldButtonsPanel, bpy.types.Panel):
 
         col = layout.column(align=True)
         col.label(text="Background:")
-        col.row(align=True).prop(world.pearray, 'background_type', expand=True)
-        if world.pearray.background_type == 'COLOR':
-            col.prop(world, "horizon_color", text="")
-        else:
-            col.prop(world.pearray, 'background_tex_slot', text="Texture Slot")
+        col.prop(world, "color", text="")
 
         col = layout.column(align=True)
         col.label(text="Radiance:")
         col.enabled = world.pearray.split_background
-        col.row(align=True).prop(world.pearray, 'radiance_type', expand=True)
-        if world.pearray.radiance_type == 'COLOR':
-            col.prop(world.pearray, "radiance_color", text="")
-        else:
-            col.prop(world.pearray, 'radiance_tex_slot', text="Texture Slot")
+        col.prop(world.pearray, "radiance_color", text="")
 
         layout.prop(world.pearray, 'radiance_factor')
+
+
+register, unregister = bpy.utils.register_classes_factory([
+    WORLD_PT_pr_preview,
+    WORLD_PT_pr_background,
+])

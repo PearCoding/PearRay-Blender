@@ -33,19 +33,21 @@ class MATERIAL_PT_pr_context_material(MaterialButtonsPanel, bpy.types.Panel):
 
             row = layout.row()
 
-            row.template_list("MATERIAL_UL_matslots", "", ob, "material_slots", ob, "active_material_index", rows=rows)
+            row.template_list("MATERIAL_UL_matslots", "", ob,
+                              "material_slots", ob, "active_material_index", rows=rows)
 
             col = row.column(align=True)
-            col.operator("object.material_slot_add", icon='ZOOMIN', text="")
-            col.operator("object.material_slot_remove", icon='ZOOMOUT', text="")
-
-            col.menu("MATERIAL_MT_specials", icon='DOWNARROW_HLT', text="")
+            col.operator("object.material_slot_add", icon='ADD', text="")
+            col.operator("object.material_slot_remove",
+                         icon='REMOVE', text="")
 
             if is_sortable:
                 col.separator()
 
-                col.operator("object.material_slot_move", icon='TRIA_UP', text="").direction = 'UP'
-                col.operator("object.material_slot_move", icon='TRIA_DOWN', text="").direction = 'DOWN'
+                col.operator("object.material_slot_move",
+                             icon='TRIA_UP', text="").direction = 'UP'
+                col.operator("object.material_slot_move",
+                             icon='TRIA_DOWN', text="").direction = 'DOWN'
 
             if ob.mode == 'EDIT':
                 row = layout.row(align=True)
@@ -53,7 +55,7 @@ class MATERIAL_PT_pr_context_material(MaterialButtonsPanel, bpy.types.Panel):
                 row.operator("object.material_slot_select", text="Select")
                 row.operator("object.material_slot_deselect", text="Deselect")
 
-        split = layout.split(percentage=0.65)
+        split = layout.split(factor=0.65)
 
         if ob:
             split.template_ID(ob, "active_material", new="material.new")
@@ -273,3 +275,15 @@ def ior_template(obj, layout, name):
         col.prop(obj.pearray, '%s_value' % name, text="Ior")
     else:
         col.prop(obj.pearray, '%s_color' % name, text="Ior")
+
+
+register, unregister = bpy.utils.register_classes_factory([
+    MATERIAL_PT_pr_context_material,
+    MATERIAL_PT_pr_preview,
+    MATERIAL_PT_pr_bsdf,
+    MATERIAL_PT_pr_diffuse,
+    MATERIAL_PT_pr_principled,
+    MATERIAL_PT_pr_grid,
+    MATERIAL_PT_pr_specular,
+    MATERIAL_PT_pr_emission,
+])

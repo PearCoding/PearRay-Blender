@@ -9,7 +9,7 @@ def _inline_entity_matrix(exporter, matrix):
 
 # Blender uses M = Translation * Rotation * Scale
 def inline_entity_matrix(exporter, obj):
-    matrix = exporter.M_WORLD * obj.matrix_world
+    matrix = exporter.M_WORLD @ obj.matrix_world
     _inline_entity_matrix(exporter, matrix)
 
 
@@ -27,6 +27,6 @@ def inline_entity_uniform(exporter,
     # Create a rotation matrix from a quaternion
     mat_rot = mathutils.Quaternion(rot).to_matrix().to_4x4()
 
-    mat_out = mat_loc * mat_rot * mat_sca
+    mat_out = mat_loc @ mat_rot @ mat_sca
 
-    _inline_entity_matrix(exporter, exporter.M_WORLD * parent_m * mat_out)
+    _inline_entity_matrix(exporter, exporter.M_WORLD @ parent_m @ mat_out)
