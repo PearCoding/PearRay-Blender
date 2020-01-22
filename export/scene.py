@@ -192,7 +192,7 @@ def write_scene(exporter, pr):
         export_world(exporter, exporter.world)
     w.write("; Lights")
     for light in renderable_instances(exporter.depsgraph):
-        if light.object.type == 'LAMP':
+        if light.object.type == 'LIGHT':
             export_light(exporter, light.instance_object if light.is_instance else light.object)
     w.write("; Primitives")
     for inst in renderable_instances(exporter.depsgraph):

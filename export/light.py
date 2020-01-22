@@ -74,7 +74,6 @@ def export_arealight(exporter, light):
 
 def export_sunlight(exporter, light):
     w = exporter.w
-    light_data = light.data
     w.write("; Light %s" % light.name)
     color_name = export_color(exporter, light.data, 'color',
                               True, asLight=True)

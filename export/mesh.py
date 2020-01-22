@@ -4,8 +4,13 @@ import mathutils
 from .entity import inline_entity_matrix
 
 
+# TODO: Reintroduce non-smooth normals
 def export_mesh_data(exporter, name, mesh):
     w = exporter.w
+
+    mesh.transform(exporter.M_WORLD)
+    if exporter.M_WORLD.is_negative:
+        mesh.flip_normals()
     mesh.calc_loop_triangles()
 
     w.write("(mesh")
@@ -25,7 +30,8 @@ def export_mesh_data(exporter, name, mesh):
     w.write("(attribute")
     w.goIn()
     w.write(":type 'n'")
-    w.write(",".join("[%f, %f, %f]" % v.normal[:] for v in mesh.vertices))
+    w.write(",".join("[%f, %f, %f]" % mathutils.Vector(
+        v.normal[:]).normalized().to_tuple() for v in mesh.vertices))
     w.goOut()
     w.write(")")
 
@@ -50,10 +56,8 @@ def export_mesh_data(exporter, name, mesh):
     # Faces
     w.write("(faces")
     w.goIn()
-    for f in mesh.loop_triangles:
-        w.write("[" + ",".join(str(mesh.vertices[v].index)
-                               for v in f.vertices) + "]")
-
+    w.write(",".join("[" + ",".join(str(v) for v in f.vertices) + "]"
+            for f in mesh.loop_triangles))
     w.goOut()
     w.write(")")
 
@@ -92,10 +96,10 @@ def export_mesh_material_part(exporter, obj):
 def export_mesh(exporter, instance):
     w = exporter.w
 
-    name = exporter.get_mesh_name(instance.object)
+    name = exporter.get_mesh_name(instance.object.data.name)
     if name is None:
         name = export_mesh_only(exporter, instance.object)
-        exporter.register_mesh(name, instance.object)
+        exporter.register_mesh(name, instance.object.data.name)
 
     obj = instance.instance_object if instance.is_instance else instance.object
     w.write("(entity")
