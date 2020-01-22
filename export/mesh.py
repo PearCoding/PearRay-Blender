@@ -4,7 +4,14 @@ import mathutils
 from .entity import inline_entity_matrix
 
 
-# TODO: Reintroduce non-smooth normals
+def rvec3(v):
+    return round(v[0], 6), round(v[1], 6), round(v[2], 6)
+
+
+def rvec2(v):
+    return round(v[0], 6), round(v[1], 6)
+
+
 def export_mesh_data(exporter, name, mesh):
     w = exporter.w
 
@@ -12,6 +19,57 @@ def export_mesh_data(exporter, name, mesh):
     if exporter.M_WORLD.is_negative:
         mesh.flip_normals()
     mesh.calc_loop_triangles()
+
+    has_uv = bool(mesh.uv_layers)
+    if has_uv:
+        uv_layer = mesh.uv_layers.active
+        if not uv_layer:
+            has_uv = False
+        else:
+            uv_layer = uv_layer.data
+
+    orig_verts = mesh.vertices
+    vert_dict = {}
+    vert_uniq = []
+    vert_count = 0
+    face_map = []
+
+    uvcoord = uvcoord_key = normal = normal_key = None
+
+    for f in mesh.loop_triangles:
+        smooth = f.use_smooth
+        if not smooth:
+            normal = f.normal[:]
+            normal_key = rvec3(normal)
+
+        if has_uv:
+            uv = [uv_layer[l].uv[:] for l in f.loops]
+
+        local_ids = []
+        for j, vidx in enumerate(f.vertices):
+            v = orig_verts[vidx]
+
+            if smooth:
+                normal = v.normal[:]
+                normal_key = rvec3(normal)
+
+            if has_uv:
+                uvcoord = uv[j][0], uv[j][1]
+                uvcoord_key = rvec2(uvcoord)
+            else:
+                uvcoord = None
+                uvcoord_key = None
+
+            key = vidx, normal_key, uvcoord_key
+            id = vert_dict.get(key)
+            if id is None:
+                id = vert_dict[key] = vert_count
+                vert_uniq.append((vidx, normal, uvcoord))
+                vert_count += 1
+
+            local_ids.append(id)
+
+        face_map.append(local_ids)
 
     w.write("(mesh")
     w.goIn()
@@ -22,7 +80,8 @@ def export_mesh_data(exporter, name, mesh):
     w.write("(attribute")
     w.goIn()
     w.write(":type 'p'")
-    w.write(",".join("[%f, %f, %f]" % v.co[:] for v in mesh.vertices))
+    w.write(",".join("[%f, %f, %f]" % mesh.vertices[v[0]].co[:]
+                     for v in vert_uniq))
     w.goOut()
     w.write(")")
 
@@ -30,18 +89,16 @@ def export_mesh_data(exporter, name, mesh):
     w.write("(attribute")
     w.goIn()
     w.write(":type 'n'")
-    w.write(",".join("[%f, %f, %f]" % mathutils.Vector(
-        v.normal[:]).normalized().to_tuple() for v in mesh.vertices))
+    w.write(",".join("[%f, %f, %f]" % v[1][:] for v in vert_uniq))
     w.goOut()
     w.write(")")
 
-    # UV (TODO)
-    uv_layer = mesh.uv_layers.active
-    if uv_layer:
+    # UV
+    if has_uv:
         w.write("(attribute")
         w.goIn()
         w.write(":type 'uv'")
-        w.write(",".join("[%f, %f]" % v.uv[:] for v in uv_layer.data))
+        w.write(",".join("[%f, %f]" % v[2][:] for v in vert_uniq))
         w.goOut()
         w.write(")")
 
@@ -56,8 +113,8 @@ def export_mesh_data(exporter, name, mesh):
     # Faces
     w.write("(faces")
     w.goIn()
-    w.write(",".join("[" + ",".join(str(v) for v in f.vertices) + "]"
-            for f in mesh.loop_triangles))
+    w.write(",".join("[" + ",".join(str(v) for v in face_map[f.index]) + "]"
+                     for f in mesh.loop_triangles))
     w.goOut()
     w.write(")")
 
