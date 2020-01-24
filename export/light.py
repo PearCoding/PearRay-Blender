@@ -39,6 +39,9 @@ def export_pointlight(exporter, light):
     w.write(":type 'sphere'")
     w.write(":radius %f" % light_data.pearray.point_radius)  # Really?
     w.write(":emission '%s'" % light_mat_n)
+    if not light.data.pearray.camera_visible:
+        w.write(":camera_visible false")
+    
     inline_entity_matrix(exporter, light)
 
     w.goOut()
@@ -66,6 +69,9 @@ def export_arealight(exporter, light):
     w.write(":width %f" % (light_data.size))
     w.write(":height %f" % (-ysize))
     w.write(":emission '%s'" % light_mat_n)
+    if not light.data.pearray.camera_visible:
+        w.write(":camera_visible false")
+        
     inline_entity_matrix(exporter, light)
 
     w.goOut()

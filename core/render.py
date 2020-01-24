@@ -78,12 +78,7 @@ class PearRayRender(bpy.types.RenderEngine):
             blendSceneName = "blender_scene"
 
         sceneFile = ""
-        renderPath = ""
-
-        # has to be called to update the frame on exporting animations
-        #scene.frame_set(scene.frame_current)
-
-        renderPath = bpy.path.resolve_ncase(bpy.path.abspath(render.frame_path()))
+        renderPath = os.path.dirname(bpy.path.resolve_ncase(bpy.path.abspath(render.frame_path())))
 
         if not renderPath:
             renderPath = tempfile.gettempdir()
@@ -163,7 +158,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
         print("<<< PEARRAY CONFIGURED >>>")
 
-        renderer.start(threads)
+        renderer.start(render.tile_x, render.tile_y, threads)
 
         print("<<< PEARRAY STARTED >>>")
 
