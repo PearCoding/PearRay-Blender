@@ -78,7 +78,9 @@ class PearRayRender(bpy.types.RenderEngine):
             blendSceneName = "blender_scene"
 
         sceneFile = ""
-        renderPath = os.path.dirname(bpy.path.resolve_ncase(bpy.path.abspath(render.frame_path())))
+        renderPath = bpy.path.resolve_ncase(bpy.path.abspath(render.frame_path()))
+        if not os.path.isdir(renderPath):
+            renderPath = os.path.dirname(renderPath)
 
         if not renderPath:
             renderPath = tempfile.gettempdir()

@@ -41,6 +41,7 @@ def export_pointlight(exporter, light):
     w.write(":emission '%s'" % light_mat_n)
     if not light.data.pearray.camera_visible:
         w.write(":camera_visible false")
+        w.write(":bounce_visible false")
     
     inline_entity_matrix(exporter, light)
 
