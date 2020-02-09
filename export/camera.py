@@ -35,6 +35,8 @@ def export_camera(exporter, camera):
     w.write(":localDirection [0,0,-1]")
     w.write(":localUp [0,-1,0]")
     w.write(":localRight [1,0,0]")
+    w.write(":near %f" % camera.data.clip_start)
+    w.write(":far %f" % camera.data.clip_end)
     inline_entity_matrix(exporter, camera)
 
     w.goOut()

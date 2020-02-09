@@ -1,4 +1,3 @@
-import bpy
 from . import (core,
                export,
                operators,
@@ -25,34 +24,15 @@ modules = (
     ui)
 
 
-def get_panels():
-    exclude_panels = {}
-
-    panels = []
-    for panel in bpy.types.Panel.__subclasses__():
-        if hasattr(panel, 'COMPAT_ENGINES') and 'BLENDER_RENDER' in panel.COMPAT_ENGINES:
-            if panel.__name__ not in exclude_panels:
-                panels.append(panel)
-
-    return panels
-
-
 # Initialization
 def register():
     for m in modules:
         m.register()
 
-    for panel in get_panels():
-        panel.COMPAT_ENGINES.add('PEARRAY')
-
 
 def unregister():
     for m in reversed(modules):
         m.unregister()
-
-    for panel in get_panels():
-        if 'PEARRAY' in panel.COMPAT_ENGINES:
-            panel.COMPAT_ENGINES.remove('PEARRAY')
 
 
 if __name__ == "__main__":

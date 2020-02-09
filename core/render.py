@@ -18,32 +18,37 @@ class PearRayRender(bpy.types.RenderEngine):
     bl_label = "PearRay"
     #bl_use_preview = True
     bl_use_exclude_layers = True
+    bl_use_eevee_viewport = True
 
     @staticmethod
     def _setup_package():
         addon_prefs = bpy.context.preferences.addons[pearray_package.__package__].preferences
 
         if addon_prefs.package_dir:
-            sys.path.append(bpy.path.resolve_ncase(bpy.path.abspath(addon_prefs.package_dir)))
+            sys.path.append(bpy.path.resolve_ncase(
+                bpy.path.abspath(addon_prefs.package_dir)))
 
         return importlib.import_module("pypearray")
 
-    def _proc_wait(self, renderer):
-        time.sleep(0.25)
-
+    def check_break(self, renderer=None):
         # User interrupts the rendering
         if self.test_break():
             try:
-                renderer.stop()
+                if renderer is not None:
+                    renderer.stop()
                 print("<<< PEARRAY INTERRUPTED >>>")
             except OSError:
                 pass
-            return False
+            return True
 
-        if renderer.finished:
-            return False
+        if renderer is not None and renderer.finished:
+            return True
 
-        return True
+        return False
+
+    def _proc_wait(self, renderer):
+        time.sleep(0.1)
+        return not self.check_break(renderer)
 
     def _handle_render_stat(self, renderer):
         stat = renderer.status
@@ -78,7 +83,8 @@ class PearRayRender(bpy.types.RenderEngine):
             blendSceneName = "blender_scene"
 
         sceneFile = ""
-        renderPath = bpy.path.resolve_ncase(bpy.path.abspath(render.frame_path()))
+        renderPath = bpy.path.resolve_ncase(
+            bpy.path.abspath(render.frame_path()))
         if not os.path.isdir(renderPath):
             renderPath = os.path.dirname(renderPath)
 
@@ -99,19 +105,29 @@ class PearRayRender(bpy.types.RenderEngine):
         fileLog.open(os.path.normpath(renderPath + "/%s.log" % time.time()))
         pr.Logger.instance.addListener(fileLog)
 
+        if self.check_break():
+            return
+
         self.update_stats("", "PearRay: Exporting data")
         scene_exporter = export.Exporter(sceneFile, depsgraph)
         scene_exporter.write_scene(pr)
 
+        if self.check_break():
+            return
+
         self.update_stats("", "PearRay: Starting render")
-        scene_opts = pr.SceneLoader.LoadOptions() 
+        scene_opts = pr.SceneLoader.LoadOptions()
         scene_opts.PluginPath = addon_prefs.package_dir
         scene_opts.WorkingDir = renderPath
 
         environment = pr.SceneLoader.loadFromFile(sceneFile, scene_opts)
         if not environment:
-            self.report({'ERROR'}, "PearRay: could not load environment from file")
+            self.report(
+                {'ERROR'}, "PearRay: could not load environment from file")
             print("<<< PEARRAY FAILED >>>")
+            return
+
+        if self.check_break():
             return
 
         toneMapper = pr.ToneMapper()
@@ -126,24 +142,33 @@ class PearRayRender(bpy.types.RenderEngine):
 
         integrator = environment.createSelectedIntegrator()
         if not integrator:
-            self.report({'ERROR'}, "PearRay: could not create pearray integrator instance")
+            self.report(
+                {'ERROR'}, "PearRay: could not create pearray integrator instance")
             print("<<< PEARRAY FAILED >>>")
             pr.Logger.instance.removeListener(fileLog)
             del fileLog
             return
 
+        if self.check_break():
+            return
+
         factory = environment.createRenderFactory()
         if not factory:
-            self.report({'ERROR'}, "PearRay: could not create pearray render factory instance")
+            self.report(
+                {'ERROR'}, "PearRay: could not create pearray render factory instance")
             print("<<< PEARRAY FAILED >>>")
             pr.Logger.instance.removeListener(fileLog)
             del fileLog
+            return
+
+        if self.check_break():
             return
 
         renderer = factory.create(integrator)
 
         if not renderer:
-            self.report({'ERROR'}, "PearRay: could not create pearray render instance")
+            self.report(
+                {'ERROR'}, "PearRay: could not create pearray render instance")
             print("<<< PEARRAY FAILED >>>")
             pr.Logger.instance.removeListener(fileLog)
             del fileLog
@@ -159,6 +184,8 @@ class PearRayRender(bpy.types.RenderEngine):
             threads = render.threads
 
         print("<<< PEARRAY CONFIGURED >>>")
+        if self.check_break():
+            return
 
         renderer.start(render.tile_x, render.tile_y, threads)
 
@@ -169,7 +196,8 @@ class PearRayRender(bpy.types.RenderEngine):
         layer = result.layers[0]
 
         def update_image():
-            colorBuffer.map(toneMapper, environment.spectrumDescriptor, renderer.output.spectral)
+            colorBuffer.map(
+                toneMapper, environment.spectrumDescriptor, renderer.output.spectral)
             colorBuffer.flipY()
             layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)
