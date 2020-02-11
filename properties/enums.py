@@ -24,6 +24,18 @@ enum_time_mapping_mode = (
 enum_integrator_mode = (
     ('DIRECT', "Direct", "Direct Rendering"),
     ('AO', "Ambient Occulusion", "Ambient Occulusion"),
+    ('VF', "Visual Feedback", "Visual and Debug Feedback"),
+)
+
+enum_vf_mode = (
+    ("COLORED_ENTITY_ID", "Colored Entity ID", "Entity colored based on id"),
+    ("COLORED_MATERIAL_ID", "Colored Material ID", "Material colored based on id"),
+    ("COLORED_EMISSION_ID", "Colored Emission ID", "Emission colored based on id"),
+    ("COLORED_DISPLACE_ID", "Colored Displace ID", "Displace colored based on id"),
+    ("COLORED_PRIMITIVE_ID", "Colored Primitive ID", "Primitive/Face colored based on id"),
+    ("COLORED_RAY_ID", "Colored Ray ID", "Ray colored based on id"),
+    ("COLORED_CONTAINER_ID", "Colored Container ID", "Colored based on container id the entity is in"),
+    ('PARAMETER', "Parameter", "Internal parameterization of surfaces/volumes"),
 )
 
 enum_tile_mode = (
@@ -143,7 +155,8 @@ enum_subdivision_fvar_interp = (
     ("NONE", "None", "Smooth everywhere"),
     ("CORNERS_ONLY", "Corner", "Sharp corners only"),
     ("CORNERS_PLUS1", "Edge Corner", "Sharp edge corners only"),
-    ("CORNERS_PLUS2", "Edge and Corner", "Sharp edges, corners and propagate corners"),
+    ("CORNERS_PLUS2", "Edge and Corner",
+     "Sharp edges, corners and propagate corners"),
     ("BOUNDARIES", "Boundary", "Sharp all boundaries"),
     ("ALL", "All", "Bilinear everywhere"),
 )

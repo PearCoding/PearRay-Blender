@@ -50,6 +50,12 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_integrator_mode,
         default='DIRECT'
     )
+    vf_mode: EnumProperty(
+        name="Mode",
+        description="Visual Feedback Mode",
+        items=enums.enum_vf_mode,
+        default='COLORED_ENTITY_ID'
+    )
     msi: BoolProperty(
         name="Use MSI",
         description="Use Multiple Importance Sampling",
@@ -138,6 +144,14 @@ class PearRaySceneProperties(PropertyGroup):
         soft_max=4096,
         subtype="UNSIGNED",
         default=1
+    )
+    ao_sample_count: IntProperty(
+        name="AO Sample Count",
+        description="Occlusion test samples",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=42
     )
 
 

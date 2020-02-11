@@ -5,9 +5,14 @@ def export_settings(exporter, pr, scene):
     w.write("(integrator")
     w.goIn()
     w.write(":type '%s'" % s.integrator)
-    w.write(":max_ray_depth %i" % s.max_ray_depth)
-    w.write(":light_sampe_count %i" % s.max_light_samples)
-    w.write(":msi %s" % str(s.msi).lower())
+    if s.integrator == 'DIRECT':
+        w.write(":max_ray_depth %i" % s.max_ray_depth)
+        w.write(":light_sampe_count %i" % s.max_light_samples)
+        w.write(":msi %s" % str(s.msi).lower())
+    elif s.integrator == 'AO':
+        w.write(":sampe_count %i" % s.ao_sample_count)
+    elif s.integrator == 'VF':
+        w.write(":mode '%s'" % s.vf_mode)
     w.goOut()
     w.write(")")
 

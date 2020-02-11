@@ -112,6 +112,10 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
         if scene.pearray.integrator == 'DIRECT':
             layout.prop(scene.pearray, "max_light_samples")
             layout.prop(scene.pearray, "msi")
+        elif scene.pearray.integrator == 'AO':
+            layout.prop(scene.pearray, "ao_sample_count")
+        elif scene.pearray.integrator == 'VF':
+            layout.prop(scene.pearray, "vf_mode")
 
 
 register, unregister = bpy.utils.register_classes_factory([
