@@ -35,7 +35,10 @@ enum_vf_mode = (
     ("COLORED_PRIMITIVE_ID", "Colored Primitive ID", "Primitive/Face colored based on id"),
     ("COLORED_RAY_ID", "Colored Ray ID", "Ray colored based on id"),
     ("COLORED_CONTAINER_ID", "Colored Container ID", "Colored based on container id the entity is in"),
+    ('RAY_DIRECTION', "Ray Direction", "Rescaled ray direction"),
     ('PARAMETER', "Parameter", "Internal parameterization of surfaces/volumes"),
+    ('INSIDE', "Inside", "Green if determined as inside"),
+    ('NDOTV', "NdotV", "Positive NdotV in red, negative NdotV in green"),
 )
 
 enum_tile_mode = (

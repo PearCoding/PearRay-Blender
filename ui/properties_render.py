@@ -116,6 +116,7 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
             layout.prop(scene.pearray, "ao_sample_count")
         elif scene.pearray.integrator == 'VF':
             layout.prop(scene.pearray, "vf_mode")
+            layout.prop(scene.pearray, "vf_apply_weighting")
 
 
 register, unregister = bpy.utils.register_classes_factory([

@@ -56,6 +56,11 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_vf_mode,
         default='COLORED_ENTITY_ID'
     )
+    vf_apply_weighting: BoolProperty(
+        name="Apply Weighting",
+        description="Apply view dependent weighting for better scene visibility",
+        default=True
+    )
     msi: BoolProperty(
         name="Use MSI",
         description="Use Multiple Importance Sampling",

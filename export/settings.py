@@ -13,6 +13,7 @@ def export_settings(exporter, pr, scene):
         w.write(":sampe_count %i" % s.ao_sample_count)
     elif s.integrator == 'VF':
         w.write(":mode '%s'" % s.vf_mode)
+        w.write(":weighting %s" % str(s.vf_apply_weighting).lower())
     w.goOut()
     w.write(")")
 
