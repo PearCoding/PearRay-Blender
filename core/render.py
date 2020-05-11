@@ -53,11 +53,10 @@ class PearRayRender(bpy.types.RenderEngine):
     def _handle_render_stat(self, renderer):
         stat = renderer.status
 
-        line = "Pass %s S %i R %i EH %i BH %i" % (renderer.currentPass+1,
-                                                  stat['global.pixel_sample_count'],
-                                                  stat['global.ray_count'],
-                                                  stat['global.entity_hit_count'],
-                                                  stat['global.background_hit_count'])
+        line = "S %i R %i EH %i BH %i" % (stat['global.pixel_sample_count'],
+                                        stat['global.ray_count'],
+                                        stat['global.entity_hit_count'],
+                                        stat['global.background_hit_count'])
 
         self.update_stats("", "PearRay: Rendering [%s]..." % (line))
         self.update_progress(stat.percentage)

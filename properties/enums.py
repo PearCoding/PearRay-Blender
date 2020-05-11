@@ -39,6 +39,7 @@ enum_vf_mode = (
     ('PARAMETER', "Parameter", "Internal parameterization of surfaces/volumes"),
     ('INSIDE', "Inside", "Green if determined as inside"),
     ('NDOTV', "NdotV", "Positive NdotV in red, negative NdotV in green"),
+    ('VALIDATE_MATERIAL', "Validate Material", "Validation of underlying material. White is good"),
 )
 
 enum_tile_mode = (
