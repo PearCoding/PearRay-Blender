@@ -131,8 +131,6 @@ class PearRayRender(bpy.types.RenderEngine):
 
         toneMapper = pr.ToneMapper()
         toneMapper.colorMode = pr.ToneColorMode.SRGB
-        toneMapper.gammaMode = pr.ToneGammaMode.NONE
-        toneMapper.mapperMode = pr.ToneMapperMode.NONE
 
         colorBuffer = pr.ColorBuffer(x, y, pr.ColorBufferMode.RGBA)
 
@@ -196,7 +194,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
         def update_image():
             colorBuffer.map(
-                toneMapper, environment.spectrumDescriptor, renderer.output.spectral)
+                toneMapper, renderer.output.spectral)
             colorBuffer.flipY()
             layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)
