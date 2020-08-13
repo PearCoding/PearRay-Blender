@@ -29,10 +29,9 @@ def export_world(exporter, world):
         exporter.w.write(":name '_blender_world_background_env'")
         exporter.w.write(":type 'env'")
         if env_radiance_name is not None:
-            exporter.w.write(":radiance %s" % env_radiance_name)
-            exporter.w.write(":background %s" % env_background_name)
+            exporter.w.write(":radiance (smul (smul (illuminant 'd65') %s) %f)" % (env_radiance_name, world.pearray.radiance_factor))
+            exporter.w.write(":background (smul (illuminant 'd65') %s)" % env_background_name) # TODO: Factor?
         else:
-            exporter.w.write(":radiance %s" % env_background_name)
-        exporter.w.write(":factor %f" % world.pearray.radiance_factor)
+            exporter.w.write(":radiance (smul (smul (illuminant 'd65') %s) %f)" % (env_background_name, world.pearray.radiance_factor))
         exporter.w.goOut()
         exporter.w.write(")")

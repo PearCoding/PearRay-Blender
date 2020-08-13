@@ -16,7 +16,7 @@ def write_emission(exporter, light, factor=1):
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'standard'")
-    w.write(":radiance %s" % color_name)
+    w.write(":radiance (smul (illuminant 'd65') %s)" % color_name)
 
     w.goOut()
     w.write(")")

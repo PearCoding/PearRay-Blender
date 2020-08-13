@@ -54,12 +54,12 @@ class PearRayRender(bpy.types.RenderEngine):
         stat = renderer.status
 
         line = "S %i R %i EH %i BH %i" % (stat['global.pixel_sample_count'],
-                                        stat['global.ray_count'],
-                                        stat['global.entity_hit_count'],
-                                        stat['global.background_hit_count'])
+                                          stat['global.ray_count'],
+                                          stat['global.entity_hit_count'],
+                                          stat['global.background_hit_count'])
 
         self.update_stats("", "PearRay: Rendering [%s]..." % (line))
-        self.update_progress(stat.percentage)
+        self.update_progress(stat.percentage/100)
 
     def render(self, depsgraph):
         addon_prefs = bpy.context.preferences.addons[pearray_package.__package__].preferences
@@ -88,7 +88,7 @@ class PearRayRender(bpy.types.RenderEngine):
             renderPath = os.path.dirname(renderPath)
 
         if not renderPath:
-            renderPath = tempfile.gettempdir()
+            renderPath = tempfile.gettempdir() + "/pearray/"
 
         if not os.path.exists(renderPath):
             os.makedirs(renderPath)
@@ -193,9 +193,12 @@ class PearRayRender(bpy.types.RenderEngine):
         layer = result.layers[0]
 
         def update_image():
+            max_iter = renderer.maxIterationCount
+            current_iter = min(max_iter, renderer.status['global.iteration_count'])
+            toneMapper.scale = max_iter/current_iter if current_iter > 0 else 1
             colorBuffer.map(
                 toneMapper, renderer.output.spectral)
-            colorBuffer.flipY()
+            # colorBuffer.flipY()
             layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)
 
@@ -219,7 +222,9 @@ class PearRayRender(bpy.types.RenderEngine):
         self.end_result(result)
 
         renderer.notifyEnd()
-        environment.save(renderer, toneMapper, True)
+        saveOpts = pr.OutputSaveOptions()
+        saveOpts.Force = True
+        environment.save(renderer, toneMapper, saveOpts)
 
         # The order here is important!
         # FIXME: This should be handled internally!!!

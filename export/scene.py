@@ -40,10 +40,9 @@ def write_scene(exporter, pr):
     # Exporters
     def export_scene():
         w.write(":name '_from_blender'")
-        w.write(":renderWidth %i" % res_x)
-        w.write(":renderHeight %i" % res_y)
+        w.write(":render_width %i" % res_x)
+        w.write(":render_height %i" % res_y)
         w.write(":camera '%s'" % scene.camera.name)
-        w.write(":spectrum 'srgb'")
 
     def export_outputs():
         rl = scene.view_layers[0]
@@ -77,14 +76,8 @@ def write_scene(exporter, pr):
                 w.write(":type 'color'")
                 if scene.pearray.color_format == 'XYZ':
                     w.write(":color 'xyz'")
-                    w.write(":gamma 'none'")
-                elif scene.pearray.color_format == 'SRGB':
-                    w.write(":color 'rgb'")
-                    w.write(":gamma 'srgb'")
                 else:
-                    w.write(":color 'rgb'")
-                    w.write(":gamma 'none'")
-                w.write(":mapper 'none'")
+                    w.write(":color 'srgb'")
                 if lpe:
                     w.write(":lpe '%s'" % lpe)
                 end_output()
@@ -165,13 +158,6 @@ def write_scene(exporter, pr):
             export_channel(lpe.channel, lpe.expression)
 
         if not rl2.separate_files:
-            w.goOut()
-            w.write(")")
-
-        if rl2.raw_spectral:
-            w.write("(output_spectral")
-            w.goIn()
-            w.write(":name 'spectral'")
             w.goOut()
             w.write(")")
 
