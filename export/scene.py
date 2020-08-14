@@ -161,6 +161,19 @@ def write_scene(exporter, pr):
             w.goOut()
             w.write(")")
 
+    # Extract information
+    has_light = False
+    has_curve = False
+    has_mesh = False
+    for obj in renderable_instances(exporter.depsgraph):
+        if obj.object.type == 'LIGHT':
+            has_light = True
+        elif obj.object.type == 'MESH':
+            has_mesh = True
+        elif is_allowed_curve(obj):
+            has_curve = True
+
+    # Write entries
     w.write("(scene")
     w.goIn()
 
@@ -173,31 +186,45 @@ def write_scene(exporter, pr):
     export_default_materials(exporter)
     w.write("; Camera")
     export_camera(exporter, scene.camera)
-    if(exporter.world):
+    if exporter.world:
         w.write("; Background")
         export_world(exporter, exporter.world)
-    w.write("; Lights")
-    for light in renderable_instances(exporter.depsgraph):
-        if light.object.type == 'LIGHT':
-            export_light(exporter, light.instance_object if light.is_instance else light.object)
-    w.write("; Primitives")
-    for inst in renderable_instances(exporter.depsgraph):
-        if inst.object.type == 'MESH':
-            if inst.object.data.pearray.is_primitive:
-                export_primitive(exporter, inst.instance_object if inst.is_instance else inst.object)
-    w.write("; Meshes")
-    for inst in renderable_instances(exporter.depsgraph):
-        if is_allowed_mesh(inst):
-            export_mesh(exporter, inst)
-    w.write("; Curves")
-    for inst in renderable_instances(exporter.depsgraph):
-        if is_allowed_curve(inst):
-            export_curve(exporter, inst.instance_object if inst.is_instance else inst.object)
-    w.write("; Particle Systems")
+    
+    if has_light:
+        w.write("; Lights")
+        for light in renderable_instances(exporter.depsgraph):
+            if light.object.type == 'LIGHT':
+                export_light(
+                    exporter, light.instance_object if light.is_instance else light.object)
+
+    if has_curve:
+        w.write("; Curves")
+        for inst in renderable_instances(exporter.depsgraph):
+            if is_allowed_curve(inst):
+                export_curve(
+                    exporter, inst.instance_object if inst.is_instance else inst.object)
+
+    # w.write("; Particle Systems")
     # TODO
-    w.write("; Materials")
-    for m in bpy.data.materials:
-        export_material(exporter, m)
+    
+    if len(bpy.data.materials) > 0:
+        w.write("; Materials")
+        for m in bpy.data.materials:
+            export_material(exporter, m)
+
+    if has_mesh:
+        w.write("; Primitives")
+        for inst in renderable_instances(exporter.depsgraph):
+            if inst.object.type == 'MESH':
+                if inst.object.data.pearray.is_primitive:
+                    export_primitive(
+                        exporter, inst.instance_object if inst.is_instance else inst.object)
+
+        # Make meshes last as they are often the largest entries
+        w.write("; Meshes")
+        for inst in renderable_instances(exporter.depsgraph):
+            if is_allowed_mesh(inst):
+                export_mesh(exporter, inst)
 
     w.goOut()
     w.write(")")
