@@ -9,9 +9,16 @@ class RENDER_PT_pr_output(RenderOutputButtonsPanel, bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+        scene = context.scene
 
         rd = context.scene.render
         layout.prop(rd, "filepath", text="")
+
+        layout.separator()
+
+        layout.prop(scene.pearray, "keep_prc")
+        layout.prop(scene.pearray, "beautiful_prc")
+        layout.prop(scene.pearray, "color_format")
 
 
 class VIEWLAYER_OP_pr_lpe_actions(bpy.types.Operator):
@@ -115,26 +122,8 @@ class VIEWLAYER_PT_pr_aovs(ViewLayerButtonsPanel, bpy.types.Panel):
         split.prop(rl2, "separate_files")
 
 
-class RENDER_PT_pr_export_settings(RenderOutputButtonsPanel, bpy.types.Panel):
-    bl_label = "Export Settings"
-    bl_options = {'DEFAULT_CLOSED'}
-    COMPAT_ENGINES = {'PEARRAY_RENDER'}
-
-    def draw_header(self, context):
-        pass
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-
-        layout.prop(scene.pearray, "keep_prc")
-        layout.prop(scene.pearray, "beautiful_prc")
-        layout.prop(scene.pearray, "color_format")
-
-
 register, unregister = bpy.utils.register_classes_factory([
     RENDER_PT_pr_output,
-    RENDER_PT_pr_export_settings,
     VIEWLAYER_OP_pr_lpe_actions,
     VIEWLAYER_UL_pr_lpe_entry,
     VIEWLAYER_PT_pr_lpe,

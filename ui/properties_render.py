@@ -10,7 +10,7 @@ class RenderButtonsPanel():
     @classmethod
     def poll(cls, context):
         rd = context.scene.render
-        return (rd.engine in cls.COMPAT_ENGINES)
+        return (rd.engine in getattr(cls, 'COMPAT_ENGINES', []))
 
 
 class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
@@ -19,21 +19,13 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-
-        rd = context.scene.render
         scene = context.scene
 
         row = layout.row(align=True)
         row.operator("render.render", text="Render", icon='RENDER_STILL')
         row.operator("render.render", text="Animation",
                      icon='RENDER_ANIMATION').animation = True
-
-        split = layout.split(factor=0.33)
-
-        split.label(text="Display:")
-        row = split.row(align=True)
-        row.prop(rd, "display_mode", text="")
-        row.prop(rd, "use_lock_interface", icon_only=True)
+        row.operator("render.render", text="Export", icon='FILE_BLANK') # TODO
 
         layout.separator()
 
@@ -46,6 +38,7 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
 
         layout.prop(scene.pearray, "integrator")
         layout.prop(scene.pearray, "max_ray_depth")
+        layout.prop(scene.pearray, "soft_max_ray_depth")
 
         layout.separator()
         layout.prop(context.scene.pearray, "pixel_filter_mode")
@@ -84,21 +77,14 @@ class RENDER_PT_pr_sampler(RenderButtonsPanel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
 
+        layout.prop(scene.pearray, "sampler_max_samples", text="SPP")
+        layout.separator()
         layout.prop(scene.pearray, "sampler_aa_mode", text="AA")
-        layout.prop(scene.pearray, "sampler_max_aa_samples")
-        layout.separator()
         layout.prop(scene.pearray, "sampler_lens_mode", text="Lens")
-        layout.prop(scene.pearray, "sampler_max_lens_samples")
-        layout.separator()
         layout.prop(scene.pearray, "sampler_time_mode", text="Time")
-        layout.prop(scene.pearray, "sampler_max_time_samples")
         layout.prop(scene.pearray, "sampler_time_mapping_mode", expand=True)
         layout.prop(scene.pearray, "sampler_time_scale")
-        layout.separator()
-        layout.label(text="Max Samples: %i" %
-                     (scene.pearray.sampler_max_aa_samples *
-                      scene.pearray.sampler_max_lens_samples *
-                      scene.pearray.sampler_max_time_samples))
+        layout.prop(scene.pearray, "sampler_spectral_mode", text="Spectral")
 
 
 class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):

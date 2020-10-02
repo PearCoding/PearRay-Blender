@@ -42,7 +42,15 @@ class PearRaySceneProperties(PropertyGroup):
         min=1,
         soft_max=4096,
         subtype="UNSIGNED",
-        default=8
+        default=64
+    )
+    soft_max_ray_depth: IntProperty(
+        name="Soft Max Ray Depth",
+        description="Maximum ray depth after which russian roulette is used",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=4
     )
     integrator: EnumProperty(
         name="Integrator",
@@ -86,19 +94,19 @@ class PearRaySceneProperties(PropertyGroup):
         subtype="UNSIGNED",
         default=1
     )
+    sampler_max_samples: IntProperty(
+        name="Max Samples",
+        description="Maximum samples",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=512
+    )
     sampler_aa_mode: EnumProperty(
         name="AA Sampler Mode",
         description="AA sampling technique",
         items=enums.enum_sampler_mode,
         default='MULTI_JITTER'
-    )
-    sampler_max_aa_samples: IntProperty(
-        name="Max AA Samples",
-        description="Maximum AA samples",
-        min=1,
-        soft_max=4096,
-        subtype="UNSIGNED",
-        default=4
     )
     sampler_lens_mode: EnumProperty(
         name="Lens Sampler Mode",
@@ -106,27 +114,17 @@ class PearRaySceneProperties(PropertyGroup):
         items=enums.enum_sampler_mode,
         default='MULTI_JITTER'
     )
-    sampler_max_lens_samples: IntProperty(
-        name="Max Lens Samples",
-        description="Maximum Lens samples",
-        min=1,
-        soft_max=4096,
-        subtype="UNSIGNED",
-        default=1
-    )
     sampler_time_mode: EnumProperty(
         name="Time Sampler Mode",
         description="Time sampling technique",
         items=enums.enum_sampler_mode,
         default='MULTI_JITTER'
     )
-    sampler_max_time_samples: IntProperty(
-        name="Max Time Samples",
-        description="Maximum Time samples",
-        min=1,
-        soft_max=4096,
-        subtype="UNSIGNED",
-        default=1
+    sampler_spectral_mode: EnumProperty(
+        name="Spectral Sampler Mode",
+        description="Spectral sampling technique",
+        items=enums.enum_sampler_mode,
+        default='RANDOM'
     )
     sampler_time_mapping_mode: EnumProperty(
         name="Time Mapping Mode",

@@ -3,20 +3,21 @@ import mathutils
 
 
 from .entity import inline_entity_matrix
-from .color import export_color
+from .node import export_node
 
 
 def write_emission(exporter, light, factor=1):
     w = exporter.w
-    color_name = export_color(exporter, light.data, 'color', True, factor, asLight=True)
+    node_name = export_node(exporter, light.name, light.data.color, True, factor, asLight=True)
     light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
+    energy = light.data.energy
 
     w.write("(emission")
     w.goIn()
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'standard'")
-    w.write(":radiance (smul (illuminant 'd65') %s)" % color_name)
+    w.write(":radiance (smul (smul (illuminant 'd65') %s) %f)" % (node_name, energy))
 
     w.goOut()
     w.write(")")
@@ -29,7 +30,7 @@ def export_pointlight(exporter, light):
     light_data = light.data
     w.write("; Light %s" % light.name)
 
-    surf = 4*math.pi*math.pow(light_data.pearray.point_radius, 2)
+    surf = 4*math.pi*math.pow(light_data.shadow_soft_size, 2)
     light_mat_n = write_emission(exporter, light, surf)
 
     w.write("(entity")
@@ -37,11 +38,8 @@ def export_pointlight(exporter, light):
 
     w.write(":name '%s'" % light.name)
     w.write(":type 'sphere'")
-    w.write(":radius %f" % light_data.pearray.point_radius)  # Really?
+    w.write(":radius %f" % light_data.shadow_soft_size)
     w.write(":emission '%s'" % light_mat_n)
-    if not light.data.pearray.camera_visible:
-        w.write(":camera_visible false")
-        w.write(":bounce_visible false")
     
     inline_entity_matrix(exporter, light)
 
@@ -70,8 +68,6 @@ def export_arealight(exporter, light):
     w.write(":width %f" % (light_data.size))
     w.write(":height %f" % (-ysize))
     w.write(":emission '%s'" % light_mat_n)
-    if not light.data.pearray.camera_visible:
-        w.write(":camera_visible false")
         
     inline_entity_matrix(exporter, light)
 
@@ -82,15 +78,15 @@ def export_arealight(exporter, light):
 def export_sunlight(exporter, light):
     w = exporter.w
     w.write("; Light %s" % light.name)
-    color_name = export_color(exporter, light.data, 'color',
-                              True, asLight=True)
+    node_name = export_node(exporter, light.name, light.data.color, True, asLight=True)
+    energy = light.data.energy
 
     w.write("(light")
     w.goIn()
 
     w.write(":type 'distant'")
     w.write(":direction [0, 0, -1]")
-    w.write(":radiance %s" % color_name)
+    w.write(":radiance (smul %s %f)" % (node_name, energy))
     inline_entity_matrix(exporter, light)
 
     w.goOut()
@@ -98,9 +94,11 @@ def export_sunlight(exporter, light):
 
 
 def export_light(exporter, light):
-    if light.data.type == 'POINT' or light.data.type == 'SPOT':
+    if light.data.type == 'POINT':
         export_pointlight(exporter, light)  # Interpret as spherical area light
-    elif light.data.type == 'HEMI' or light.data.type == 'AREA':
+    elif light.data.type == 'SPOT':
+        export_pointlight(exporter, light)  # TODO
+    elif light.data.type == 'AREA':
         export_arealight(exporter, light)
     elif light.data.type == 'SUN':
         export_sunlight(exporter, light)

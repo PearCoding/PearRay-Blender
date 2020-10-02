@@ -24,7 +24,7 @@ def export_settings(exporter, pr, scene):
     w.goIn()
     w.write(":slot 'aa'")
     w.write(":type '%s'" % s.sampler_aa_mode)
-    w.write(":sample_count %i" % s.sampler_max_aa_samples)
+    w.write(":sample_count %i" % s.sampler_max_samples)
     w.goOut()
     w.write(")")
 
@@ -32,7 +32,7 @@ def export_settings(exporter, pr, scene):
     w.goIn()
     w.write(":slot 'lens'")
     w.write(":type '%s'" % s.sampler_lens_mode)
-    w.write(":sample_count %i" % s.sampler_max_lens_samples)
+    w.write(":sample_count 1")
     w.goOut()
     w.write(")")
 
@@ -40,7 +40,7 @@ def export_settings(exporter, pr, scene):
     w.goIn()
     w.write(":slot 'time'")
     w.write(":type '%s'" % s.sampler_time_mode)
-    w.write(":sample_count %i" % s.sampler_max_time_samples)
+    w.write(":sample_count 1")
     w.goOut()
     w.write(")")
 
@@ -48,6 +48,14 @@ def export_settings(exporter, pr, scene):
     #          s.sampler_time_mapping_mode)
     # add_entry(exporter, '/renderer/common/sampler/time/scale',
     #          s.sampler_time_scale)
+
+    w.write("(sampler")
+    w.goIn()
+    w.write(":slot 'spectral'")
+    w.write(":type '%s'" % s.sampler_spectral_mode)
+    w.write(":sample_count 1")
+    w.goOut()
+    w.write(")")
 
     w.write("(filter")
     w.goIn()

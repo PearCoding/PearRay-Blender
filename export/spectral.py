@@ -1,6 +1,6 @@
 def write_spectral_color(exporter, spec_name, color,
                          asLight=False):
-    new_name = exporter.register_unique_name('SPEC', spec_name)
+    new_name = exporter.register_unique_name('NODE', spec_name)
 
     exporter.w.write("(spectrum")
     exporter.w.goIn()
@@ -18,7 +18,7 @@ def write_spectral_color(exporter, spec_name, color,
 
 
 def write_spectral_temp(exporter, spec_name, temp, type, factor):
-    new_name = exporter.register_unique_name('SPEC', spec_name)
+    new_name = exporter.register_unique_name('NODE', spec_name)
 
     exporter.w.write("(spectrum")
     exporter.w.goIn()

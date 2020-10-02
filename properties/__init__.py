@@ -7,9 +7,9 @@ from bpy.props import (
 from bpy.types import AddonPreferences
 import bpy
 
-from . import (camera, scene, layer, material, primitive, mesh, light, world)
-_mods = [camera, scene, layer, material, primitive,
-         mesh, light, world]  # Order is important
+from . import (camera, scene, layer, primitive, mesh, world)
+_mods = [camera, scene, layer, primitive,
+         mesh, world]  # Order is important
 
 
 # Global Settings
