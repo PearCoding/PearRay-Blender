@@ -3,21 +3,20 @@ import mathutils
 
 
 from .entity import inline_entity_matrix
-from .node import export_node
+from .spectral import write_spectral_color
 
 
 def write_emission(exporter, light, factor=1):
     w = exporter.w
-    node_name = export_node(exporter, light.name, light.data.color, True, factor, asLight=True)
+    color = write_spectral_color(light.data.color, factor=factor * light.data.energy, asLight=True)
     light_mat_n = exporter.register_unique_name('EMISSION', light.name + "_em")
-    energy = light.data.energy
 
     w.write("(emission")
     w.goIn()
 
     w.write(":name '%s'" % light_mat_n)
     w.write(":type 'standard'")
-    w.write(":radiance (smul (smul (illuminant 'd65') %s) %f)" % (node_name, energy))
+    w.write(":radiance (smul (illuminant 'd65') %s)" % color)
 
     w.goOut()
     w.write(")")
@@ -78,15 +77,14 @@ def export_arealight(exporter, light):
 def export_sunlight(exporter, light):
     w = exporter.w
     w.write("; Light %s" % light.name)
-    node_name = export_node(exporter, light.name, light.data.color, True, asLight=True)
-    energy = light.data.energy
+    color = write_spectral_color(light.data.color, factor=light.data.energy, asLight=True)
 
     w.write("(light")
     w.goIn()
 
     w.write(":type 'distant'")
     w.write(":direction [0, 0, -1]")
-    w.write(":radiance (smul %s %f)" % (node_name, energy))
+    w.write(":radiance %s" % color)
     inline_entity_matrix(exporter, light)
 
     w.goOut()

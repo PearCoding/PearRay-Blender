@@ -1,39 +1,5 @@
-def write_spectral_color(exporter, spec_name, color,
-                         asLight=False):
-    new_name = exporter.register_unique_name('NODE', spec_name)
-
-    exporter.w.write("(spectrum")
-    exporter.w.goIn()
-
-    exporter.w.write(":name '%s'" % spec_name)
+def write_spectral_color(color, factor=1, asLight=False):
     if asLight:
-        exporter.w.write(":data (illum %f %f %f)" % color[:])
+        return "(illum %f %f %f)" % (factor * color[0], factor * color[1], factor * color[2])
     else:
-        exporter.w.write(":data (refl %f %f %f)" % color[:])
-
-    exporter.w.goOut()
-    exporter.w.write(")")
-
-    return new_name
-
-
-def write_spectral_temp(exporter, spec_name, temp, type, factor):
-    new_name = exporter.register_unique_name('NODE', spec_name)
-
-    exporter.w.write("(spectrum")
-    exporter.w.goIn()
-
-    exporter.w.write(":name '%s'" % spec_name)
-    if type == 'LUM':
-        exporter.w.write(":data (temperature %f %f)" % (temp, factor))
-    elif type == 'RAD':
-        exporter.w.write(":data (temperature_raw %f %f)" % (temp, factor))
-    elif type == 'LUM_NORM':
-        exporter.w.write(":data (temperature_norm %f %f)" % (temp, factor))
-    elif type == 'RAD_NORM':
-        exporter.w.write(":data (temperature_raw_norm %f %f)" % (temp, factor))
-
-    exporter.w.goOut()
-    exporter.w.write(")")
-
-    return new_name
+        return "(refl %f %f %f)" % (factor * color[0], factor * color[1], factor * color[2])
