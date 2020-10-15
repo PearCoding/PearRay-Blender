@@ -1,5 +1,4 @@
 from .spectral import write_spectral_color
-from .texture import export_texture
 from .node import export_node
 
 
@@ -128,7 +127,7 @@ def export_default_materials(exporter):
     exporter.MISSING_MAT = exporter.register_unique_name(
         'MATERIAL', "_missing_mat")
 
-    missing_spec_n = write_spectral_color((10, 7, 8))
+    missing_spec_n = write_spectral_color((1.0, 0.7, 0.8))
 
     exporter.w.write("(material")
     exporter.w.goIn()

@@ -16,29 +16,3 @@ def export_image(exporter, image):
                 path = image.filepath
 
     return bpy.path.resolve_ncase(bpy.path.abspath(path)).replace("\\", "\\\\")
-
-
-def export_texture(exporter, texture):
-    if not texture:
-        return ''
-
-    if texture.type != 'IMAGE':
-        return ''
-
-    if texture.name in exporter.instances['NODE']:
-        return texture.name
-
-    name = exporter.register_unique_name('NODE', texture.name)
-    img_name = export_image(exporter, texture.image)
-
-    exporter.w.write("(texture")
-    exporter.w.goIn()
-
-    exporter.w.write(":name '%s'" % name)
-    exporter.w.write(":type 'color'")
-    exporter.w.write(":file '%s'" % img_name)
-
-    exporter.w.goOut()
-    exporter.w.write(")")
-
-    return name

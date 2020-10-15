@@ -35,7 +35,6 @@ def get_panels():
 
     for panel in bpy.types.Panel.__subclasses__():
         if ('CYCLES' in getattr(panel, 'COMPAT_ENGINES', [])) and (panel.__name__ not in exclude_panels):
-            print(panel.__name__)
             yield panel
 
 
