@@ -191,6 +191,20 @@ def _export_spectral_math(exporter, node):
         return ops
 
 
+def _export_spectral_gamma(exporter, node):
+    color_node = export_node(exporter, node.inputs[0])
+    gamma_node = export_node(exporter, node.inputs[1])
+    return "(smul %s (exp %s))" % (color_node, gamma_node)
+
+
+def _export_spectral_brightcontrast(exporter, node):
+    color_node = export_node(exporter, node.inputs[0])
+    bright_node = export_node(exporter, node.inputs[1])
+    contrast_node = export_node(exporter, node.inputs[2])
+
+    return "(sbrightnesscontrast %s %s %s)" % (color_node, bright_node, contrast_node)
+
+
 def _export_spectral_invert(exporter, node):
     # Only valid if values between 0 and 1
 
@@ -264,6 +278,10 @@ def _export_node(exporter, socket, node, factor, asLight):
         return _export_spectral_invert(exporter, node)
     elif isinstance(node, bpy.types.ShaderNodeRGB):
         return _export_spectral_value(exporter, node, factor, asLight)
+    elif isinstance(node, bpy.types.ShaderNodeGamma):
+        return _export_spectral_gamma(exporter, node)
+    elif isinstance(node, bpy.types.ShaderNodeBrightContrast):
+        return _export_spectral_brightcontrast(exporter, node)
     elif isinstance(node, bpy.types.ShaderNodeBlackbody):
         return _export_blackbody(exporter, node)
     elif isinstance(node, bpy.types.ShaderNodeWavelength):
