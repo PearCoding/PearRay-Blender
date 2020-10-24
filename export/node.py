@@ -211,7 +211,7 @@ def _export_spectral_invert(exporter, node):
     fac = export_node(exporter, node.inputs[0])
     col1 = export_node(exporter, node.inputs[1])
 
-    if node.inputs[0].is_linked or node.inputs[0].default_value != 1:  # TODO: Prevent copying?
+    if node.inputs[0].is_linked or node.inputs[0].default_value != 1:
         return "(sblend %s %s (ssub 1 %s))" % (fac, col1, col1)
     else:
         return "(ssub 1 %s)" % col1
