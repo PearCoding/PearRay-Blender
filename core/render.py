@@ -194,11 +194,8 @@ class PearRayRender(bpy.types.RenderEngine):
         layer = result.layers[0]
 
         def update_image():
-            max_iter = renderer.maxIterationCount
-            current_iter = min(max_iter, renderer.status['global.iteration_count'])
-            toneMapper.scale = max_iter/current_iter if current_iter > 0 else 1
-            colorBuffer.map(
-                toneMapper, renderer.output.spectral)
+            colorBuffer.mapWeighted(
+                toneMapper, renderer.output.spectral, renderer.output.pixelweight)
             # colorBuffer.flipY()
             layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)
