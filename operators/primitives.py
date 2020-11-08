@@ -153,12 +153,15 @@ _classes = [OBJECT_OT_AddSphereOperator, OBJECT_OT_AddBoxOperator, OBJECT_OT_Add
             OBJECT_OT_AddDiskOperator, OBJECT_OT_AddQuadricOperator, VIEW3D_MT_add_primitives]
 _bl_register, _bl_unregister = bpy.utils.register_classes_factory(_classes)
 
+
 def _sub_menu(self, context):
     self.layout.menu("VIEW3D_MT_add_primitives")
+
 
 def register():
     _bl_register()
     bpy.types.VIEW3D_MT_add.append(_sub_menu)
+
 
 def unregister():
     bpy.types.VIEW3D_MT_add.remove(_sub_menu)

@@ -25,7 +25,7 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
         row.operator("render.render", text="Render", icon='RENDER_STILL')
         row.operator("render.render", text="Animation",
                      icon='RENDER_ANIMATION').animation = True
-        row.operator("render.render", text="Export", icon='FILE_BLANK') # TODO
+        row.operator("pr.export", text="Export", icon='FILE_BLANK')  # TODO
 
         layout.separator()
 
@@ -35,10 +35,7 @@ class RENDER_PT_pr_render(RenderButtonsPanel, bpy.types.Panel):
         row.prop(context.scene.pearray, "render_tile_mode", expand=True)
 
         layout.separator()
-
         layout.prop(scene.pearray, "integrator")
-        layout.prop(scene.pearray, "max_ray_depth")
-        layout.prop(scene.pearray, "soft_max_ray_depth")
 
         layout.separator()
         layout.prop(context.scene.pearray, "pixel_filter_mode")
@@ -96,8 +93,25 @@ class RENDER_PT_pr_integrator(RenderButtonsPanel, bpy.types.Panel):
         scene = context.scene
 
         if scene.pearray.integrator == 'DIRECT':
+            col = layout.column(align=True)
+            col.prop(scene.pearray, "max_ray_depth")
+            col.prop(scene.pearray, "soft_max_ray_depth")
             layout.prop(scene.pearray, "max_light_samples")
-            layout.prop(scene.pearray, "msi")
+        elif scene.pearray.integrator == 'BIDIRECT':
+            col = layout.column(align=True)
+            col.prop(scene.pearray, "max_ray_depth")
+            col.prop(scene.pearray, "soft_max_ray_depth")
+            col = layout.column(align=True)
+            col.prop(scene.pearray, "max_light_ray_depth")
+            col.prop(scene.pearray, "soft_max_light_ray_depth")
+        elif scene.pearray.integrator == 'PPM':
+            layout.prop(scene.pearray, "ppm_photons_per_pass")
+            col = layout.column(align=True)
+            col.prop(scene.pearray, "max_ray_depth")
+            col.prop(scene.pearray, "soft_max_ray_depth")
+            col = layout.column(align=True)
+            col.prop(scene.pearray, "max_light_ray_depth")
+            col.prop(scene.pearray, "soft_max_light_ray_depth")
         elif scene.pearray.integrator == 'AO':
             layout.prop(scene.pearray, "ao_sample_count")
         elif scene.pearray.integrator == 'VF':

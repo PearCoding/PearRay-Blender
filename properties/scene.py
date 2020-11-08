@@ -52,6 +52,22 @@ class PearRaySceneProperties(PropertyGroup):
         subtype="UNSIGNED",
         default=4
     )
+    max_light_ray_depth: IntProperty(
+        name="Max Light Ray Depth",
+        description="Maximum ray depth for rays starting from light sources",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=16
+    )
+    soft_max_light_ray_depth: IntProperty(
+        name="Soft Max Light Ray Depth",
+        description="Maximum light ray depth after which russian roulette is used",
+        min=1,
+        soft_max=4096,
+        subtype="UNSIGNED",
+        default=2
+    )
     integrator: EnumProperty(
         name="Integrator",
         description="Integrator to be used",
@@ -69,10 +85,13 @@ class PearRaySceneProperties(PropertyGroup):
         description="Apply view dependent weighting for better scene visibility",
         default=True
     )
-    msi: BoolProperty(
-        name="Use MSI",
-        description="Use Multiple Importance Sampling",
-        default=True
+    ppm_photons_per_pass: IntProperty(
+        name="Max Photons per Pass",
+        description="Maximum amount of photons to trace each pass",
+        min=1000,
+        soft_max=100000000,
+        subtype="UNSIGNED",
+        default=1000000
     )
     render_tile_mode: EnumProperty(
         name="Tile Mode",

@@ -23,6 +23,8 @@ enum_time_mapping_mode = (
 
 enum_integrator_mode = (
     ('DIRECT', "Direct", "Direct Rendering"),
+    ('BIDIRECT', "Bi-Direct", "Bidirectional Path Tracing"),
+    ('PPM', "PPM", "Progressive Photon Mapping"),
     ('AO', "Ambient Occulusion", "Ambient Occulusion"),
     ('VF', "Visual Feedback", "Visual and Debug Feedback"),
 )

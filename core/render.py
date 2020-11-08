@@ -110,7 +110,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
         self.update_stats("", "PearRay: Exporting data")
         scene_exporter = export.Exporter(sceneFile, depsgraph)
-        scene_exporter.write_scene(pr)
+        scene_exporter.write_scene()
 
         if self.check_break():
             return

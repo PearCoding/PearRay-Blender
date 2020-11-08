@@ -28,7 +28,7 @@ def is_allowed_curve(inst):
     return (inst.object.type in {'CURVE', 'FONT'})
 
 
-def write_scene(exporter, pr):
+def write_scene(exporter):
     w = exporter.w
     scene = exporter.scene
 
@@ -179,7 +179,7 @@ def write_scene(exporter, pr):
 
     export_scene()
     w.write("; Settings")
-    export_settings(exporter, pr, scene)
+    export_settings(exporter, scene)
     w.write("; Outputs")
     export_outputs()
     w.write("; Default Materials")

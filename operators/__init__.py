@@ -1,18 +1,13 @@
 import bpy
 
-from . import primitives
-
-
-def menu_func(self, context):
-    self.layout.separator()
-    self.layout.menu(primitives.OBJECT_MT_AddPrimitives.bl_idname)
+from . import primitives, export
 
 
 def register():
     primitives.register()
-    #bpy.types.INFO_MT_add.append(menu_func)
+    export.register()
 
 
 def unregister():
-    #bpy.types.INFO_MT_add.remove(menu_func)
+    export.unregister()
     primitives.unregister()
