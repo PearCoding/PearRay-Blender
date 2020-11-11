@@ -140,7 +140,7 @@ def export_mesh_only(exporter, obj):
 
 def export_mesh_material_part(exporter, obj):
     w = exporter.w
-    if len(obj.data.materials) == 1:
+    if len(obj.data.materials) == 1 and obj.data.materials[0] is not None:
         w.write(":materials '%s'" % obj.data.materials[0].name)
     elif len(obj.data.materials) > 1:
         w.write(":materials [%s]" % ', '.join(
