@@ -1,5 +1,6 @@
 from .spectral import write_spectral_color
 from .node import export_node
+import bpy
 
 
 def _extract_material_bsdf(material):
@@ -65,6 +66,25 @@ def _export_glass_bsdf(exporter, bsdf, export_name):
     exporter.w.write(")")
 
 
+def _export_glossy_bsdf(exporter, bsdf, export_name):
+    # A simple principled shader
+    base_color = export_node(exporter, bsdf.inputs["Color"])
+    roughness = export_node(exporter, bsdf.inputs["Roughness"])
+
+    exporter.w.write("(material")
+    exporter.w.goIn()
+
+    exporter.w.write(":name '%s'" % export_name)
+    exporter.w.write(":type 'principled'")
+
+    exporter.w.write(":base_color %s" % base_color)
+    exporter.w.write(":roughness %s" % roughness)
+    exporter.w.write(":specular 1")
+
+    exporter.w.goOut()
+    exporter.w.write(")")
+
+
 def _export_principled_bsdf(exporter, bsdf, export_name):
     base_color = export_node(exporter, bsdf.inputs["Base Color"])
     roughness = export_node(exporter, bsdf.inputs["Roughness"])
@@ -100,6 +120,79 @@ def _export_principled_bsdf(exporter, bsdf, export_name):
     exporter.w.write(")")
 
 
+def _export_add_bsdf(exporter, bsdf, export_name):
+    mat1 = export_bsdf_inline(exporter, bsdf.inputs[0], export_name)
+    mat2 = export_bsdf_inline(exporter, bsdf.inputs[1], export_name)
+    
+    if mat1 is None or mat2 is None:
+        print("Mix BSDF %s has no valid bsdf input " % export_name)
+        return
+
+    exporter.w.write("(material")
+    exporter.w.goIn()
+
+    exporter.w.write(":name '%s'" % export_name)
+    exporter.w.write(":type 'add'")
+
+    exporter.w.write(":material1 '%s'" % mat1)
+    exporter.w.write(":material2 '%s'" % mat2)
+
+    exporter.w.goOut()
+    exporter.w.write(")")
+
+
+def _export_mix_bsdf(exporter, bsdf, export_name):
+    mat1 = export_bsdf_inline(exporter, bsdf.inputs[1], export_name)
+    mat2 = export_bsdf_inline(exporter, bsdf.inputs[2], export_name)
+    factor = export_node(exporter, bsdf.inputs["Fac"])
+    
+    if mat1 is None or mat2 is None:
+        print("Mix BSDF %s has no valid bsdf input " % export_name)
+        return
+
+    exporter.w.write("(material")
+    exporter.w.goIn()
+
+    exporter.w.write(":name '%s'" % export_name)
+    exporter.w.write(":type 'blend'")
+
+    exporter.w.write(":material1 '%s'" % mat1)
+    exporter.w.write(":material2 '%s'" % mat2)
+    exporter.w.write(":factor %s" % factor)
+
+    exporter.w.goOut()
+    exporter.w.write(")")
+
+
+def export_bsdf(exporter, bsdf, prename):
+    name = exporter.register_unique_name('MATERIAL', prename)
+    if bsdf is None:
+        print("Material %s has no valid BSDF!" % name)
+    elif isinstance(bsdf, bpy.types.ShaderNodeBsdfDiffuse):
+        _export_diffuse_bsdf(exporter, bsdf, name)
+    elif isinstance(bsdf, bpy.types.ShaderNodeBsdfGlass):
+        _export_glass_bsdf(exporter, bsdf, name)
+    elif isinstance(bsdf, bpy.types.ShaderNodeBsdfGlossy):
+        _export_glossy_bsdf(exporter, bsdf, name)
+    elif isinstance(bsdf, bpy.types.ShaderNodeBsdfPrincipled):
+        _export_principled_bsdf(exporter, bsdf, name)
+    elif isinstance(bsdf, bpy.types.ShaderNodeMixShader):
+        _export_mix_bsdf(exporter, bsdf, name)
+    elif isinstance(bsdf, bpy.types.ShaderNodeAddShader):
+        _export_add_bsdf(exporter, bsdf, name)
+    else:
+        print("Material %s has a '%s' which is not supported " %
+              (name, bsdf.name))
+    return name
+
+
+def export_bsdf_inline(exporter, socket, prename):
+    if not socket.is_linked:
+        return None
+    
+    return export_bsdf(exporter, socket.links[0].from_node, prename)
+
+
 def export_material(exporter, material):
     if not material:
         return
@@ -107,20 +200,8 @@ def export_material(exporter, material):
     if material.name in exporter.instances['MATERIAL']:
         return
 
-    name = exporter.register_unique_name('MATERIAL', material.name)
-
-    bsdf = _extract_material_bsdf(material)
-    if bsdf is None:
-        print("Material %s has no valid BSDF!" % material.name)
-    elif bsdf.name == "Diffuse BSDF":
-        _export_diffuse_bsdf(exporter, bsdf, name)
-    elif bsdf.name == "Glass BSDF":
-        _export_glass_bsdf(exporter, bsdf, name)
-    elif bsdf.name == "Principled BSDF":
-        _export_principled_bsdf(exporter, bsdf, name)
-    else:
-        print("Material %s has a '%s' which is not supported " %
-              (material.name, bsdf.name))
+    export_bsdf(exporter, _extract_material_bsdf(material), material.name)
+    
 
 
 def export_default_materials(exporter):
