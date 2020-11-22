@@ -25,8 +25,9 @@ class PearRayExportSceneOperator(bpy.types.Operator, ExportHelper):
     bl_description = "Export to PearRay format"
     bl_options = {'UNDO'}
 
-    filename_ext = ".pr"
-    filter_glob: StringProperty(default="*.pr", options={'HIDDEN'})
+    filename_ext = ".prc"
+    filter_glob: StringProperty(default="*.prc", options={'HIDDEN'})
+    external_mesh_files: BoolProperty(default=True)
 
     def draw(self, context):
         pass
@@ -41,6 +42,7 @@ class PearRayExportSceneOperator(bpy.types.Operator, ExportHelper):
 
         scene_exporter = export.Exporter(self.filepath, context.evaluated_depsgraph_get())
         scene_exporter.M_WORLD = global_matrix
+        scene_exporter.EXTERNAL_MESH_FILES = self.external_mesh_files
         scene_exporter.write_scene()
 
         return {'FINISHED'}
@@ -52,7 +54,7 @@ _bl_register, _bl_unregister = bpy.utils.register_classes_factory(_classes)
 
 def menu_func_export(self, context):
 	self.layout.operator(
-	    PearRayExportSceneOperator.bl_idname, text="PearRay (.pr)")
+	    PearRayExportSceneOperator.bl_idname, text="PearRay (.prc)")
 
 
 def register():

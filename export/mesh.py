@@ -1,6 +1,7 @@
 import collections
 import bpy
 import mathutils
+import os
 from .entity import inline_entity_matrix
 
 
@@ -132,8 +133,18 @@ def export_mesh_only(exporter, obj):
         return None
 
     name = exporter.register_unique_name('MESH', obj.data.name)
+    if exporter.EXTERNAL_MESH_FILES:
+        filename = exporter.create_file(name_hint="%s.prc" % name)
+        exporter.push_writer(filename)
+
     name = export_mesh_data(exporter, name, mesh)
+
     obj.to_mesh_clear()
+
+    if exporter.EXTERNAL_MESH_FILES:
+        exporter.pop_writer()
+        relpath = os.path.relpath(filename, os.path.dirname(exporter.filename))
+        exporter.w.write("(include '%s')" % relpath)
 
     return name
 

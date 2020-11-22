@@ -168,6 +168,7 @@ def export_bsdf(exporter, bsdf, prename):
     name = exporter.register_unique_name('MATERIAL', prename)
     if bsdf is None:
         print("Material %s has no valid BSDF!" % name)
+        return exporter.MISSING_MAT
     elif isinstance(bsdf, bpy.types.ShaderNodeBsdfDiffuse):
         _export_diffuse_bsdf(exporter, bsdf, name)
     elif isinstance(bsdf, bpy.types.ShaderNodeBsdfGlass):
@@ -183,6 +184,7 @@ def export_bsdf(exporter, bsdf, prename):
     else:
         print("Material %s has a '%s' which is not supported " %
               (name, bsdf.name))
+        return exporter.MISSING_MAT
     return name
 
 
@@ -202,7 +204,6 @@ def export_material(exporter, material):
 
     export_bsdf(exporter, _extract_material_bsdf(material), material.name)
     
-
 
 def export_default_materials(exporter):
     exporter.MISSING_MAT = exporter.register_unique_name(
