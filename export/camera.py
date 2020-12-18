@@ -30,11 +30,12 @@ def export_camera(exporter, camera):
         w.write(":height %f" % (aspectH))
         w.write(":zoom %f" % camera.data.pearray.zoom)
         w.write(":fstop %f" % camera.data.pearray.fstop)
-        w.write(":apertureRadius %f" % camera.data.pearray.apertureRadius)
+        w.write(":aperture_radius %f" % camera.data.pearray.apertureRadius)
 
-    w.write(":localDirection [0,0,-1]")
-    w.write(":localUp [0,-1,0]")
-    w.write(":localRight [1,0,0]")
+    w.write(":local_direction [0,0,-1]")
+    w.write(":local_up [0,1,0]")
+    w.write(":local_right [1,0,0]")
+
     w.write(":near %f" % camera.data.clip_start)
     w.write(":far %f" % camera.data.clip_end)
     inline_entity_matrix(exporter, camera)

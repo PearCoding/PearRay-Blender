@@ -16,9 +16,6 @@ def rvec2(v):
 def export_mesh_data(exporter, name, mesh):
     w = exporter.w
 
-    mesh.transform(exporter.M_WORLD)
-    if exporter.M_WORLD.is_negative:
-        mesh.flip_normals()
     mesh.calc_loop_triangles()
 
     has_uv = bool(mesh.uv_layers)
@@ -151,11 +148,11 @@ def export_mesh_only(exporter, obj):
 
 def export_mesh_material_part(exporter, obj):
     w = exporter.w
-    if len(obj.data.materials) == 1 and obj.data.materials[0] is not None:
-        w.write(":materials '%s'" % obj.data.materials[0].name)
+    if len(obj.material_slots) == 1 and obj.material_slots[0] is not None:
+        w.write(":materials '%s'" % obj.material_slots[0].name)
     elif len(obj.data.materials) > 1:
         w.write(":materials [%s]" % ', '.join(
-            ['"%s"' % (m.name if m is not None else exporter.MISSING_MAT) for m in obj.data.materials]))
+            ['"%s"' % (m.name if m is not None else exporter.MISSING_MAT) for m in obj.material_slots]))
     else:
         w.write(":materials '%s'" % exporter.MISSING_MAT)
         print("Mesh %s has no material!" % obj.name)

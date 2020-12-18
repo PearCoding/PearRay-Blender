@@ -78,9 +78,6 @@ class PearRayRender(bpy.types.RenderEngine):
         y = int(render.resolution_y * render.resolution_percentage * 0.01)
 
         print("<<< START PEARRAY >>>")
-        blendSceneName = bpy.data.filepath.split(os.path.sep)[-1].split(".")[0]
-        if not blendSceneName:
-            blendSceneName = "blender_scene"
 
         sceneFile = ""
         renderPath = bpy.path.resolve_ncase(
@@ -196,7 +193,7 @@ class PearRayRender(bpy.types.RenderEngine):
         def update_image():
             colorBuffer.mapWeighted(
                 toneMapper, renderer.output.spectral, renderer.output.pixelweight)
-            # colorBuffer.flipY()
+            colorBuffer.flipY()
             layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)
 

@@ -49,7 +49,7 @@ def _export_diffuse_bsdf(exporter, bsdf, export_name):
 
 def _export_glass_bsdf(exporter, bsdf, export_name):
     color = export_node(exporter, bsdf.inputs["Color"])
-    #roughness = export_node(exporter, bsdf.inputs["Roughness"])
+    roughness = export_node(exporter, bsdf.inputs["Roughness"])
     ior = export_node(exporter, bsdf.inputs["IOR"])
 
     exporter.w.write("(material")
@@ -59,7 +59,7 @@ def _export_glass_bsdf(exporter, bsdf, export_name):
     exporter.w.write(":type 'dielectric'")
 
     exporter.w.write(":specularity %s" % color)
-    #exporter.w.write(":roughness %s" % roughness)
+    exporter.w.write(":roughness %s" % roughness)
     exporter.w.write(":index %s" % ior)
 
     exporter.w.goOut()
@@ -86,17 +86,18 @@ def _export_glossy_bsdf(exporter, bsdf, export_name):
 
 
 def _export_principled_bsdf(exporter, bsdf, export_name):
-    base_color = export_node(exporter, bsdf.inputs["Base Color"])
-    roughness = export_node(exporter, bsdf.inputs["Roughness"])
-    subsurface = export_node(exporter, bsdf.inputs["Subsurface"])
-    metallic = export_node(exporter, bsdf.inputs["Metallic"])
-    specular = export_node(exporter, bsdf.inputs["Specular"])
+    base_color    = export_node(exporter, bsdf.inputs["Base Color"])
+    roughness     = export_node(exporter, bsdf.inputs["Roughness"])
+    subsurface    = export_node(exporter, bsdf.inputs["Subsurface"])
+    metallic      = export_node(exporter, bsdf.inputs["Metallic"])
+    specular      = export_node(exporter, bsdf.inputs["Specular"])
     specular_tint = export_node(exporter, bsdf.inputs["Specular Tint"])
-    anisotropic = export_node(exporter, bsdf.inputs["Anisotropic"])
+    transmission  = export_node(exporter, bsdf.inputs["Transmission"])
+    anisotropic   = export_node(exporter, bsdf.inputs["Anisotropic"])
     # anisotropic_rotation = export_node(exporter, bsdf.inputs["Anisotropic Rotation"])
-    sheen = export_node(exporter, bsdf.inputs["Sheen"])
-    sheen_tint = export_node(exporter, bsdf.inputs["Sheen Tint"])
-    clearcoat = export_node(exporter, bsdf.inputs["Clearcoat"])
+    sheen         = export_node(exporter, bsdf.inputs["Sheen"])
+    sheen_tint    = export_node(exporter, bsdf.inputs["Sheen Tint"])
+    clearcoat     = export_node(exporter, bsdf.inputs["Clearcoat"])
 
     exporter.w.write("(material")
     exporter.w.goIn()
@@ -106,11 +107,12 @@ def _export_principled_bsdf(exporter, bsdf, export_name):
 
     exporter.w.write(":base_color %s" % base_color)
     exporter.w.write(":roughness %s" % roughness)
-    exporter.w.write(":subsurface %s" % subsurface)
+    exporter.w.write(":flatness %s" % subsurface)
     exporter.w.write(":metallic %s" % metallic)
     exporter.w.write(":anisotropic %s" % anisotropic)
     exporter.w.write(":specular %s" % specular)
     exporter.w.write(":specular_tint %s" % specular_tint)
+    exporter.w.write(":specular_transmission %s" % transmission)
     exporter.w.write(":sheen %s" % sheen)
     exporter.w.write(":sheen_tint %s" % sheen_tint)
     exporter.w.write(":clearcoat %s" % clearcoat)
@@ -123,7 +125,7 @@ def _export_principled_bsdf(exporter, bsdf, export_name):
 def _export_add_bsdf(exporter, bsdf, export_name):
     mat1 = export_bsdf_inline(exporter, bsdf.inputs[0], export_name)
     mat2 = export_bsdf_inline(exporter, bsdf.inputs[1], export_name)
-    
+
     if mat1 is None or mat2 is None:
         print("Mix BSDF %s has no valid bsdf input " % export_name)
         return
@@ -145,7 +147,7 @@ def _export_mix_bsdf(exporter, bsdf, export_name):
     mat1 = export_bsdf_inline(exporter, bsdf.inputs[1], export_name)
     mat2 = export_bsdf_inline(exporter, bsdf.inputs[2], export_name)
     factor = export_node(exporter, bsdf.inputs["Fac"])
-    
+
     if mat1 is None or mat2 is None:
         print("Mix BSDF %s has no valid bsdf input " % export_name)
         return
@@ -191,7 +193,7 @@ def export_bsdf(exporter, bsdf, prename):
 def export_bsdf_inline(exporter, socket, prename):
     if not socket.is_linked:
         return None
-    
+
     return export_bsdf(exporter, socket.links[0].from_node, prename)
 
 
@@ -203,7 +205,7 @@ def export_material(exporter, material):
         return
 
     export_bsdf(exporter, _extract_material_bsdf(material), material.name)
-    
+
 
 def export_default_materials(exporter):
     exporter.MISSING_MAT = exporter.register_unique_name(

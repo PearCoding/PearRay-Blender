@@ -7,12 +7,11 @@ def _inline_entity_matrix(exporter, matrix):
         [",".join(map(str, matrix[i])) for i in range(4)]) + "]")
 
 
-# Blender uses M = Translation * Rotation * Scale
 def inline_entity_matrix(exporter, obj):
-    matrix = exporter.M_WORLD @ obj.matrix_world
-    _inline_entity_matrix(exporter, matrix)
+    _inline_entity_matrix(exporter, obj.matrix_world)
 
 
+# Blender uses M = Translation * Rotation * Scale
 def inline_entity_uniform(exporter,
                           loc,
                           rot,
@@ -29,4 +28,4 @@ def inline_entity_uniform(exporter,
 
     mat_out = mat_loc @ mat_rot @ mat_sca
 
-    _inline_entity_matrix(exporter, exporter.M_WORLD @ parent_m @ mat_out)
+    _inline_entity_matrix(exporter, parent_m @ mat_out)

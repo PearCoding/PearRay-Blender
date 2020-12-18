@@ -39,7 +39,6 @@ def write_scene(exporter):
 
     # Exporters
     def export_scene():
-        w.write(":name '_from_blender'")
         w.write(":render_width %i" % res_x)
         w.write(":render_height %i" % res_y)
         w.write(":camera '%s'" % scene.camera.name)
@@ -53,33 +52,31 @@ def write_scene(exporter):
                 w.write("(output")
                 w.goIn()
                 w.write(":name '%s'" % str)
-            w.write("(channel")
-            w.goIn()
+            w.write("(channel ", newline=False)
 
         def end_output():
-            w.goOut()
-            w.write(")")
+            w.write_inline(")\n")
             if rl2.separate_files:
                 w.goOut()
                 w.write(")")
 
         def raw_output(str, lpe):
             start_output(str)
-            w.write(":type '%s'" % str)
+            w.write_inline(":type '%s' " % str)
             if lpe:
-                w.write(":lpe '%s'" % lpe)
+                w.write_inline(":lpe '%s' " % lpe)
             end_output()
 
         def export_channel(type, lpe=None):
             if type == 'SPECTRAL':
                 start_output('image')
-                w.write(":type 'color'")
+                w.write_inline(":type 'color' ")
                 if scene.pearray.color_format == 'XYZ':
-                    w.write(":color 'xyz'")
+                    w.write_inline(":color 'xyz' ")
                 else:
-                    w.write(":color 'srgb'")
+                    w.write_inline(":color 'srgb' ")
                 if lpe:
-                    w.write(":lpe '%s'" % lpe)
+                    w.write_inline(":lpe '%s' " % lpe)
                 end_output()
             elif type == 'POSITION':
                 raw_output('p', lpe)

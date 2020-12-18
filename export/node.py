@@ -217,6 +217,19 @@ def _export_spectral_invert(exporter, node):
         return "(ssub 1 %s)" % col1
 
 
+def _export_hsv(exporter, node):
+    hue = export_node(exporter, node.inputs[0])
+    sat = export_node(exporter, node.inputs[1])
+    val = export_node(exporter, node.inputs[2])
+    fac = export_node(exporter, node.inputs[3])
+    col = export_node(exporter, node.inputs[4])
+
+    if node.inputs[3].is_linked or node.inputs[3].default_value != 1:
+        return "(sblend %s %s (shsv %s %s %s %s))" % (fac, col, hue, sat, val, col)
+    else:
+        return "(shsv %s %s %s %s)" % (hue, sat, val, col)
+
+
 def _export_blackbody(exporter, node):
     print("Warning: Blackbody node operates in radiance units!")
     temp_node = export_node(exporter, node.inputs["Temperature"])
@@ -226,6 +239,13 @@ def _export_blackbody(exporter, node):
 def _export_wavelength(exporter, node):
     wvl_node = export_node(exporter, node.inputs["Wavelength"])
     return "(triangle_peak %s 1)" % wvl_node
+
+
+def _export_checkerboard(exporter, node):
+    color1 = export_node(exporter, node.inputs["Color1"])
+    color2 = export_node(exporter, node.inputs["Color2"])
+    scale = export_node(exporter, node.inputs["Scale"])
+    return "(checkerboard %s %s %s %s)" % (color1, color2, scale, scale)
 
 
 def _export_image_texture(exporter, node):
@@ -264,6 +284,8 @@ def _export_image_texture(exporter, node):
 def _export_node(exporter, socket, node, factor, asLight):
     if isinstance(node, bpy.types.ShaderNodeTexImage):
         return _export_image_texture(exporter, node)
+    elif isinstance(node, bpy.types.ShaderNodeTexChecker):
+        return _export_checkerboard(exporter, node)
     elif isinstance(node, bpy.types.ShaderNodeMath):
         return _export_scalar_math(exporter, node)
     elif isinstance(node, bpy.types.ShaderNodeValue):
@@ -286,6 +308,8 @@ def _export_node(exporter, socket, node, factor, asLight):
         return _export_blackbody(exporter, node)
     elif isinstance(node, bpy.types.ShaderNodeWavelength):
         return _export_wavelength(exporter, node)
+    elif isinstance(node, bpy.types.ShaderNodeHueSaturation):
+        return _export_hsv(exporter, node)
     else:
         print("Shader Node '%s' is not supported" % node.name)
         return "''"

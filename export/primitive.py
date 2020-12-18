@@ -7,8 +7,8 @@ from .entity import inline_entity_matrix
 
 def export_prim_material_part(exporter, obj):
     w = exporter.w
-    if len(obj.data.materials) >= 1:
-        w.write(":material '%s'" % obj.data.materials[0].name)
+    if len(obj.material_slots) >= 1:
+        w.write(":material '%s'" % obj.material_slots[0].name)
     else:
         w.write(":material '%s'" % exporter.MISSING_MAT)
         print("Primitive %s has no material!" % obj.name)
