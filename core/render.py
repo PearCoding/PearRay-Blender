@@ -169,6 +169,7 @@ class PearRayRender(bpy.types.RenderEngine):
             del fileLog
             return
 
+        output = environment.createAndAssignFrameOutputDevice(renderer)
         environment.setup(renderer)
 
         if addon_prefs.verbose:
@@ -192,7 +193,7 @@ class PearRayRender(bpy.types.RenderEngine):
 
         def update_image():
             colorBuffer.mapWeighted(
-                toneMapper, renderer.output.spectral, renderer.output.pixelweight)
+                toneMapper, output.spectral, output.pixelweight)
             colorBuffer.flipY()
             layer.passes["Combined"].rect = colorBuffer.asLinearWithChannels()
             self.update_result(result)
@@ -219,7 +220,7 @@ class PearRayRender(bpy.types.RenderEngine):
         renderer.notifyEnd()
         saveOpts = pr.OutputSaveOptions()
         saveOpts.Force = True
-        environment.save(renderer, toneMapper, saveOpts)
+        environment.save(renderer, output, toneMapper, saveOpts)
 
         # The order here is important!
         # FIXME: This should be handled internally!!!
